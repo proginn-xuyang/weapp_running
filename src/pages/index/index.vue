@@ -8,6 +8,9 @@
     <img class="abs logo" src="/static/images/logo.png" alt="" srcset="">
 
     <img class="abs h-center banner" src="/static/images/banner.png" alt="" srcset="">
+
+    <com-dial></com-dial>
+
     <!-- 步数 -->
     <div class="abs summary">
       <div class="summary-detail">
@@ -21,10 +24,12 @@
       <img src="/static/images/home-summary.png" alt srcset class="summary-bg" mode="scaleToFill">
     </div>
 
+    <!-- 加速按键 -->
     <div class="abs jiasu-box">
       <img class="btn-jiasu" src="/static/images/btn-jiasu.png" alt srcset>
     </div>
 
+    <!-- 规则按键 -->
     <div class="abs rule-box">
       <img class="btn-rule" src="/static/images/btn-rule.png" alt srcset>
     </div>
@@ -112,7 +117,14 @@
 </template>
 
 <script>
+import Dial from './../../components/dial'
+console.log('-----')
+console.log(Dial)
+console.log('-----')
 export default {
+  components: {
+    [Dial.name]: Dial
+  },
   data () {
     return {
       zhandian: [{ name: '', distancs: '' }]
@@ -135,6 +147,12 @@ export default {
 
   created () {
     // let app = getApp()
+    wx.setTabBarStyle({
+      color: '#FF0000',
+      selectedColor: '#00FF00',
+      backgroundColor: '#0000FF',
+      borderStyle: 'white'
+    })
   },
 
   computed: {
@@ -459,8 +477,4 @@ cwh(x, y) {
 .address-tip2{
  	background-color: #ee7d32;
 }
-</style>
-
-
-
-  
+</style> 

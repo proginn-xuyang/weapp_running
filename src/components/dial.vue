@@ -1,8 +1,10 @@
 <template>
   <div class="com-dial">
-    <div class="header" slot="header">
+    <div class="header">
+     header
     </div>
-    <div class="content" slot='content'>
+    <div class="content" >
+      content
     </div>
   </div>
 </template>
@@ -14,6 +16,25 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus">
+c(x) {
+ ((x / 2) px)
+}
+ptl(x, y) {
+  left (x / 2) px
+  top (y / 2) px
+}
+cwh(x, y) {
+  width  x == 0 ? auto : (x / 2) px
+  height (y / 2) px
+}
 
+.com-dial{
+  position absolute
+  cwh(540, 0)
+  .header{
+    cwh(724, 110)
+    background-image: linear-gradient(90deg, #85f5bc 1%, #3ea26d 100%), linear-gradient(#000000, #000000);}
+}
 </style>
+
