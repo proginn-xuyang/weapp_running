@@ -71,8 +71,24 @@ exports.cssLoaders = function (options) {
     less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
-    stylus: generateLoaders('stylus'),
-    styl: generateLoaders('stylus')
+    stylus: generateLoaders('stylus').concat({
+      // 需要下载这个loader
+      loader: 'style-resources-loader',
+      options: {
+        patterns: [
+          path.resolve(__dirname, './../src/global.stylus'),
+        ]
+      }
+    }),
+    styl: generateLoaders('stylus').concat({
+      // 需要下载这个loader
+      loader: 'style-resources-loader',
+      options: {
+        patterns: [
+          path.resolve(__dirname, './../src/global.stylus'),
+        ]
+      }
+    })
   }
 }
 

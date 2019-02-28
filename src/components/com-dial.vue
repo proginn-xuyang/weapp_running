@@ -1,9 +1,39 @@
+
+<template>
+  <div class="com-dial" :class="{'actived': state.dial.is_show}" catchtouchmove="true">
+    <div class="com-dial-box">
+      <div class="header">
+        <div>步数增减明细</div>
+      </div>
+      <div class="content">
+        <div>content</div>
+      </div>
+      <div class="btns">btn</div>
+      <div class="close" @click="closeDial">
+        <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">
+      </div>
+    </div>
+  </div>
+</template>
+
 <script>
-export default {}
+export default {
+  name: 'comdial',
+  props: ['header', 'content'],
+  methods: {
+    closeDial () {
+      this.$store.commit('toggleDial')
+    }
+  },
+  computed: {
+    state () {
+      return this.$store.state
+    }
+  }
+}
 </script>
 
-
-<style lang="stylus" >
+<style lang="stylus">
 c(x) {
   (((x / 2)) px)
 }
@@ -15,53 +45,6 @@ cwh(x, y) {
   width x == 0 ? auto : (((x / 2))) px
   height (y / 2) px
 }
-page, container {
-  padding 0px
-  margin 0px
-}
-.container {
-  width 100%
-  height 100%
-}
-
-.scroll-view{
-  height 100%
-}
-  
-page {
-  padding 0px
-  margin 0px
-  background #025527
-  width 100%
-  height 100%
-}
-.abs {
-  position absolute
-}
-.h-center {
-  left 0
-  right 0
-  margin auto
-}
-.v-center {
-  top 0
-  bottom 0
-  margin auto
-}
-.logo {
-  cwh(455, 33)
-  ptl(22, 68)
-}
-.h-line {
-  width 100%
-  height c(1)
-  border none
-  border-bottom c(1) solid #c5c5c5
-  transform scaleY(0.5)
-  transform-origin 0 0
-}
-
-// 对话框模块
 .com-dial {
   position fixed
   z-index 100000
@@ -74,7 +57,9 @@ page {
   display flex
   justify-content center
   align-items center
-
+  &.actived {
+    opacity 1
+  }
   .header {
     cwh(540, 110)
     display flex
@@ -88,46 +73,25 @@ page {
     font-weight 800
     color #ffffff
   }
-
   .content {
     width c(540)
+    height c(310)
     display flex
     justify-content center
     align-items center
-    margin c(-1) auto auto auto
+    margin auto
     background #ffffff
   }
-
   .btns {
     cwh(540, 160)
     display flex
     justify-content center
     align-items center
     margin auto
-    background #ffffff
-    margin c(-1) auto auto auto
+    background #f2f2f2
     border-bottom-left-radius c(20)
     border-bottom-right-radius c(20)
-    .btn {
-      cwh(400, 68)
-      background-image linear-gradient(
-        90deg,
-        #ef8b3b 0%,
-        #fbd565 100%
-      ), linear-gradient(
-        90deg,
-        #bccbf9 0%,
-        #26c1db 100%
-      )
-      background-blend-mode normal, normal
-      border-radius c(34)
-      font-size c(26)
-      color #ffffff
-      line-height c(68)
-      text-align center
-    }
   }
-
   .close {
     height c(160)
     display flex
@@ -138,6 +102,5 @@ page {
     }
   }
 }
-
 </style>
 

@@ -1,134 +1,202 @@
 <template>
-  <!-- <div class="circle-outer">
-    <div class="circle-inner"></div>
-  </div>-->
-  <div class="container container-index">
-    <img class="abs home-bg" src="/static/images/home-bg.png" alt srcset mode="scaleToFill"></img>
  
-    <img class="abs logo" src="/static/images/logo.png" alt="" srcset="">
+  <div>
+    <!-- <div class="circle-outer">
+      <div class="circle-inner"></div>
+    </div> -->
+    <scroll-view class="container container-index">
+      <img class="abs home-bg" src="/static/images/home-bg.png" alt srcset mode="scaleToFill"></img>
+      <img class="abs logo" src="/static/images/logo.png" alt="" srcset="">
+      <img class="abs h-center banner" src="/static/images/banner.png" alt="" srcset="">
 
-    <img class="abs h-center banner" src="/static/images/banner.png" alt="" srcset="">
-
-    <com-dial></com-dial>
-
-    <!-- 步数 -->
-    <div class="abs summary">
-      <div class="summary-detail">
-        <div class="summary-title">今日步数</div>
-        <div class="summary-today-total-count">16050</div>
-        <div class="summary-today-left-count">离每日红包还差5000步</div>
-        <div class="btn-log">
-          <span>获赠记录></span>
-        </div>
-      </div>
-      <img src="/static/images/home-summary.png" alt srcset class="summary-bg" mode="scaleToFill">
-    </div>
-
-    <!-- 加速按键 -->
-    <div class="abs jiasu-box">
-      <img class="btn-jiasu" src="/static/images/btn-jiasu.png" alt srcset>
-    </div>
-
-    <!-- 规则按键 -->
-    <div class="abs rule-box">
-      <img class="btn-rule" src="/static/images/btn-rule.png" alt srcset>
-    </div>
-
-    <!-- 邀请好友 -->
-    <div class="abs invite-box">
-      <img class="btn-invite" src="/static/images/btn-invite.png" alt srcset mode="scaleToFill">
-    </div>
-
-    <!-- 里程 -->
-    <div class="abs licheng">
-      <img class="licheng-logo" src="/static/images/licheng-logo.png" alt mode="scaleToFill">
-      <div class="licheng-tip1">
-        离下一个里程碑还差
-        <span class="licheng-left-count">4KM</span>
-      </div>
-
-      <div class="licheng-tip2">每日红包收益将直接存入微信零钱账户</div>
-
-      <div class="licheng-total-count">
-        <img
-          class="licheng-address-icon"
-          src="/static/images/licheng-address-icon.png"
-          alt
-          srcset
-          mode="scaleToFill"
-        >
-        <p>已达50000步</p>
-      </div>
-
-      <div class="h-center licheng-map">
-        <div class="abs h-center licheng-map-steps normal"></div>
-        <div class="abs h-center licheng-map-steps steps">
-          <div class="abs licheng-map-steps progress"></div>
-          <div class="abs h-center step-box">
-            <div class="licheng-map-step actived"></div>
-            <div class="licheng-map-step actived"></div>
-            <div class="licheng-map-step actived"></div>
-            <div class="licheng-map-step"></div>
-            <div class="licheng-map-step"></div>
+      <!-- 步数 -->
+      <div class="abs summary">
+        <div class="summary-detail">
+          <div class="summary-title">今日步数</div>
+          <div class="summary-today-total-count">16050</div>
+          <div class="summary-today-left-count">离每日红包还差5000步</div>
+          <div class="btn-log">
+            <span>获赠记录></span>
           </div>
         </div>
+        <img src="/static/images/home-summary.png" alt srcset class="summary-bg" mode="scaleToFill">
+      </div>
 
-        <div class="licheng-map-infos">
-          <div class="licheng-map-info">
-            <div class="address">南滨公园</div>
-            <div class="distance">起点</div>
+      <!-- 加速按键 -->
+      <div class="abs jiasu-box" @click="clickJiaSu">
+        <img class="btn-jiasu" src="/static/images/btn-jiasu.png" alt srcset>
+      </div>
+
+      <!-- 规则按键 -->
+      <div class="abs rule-box" @click="clickRule">
+        <img class="btn-rule" src="/static/images/btn-rule.png" alt srcset>
+      </div>
+
+      <!-- 邀请好友 -->
+      <div class="abs h-center invite-box" @click="clickDial">
+        <img class="btn-invite" src="/static/images/btn-invite.png" alt srcset mode="scaleToFill">
+      </div>
+
+      <!-- 里程 -->
+      <div class="abs h-center licheng">
+        <img class="licheng-logo" src="/static/images/licheng-logo.png" alt mode="scaleToFill">
+        <div class="licheng-tip1">
+          离下一个里程碑还差
+          <span class="licheng-left-count">4KM</span>
+        </div>
+
+        <div class="licheng-tip2">每日红包收益将直接存入微信零钱账户</div>
+
+        <div class="licheng-total-count">
+          <img
+            class="licheng-address-icon"
+            src="/static/images/licheng-address-icon.png"
+            alt
+            srcset
+            mode="scaleToFill"
+          >
+          <p>已达50000步</p>
+        </div>
+
+        <div class="h-center licheng-map">
+          <div class="abs h-center licheng-map-steps normal"></div>
+          <div class="abs h-center licheng-map-steps steps">
+            <div class="abs licheng-map-steps progress"></div>
+            <div class="abs h-center step-box">
+              <div class="licheng-map-step actived"></div>
+              <div class="licheng-map-step actived"></div>
+              <div class="licheng-map-step actived"></div>
+              <div class="licheng-map-step"></div>
+              <div class="licheng-map-step"></div>
+            </div>
           </div>
-          <div class="licheng-map-info">
-            <div class="address">洪崖洞</div>
-            <div class="distance">5KM</div>
-          </div>
-          <div class="licheng-map-info">
-            <div class="address">李子坝</div>
-            <div class="distance">10KM</div>
-          </div>
-          <div class="licheng-map-info">
-            <div class="address">磁器口</div>
-            <div class="distance">45KM</div>
-          </div>
-          <div class="licheng-map-info">
-            <div class="address">欧尚X-house</div>
-            <div class="distance">46KM</div>
+
+          <div class="licheng-map-infos">
+            <div class="licheng-map-info">
+              <div class="address">南滨公园</div>
+              <div class="distance">起点</div>
+            </div>
+            <div class="licheng-map-info">
+              <div class="address">洪崖洞</div>
+              <div class="distance">5KM</div>
+            </div>
+            <div class="licheng-map-info">
+              <div class="address">李子坝</div>
+              <div class="distance">10KM</div>
+            </div>
+            <div class="licheng-map-info">
+              <div class="address">磁器口</div>
+              <div class="distance">45KM</div>
+            </div>
+            <div class="licheng-map-info">
+              <div class="address">欧尚X-house</div>
+              <div class="distance">46KM</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 站点 -->
-    <div class="abs zhandian">
-      <img class="zhandian-map" src="/static/images/zhandian.png" alt srcset mode="scaleToFill">
+      <!-- 站点 -->
+      <div class="abs zhandian">
+        <img class="zhandian-map" src="/static/images/zhandian.png" alt srcset mode="scaleToFill">
 
-      <div class="abs zhandian-step" :class="'zhandian-step' + (i+2) " v-for="i in 11" :key="i">
-        <img class="address-small-icon" src="/static/images/address-small-icon0.png" alt mode="scaleToFill" >
+        <div class="abs zhandian-step" :class="'zhandian-step' + (i+2) " v-for="i in 11" :key="i">
+          <img class="address-small-icon" src="/static/images/address-small-icon0.png" alt mode="scaleToFill" >
+        </div>
+
+        <div class="abs address-tip address-tip1" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
+          已领取奖品
+        </div>
       </div>
+    </scroll-view>
 
-      <div class="abs address-tip address-tip1" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
-        已领取奖品
-      </div>
+    <div :class="{'loading': loading}"></div>
 
+    <!-- <com-dial v-if="state.dial.is_show"></com-dial> -->
 
-     
-    </div>
+    <!-- 步数明细 -->
+    <!-- <dial-step-log></dial-step-log> -->
+
+    <!-- 好友赠送 -->
+    <!-- <dial-friend-step-log></dial-friend-step-log> -->
+
+    <!-- 现金奖励 -->
+    <!-- <dial-gift-money></dial-gift-money> -->
+
+    <!-- 到达终点 -->
+    <!-- <dial-end-pointer></dial-end-pointer> -->
+
+    <!-- 到达中点（其他站点） -->
+    <!-- <dial-mid-pointer></dial-mid-pointer> -->
+
+    <!-- 放弃站点奖励 -->
+    <!-- <dial-give-up></dial-give-up> -->
+
+    <!-- 确认奖励 -->
+    <!-- <dial-comfirm></dial-comfirm> -->
+
+    <!-- 加速成功 -->
+    <!-- <dial-jiasu-success></dial-jiasu-success> -->
+    
+    <!-- 加速失败 -->
+    <!-- <dial-jiasu-failed></dial-jiasu-failed> -->
+
+    <!-- 赠送成功 -->
+    <!-- <dial-donate-success></dial-donate-success> -->
+
+    <!-- 赠送失败 -->
+    <!-- <dial-donate-failed></dial-donate-failed> -->
+
+    <!-- 规则 -->
+    <!-- <dial-rule></dial-rule> -->
   </div>
+ 
 </template>
 
 <script>
-import Dial from './../../components/dial'
-console.log('-----')
-console.log(Dial)
-console.log('-----')
+import DialStepLog from './../../components/dial-step-log'
+import DialFriendStepLog from './../../components/dial-friend-step-log'
+import DialGiftMoney from './../../components/dial-gift-money'
+import DialMidPointer from './../../components/dial-mid-pointer'
+import DialEndPointer from './../../components/dial-end-pointer'
+import DialGiveUp from './../../components/dial-give-up'
+import DialComfirm from './../../components/dial-comfirm'
+import DialJiasuSuccess from './../../components/dial-jiasu-success'
+import DialJiasuFailed from './../../components/dial-jiasu-failed'
+import DialDonateSuccess from './../../components/dial-donate-success'
+import DialDonateFailed from './../../components/dial-donate-failed'
+import DialRule from './../../components/dial-rule'
 export default {
   components: {
-    [Dial.name]: Dial
+    DialStepLog,
+    DialFriendStepLog,
+    DialGiftMoney,
+    DialMidPointer,
+    DialEndPointer,
+    DialGiveUp,
+    DialComfirm,
+    DialJiasuSuccess,
+    DialJiasuFailed,
+    DialDonateSuccess,
+    DialDonateFailed,
+    DialRule
   },
   data () {
     return {
+      loading: true,
       zhandian: [{ name: '', distancs: '' }]
     }
+  },
+  onShow () {
+    this.loading = true
+    wx.showLoading({
+      title: '加载中'
+    })
+
+    setTimeout(() => {
+      this.loading = false
+      wx.hideLoading()
+    }, 1000)
   },
   methods: {
     bindViewTap () {
@@ -142,6 +210,25 @@ export default {
     clickHandle (ev) {
       console.log('clickHandle:', ev)
       // throw {message: 'custom test'}
+    },
+    clickJiaSu () {
+      console.log(1)
+      wx.navigateTo({
+        url: '/pages/rank/main',
+        complete: () => {
+        }
+      })
+    },
+    clickRule () {
+      console.log(2)
+      wx.navigateTo({
+        url: '/pages/gift/main',
+        complete: () => {
+        }
+      })
+    },
+    clickDial () {
+      this.$store.commit('toggleDial')
     }
   },
 
@@ -185,17 +272,20 @@ cwh(x, y) {
   align-items center
 }
 
+.fixed{
+  position fixed
+  top 0
+  bottom 0
+  left 0
+  right 0
+}
+
 .home-bg{
   cwh(750, 1677)
 }
 
-.logo{
-  cwh(455, 33)
-  ptl(22, 68)
-}
-
 .banner{
-  cwh(660, 225)
+  cwh(668, 231)
   top c(136)
 }
 
@@ -279,6 +369,7 @@ cwh(x, y) {
     align-items center
   }
 }
+
 .invite-box {
   top c(890)
   cwh(664, 113)
@@ -286,6 +377,7 @@ cwh(x, y) {
     cwh(664, 113)
   }
 }
+
 .licheng {
   top c(1046)
   cwh(660, 462)
@@ -476,5 +568,14 @@ cwh(x, y) {
 
 .address-tip2{
  	background-color: #ee7d32;
+}
+
+.loading{
+  position absolute 
+  top 0
+  bottom 0
+  left 0
+  right 0
+  background rgba(255,255,255, 0.8)
 }
 </style> 

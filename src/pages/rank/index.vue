@@ -1,59 +1,345 @@
 <template>
-  <div>
-      <swiper v-if="imgUrls.length > 0" indidator-dots="imgUrls.length > 1" >
-      <block v-for="(item, index) in imgUrls" :key="index" >
-        <swiper-item>
-          <image :src="item" mode="scaleToFill"></image>
-        </swiper-item>
-      </block>
-    </swiper>
+  <div class="container container-rank">
+    <comheader></comheader>
 
-    <ul class="container log-list">
-      <li v-for="(log, index) in logs" :class="{ red: aa }" :key="index" class="log-item">
-       
-      </li>
-    </ul>
+    <div class="btns">
+      <div class="btn btn-left" :class="{'actived': state.rank.type === 0}" @click="toggleRankType">今日排行榜</div>
+      <div class="btn btn-right" :class="{'actived': state.rank.type === 1}" @click="toggleRankType">里程排行榜</div>
+    </div>
+    <div class="content">
+      <div class="none-data-box" v-if="false">
+        <img class="none-data" src="/static/images/none-data.png" alt srcset>
+        <p class="none-data-tip">排行榜暂无数据</p>
+      </div>
+      <div class="data-box">
+        <div class="title">
+          <div class="title-line"></div>
+          <div class="title-name">{{getters.rank_type}}</div>
+          <div class="title-line"></div>
+        </div>
+
+        <div class="my-rank">
+          <div class="rank-items">
+            <div class="userinfo">
+              <img class="avaster" src="/static/images/header.png" alt="" srcset="" mode="aspectFill">
+              <div class="userinfo-defail">
+                <div>序言</div>
+                <div>123名</div>
+              </div>
+            </div>
+            <div class="steps">
+              123123步
+            </div>
+          </div>
+        </div>
+
+        <div class="rank-items">
+          <scroll-view
+            class="scroll-view"
+            @scrolltoupper="scrolltoupper"
+            @scrolltolower="scrolltolower"
+            scroll-y
+          >
+            <div class="rank-item" v-for="i in 20" :key="i">
+              <div class="rank-item-box">
+                <div class="rank-item-num">
+                  <div :class="{'actived': i < 3}">{{i + 1}}</div>
+                </div>
+                <div class="rank-item-user">
+                  <img class="avaster" src="/static/images/header.png" alt="" srcset="" mode="aspectFill">
+                  <div class="nickname">许杨</div>
+                </div>
+                <div class="rank-item-step">{{i * 1000}}步</div>
+              </div>
+              <div class="h-line"></div>
+            </div>
+          </scroll-view>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="btn-back" @click="btnBackHome">返回首页 >></div>
+      <!-- <div class="footer-tip">
+        <p>实物奖励需要到欧尚Style APP</p>
+        <p>完善相关资料后，奖品才会邮寄到您手中</p>
+      </div>-->
+    </div>
   </div>
-</template>
+</template> 
 
 <script>
-import { formatTime } from '@/utils/index'
+import ComHeader from './../../components/com-header'
 
 export default {
   components: {
+    comheader: ComHeader
   },
-
-  data () {
-    return {
-      logs: [],
-      imgUrls: [
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/newsPicture/05558951-de60-49fb-b674-dd906c8897a6',
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/coursePicture/0fbcfdf7-0040-4692-8f84-78bb21f3395d',
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/management-school-picture/7683b32e-4e44-4b2f-9c03-c21f34320870'
-      ]
+  computed: {
+    state () {
+      return this.$store.state
+    },
+    getters () {
+      console.log(this.$store.getters)
+      return this.$store.getters
     }
   },
+  methods: {
+    btnBackHome () {
+      // wx.showModal({
+      //   title: '提示',
+      //   content: '这是一个模态弹窗',
+      //   success (res) {
+      //     if (res.confirm) {
+      //       console.log('用户点击确定')
+      //     } else if (res.cancel) {
+      //       console.log('用户点击取消')
+      //     }
+      //   }
+      // })
 
-  created () {
-    let logs
-    if (mpvuePlatform === 'my') {
-      logs = mpvue.getStorageSync({key: 'logs'}).data || []
-    } else {
-      logs = mpvue.getStorageSync('logs') || []
+      wx.showNavigationBarLoading()
+      // setTimeout(() => {
+      //       wx.hideLoading()
+      //     }, 1000)
+      wx.navigateTo({
+        url: '/pages/index/main',
+        complete: () => {
+        }
+      })
+    },
+    toggleRankType () {
+      this.$store.commit('toggleRankType')
+    },
+    scrolltoupper () {
+      console.log('scrolltoupper')
+      // 加载最新的数据
+    },
+    scrolltolower () {
+      // 加载更多
+      console.log('scrolltolower')
     }
-    this.logs = logs.map(log => formatTime(new Date(log)))
   }
 }
 </script>
 
-<style>
-.log-list {
-  display: flex;
-  flex-direction: column;
-  padding: 40rpx;
+<style lang="stylus">
+c(x) {
+  (((x / 2))) px
 }
+ptl(x, y) {
+  left (x / 2) px
+  top (y / 2) px
+}
+cwh(x, y) {
+  width x == 0 ? auto : ((((x / 2)))) px
+  height (y / 2) px
+}
+.container-rank {
+  width c(750)
+  height 100%
+  display flex
+  flex-direction column
+  background #ffffff
 
-.log-item {
-  margin: 10rpx;
+  .btns {
+    cwh(676, 70)
+    margin c(30) auto
+    background #ffffff
+    border-radius c(35)
+    // border solid c(1) #eaeaea
+    display flex
+    box-sizing border-box
+
+    .btn-left {
+      border-top-left-radius c(35)
+      border-bottom-left-radius c(35)
+    }
+    .btn-right {
+      border-top-right-radius c(35)
+      border-bottom-right-radius c(35)
+    }
+    .btn {
+      flex 1
+      font-size c(30)
+      line-height c(70)
+      text-align center
+      box-sizing border-box
+      border solid c(1) #eaeaea
+      &.actived {
+        color #40a46f
+        background #def1e7
+        border solid c(1) #40a46f
+        font-weight 800
+      }
+    }
+  }
+
+
+  .content {
+    flex 1
+    display flex
+    justify-content center
+    align-items center
+    background #ffffff
+    .none-data-box {
+      display flex
+      flex-direction column
+      justify-content center
+      align-items center
+    }
+    .none-data {
+      cwh(156, 169)
+    }
+    .none-data-tip {
+      padding-top c(30)
+      font-size c(36)
+      color #333333
+    }
+    .data-box {
+      height 100%
+      display flex
+      flex-direction column
+    }
+    .title {
+      display flex
+      justify-content space-between
+      align-items center
+      cwh(660, 40)
+      margin-bottom c(30)
+      margin-left auto 
+      margin-right auto
+    }
+    .title-line {
+      cwh(230, 0)
+      border-bottom c(1) solid #40a46f
+    }
+    .title-name {
+      font-size c(30)
+      color #40a46f
+    }
+    .rank-items {
+      width c(660)
+      margin auto
+      flex 1
+      font-size c(34)
+      color #010101
+      overflow-y auto
+      .rank-item {
+        width 100%
+        display flex
+        flex-direction column
+        justify-content space-between
+        align-items center
+        // border-bottom c(0.1) solid #d5d5d5
+      }
+      .rank-item-box {
+        display flex
+        width 100% - c(10)
+        height c(160)
+        padding 0 c(10)
+        justify-content space-between
+        align-items center
+        box-sizing content-box
+      }
+      .rank-item-num{
+        width c(170)
+        margin-left c(-15)
+        text-align center
+        display flex
+        justify-content center
+        align-items center
+        .actived{
+          cwh(50,50)
+	        background-color: #ef8b3b;
+          border-radius c(50/2)
+          color #ffffff
+        }
+      }
+      .rank-item-user{
+        flex 1
+        display flex
+        justify-content flex-start
+        align-items center
+        .nickname{
+          flex 1
+          // overflow hidden
+          // white-space: nowrap;
+          // text-overflow: ellipsis 
+          padding-left c(15)
+          font-size: c(26);
+          color: #010101; 
+        }
+      }
+      .rank-item-step{
+        width c(150)
+        font-size c(36)
+        text-align right
+      }
+    }
+  }
+
+  .my-rank{
+    cwh(750, 154)
+	  background-color: #def1e7;
+    .rank-items{
+      cwh(660, 154)
+      margin auto
+      display flex
+      justify-content space-between
+      align-items center
+    }
+
+    .userinfo{
+      display flex
+      justify-content center
+      align-items center
+      .avaster{
+        cwh(104,104)
+        border-radius c(104/2)
+        margin-right c(25)
+      }
+
+      .userinfo-detail{
+        display flex
+        flex-direction column
+        justify-content center
+        align-items center
+        font-size c(26)
+      }
+    }
+
+    .steps{
+      font-size c(36)
+      margin-right c(15)
+    }
+  }
+
+ .avaster{
+    cwh(80,80)
+    border-radius c(40)
+  }
+
+  .footer {
+    width 100%
+    height c(210)
+    background #ffffff
+    display flex
+    flex-direction column
+    justify-content center
+    align-items center
+    .btn-back {
+      font-size c(36)
+      color #ee7d32
+      padding-bottom c(20)
+    }
+    .footer-tip {
+      text-align center
+      font-size c(24)
+      line-height 1.5
+      color #666666
+    }
+  }
+
+  
 }
 </style>
