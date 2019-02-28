@@ -11,7 +11,8 @@
 
       <!-- 步数 -->
       <div class="abs summary">
-        <div class="summary-detail">
+        <com-circle></com-circle>
+        <div class="abs h-center summary-detail">
           <div class="summary-title">今日步数</div>
           <div class="summary-today-total-count">16050</div>
           <div class="summary-today-left-count">离每日红包还差5000步</div>
@@ -149,6 +150,11 @@
 
     <!-- 规则 -->
     <!-- <dial-rule></dial-rule> -->
+
+    <!-- 测试圆盘  -->
+    <!-- <dial-circle></dial-circle> -->
+
+    
   </div>
  
 </template>
@@ -166,6 +172,8 @@ import DialJiasuFailed from './../../components/dial-jiasu-failed'
 import DialDonateSuccess from './../../components/dial-donate-success'
 import DialDonateFailed from './../../components/dial-donate-failed'
 import DialRule from './../../components/dial-rule'
+import DialCircle from './../../components/dial-circle'
+import ComCircle from './../../components/com-circle'
 export default {
   components: {
     DialStepLog,
@@ -179,7 +187,9 @@ export default {
     DialJiasuFailed,
     DialDonateSuccess,
     DialDonateFailed,
-    DialRule
+    DialRule,
+    DialCircle,
+    ComCircle
   },
   data () {
     return {
@@ -313,16 +323,17 @@ cwh(x, y) {
   flex-direction column
   justify-content center
   align-items center
+  w = 300
   .summary-detail {
-    width c(442)
-    height c(442)
+    top: c(80)
+    width c(w)
+    height c(w)
     background #ffffff
-    border-radius c((442 / 2))
+    border-radius c((w / 2))
     display flex
     flex-direction column
     justify-content center
     align-items center
-    margin-top c(-200)
   }
   .summary-bg {
     width c(750)

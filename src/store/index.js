@@ -51,6 +51,7 @@ const store = new Vuex.Store({
     end_pointer: {
       is_has_prize: 1, // 0表示没有奖品，1表示有奖品
       rank: 1, // 终点排名
+      pointer_name: '终点站', // 站点名称
       gift_name: '欧尚车模', // 获得奖品的名称
       is_get_prize: 0 // 0表示没有领取奖品，1表示已经领取奖品
     },
