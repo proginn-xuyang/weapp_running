@@ -135,7 +135,7 @@ const store = new Vuex.Store({
         id: 11,
         name: '照母山森林公园',
         detail: '重庆南滨海棠公园位于南岸区南滨路沿长江一侧，是一个开放式带状公园。公园分成187道路景观、六大主题景区、180景区连接段景观三大部分，园内现有全国最大的浮雕及最长的音乐灯饰。公园以绿色为生命、以文化为灵魂、以灯饰为特色，建成具有历史文化、巴渝文化特色的新型滨江公园。',
-        step: 0
+        step: 41000
       },
       {
         id: 12,
@@ -213,6 +213,31 @@ const store = new Vuex.Store({
       return state.target_step - state.userinfo.today_step
     },
     /**
+     * 达到下一站的步数
+     * @param {*} state
+     */
+    left_all_step (state) {
+      // TODO:
+      return (10000 / 1000)
+    },
+    /**
+     * 当前进度
+     * @param {*} state
+     */
+    progress (state) {
+      console.log('state.sites.length ', state.sites.length)
+      if (state.sites.length < 12) {
+        return 0
+      }
+
+      let progress = state.userinfo.total_step / state.sites[11].mileage * 100
+      if (progress > 100) {
+        return 100
+      } else {
+        return progress
+      }
+    },
+    /**
      * 好友剩余步数
      * @param {*} state
      */
@@ -228,6 +253,20 @@ const store = new Vuex.Store({
      */
     zhandian (state) {
       return state.zhandians[state.zhandian_id]
+    },
+    /**
+     * 关键站点
+     */
+    key_zhandians (state) {
+      var site = []
+      site.push(state.zhandians[0])
+      site.push(state.zhandians[2])
+      site.push(state.zhandians[5])
+      site.push(state.zhandians[8])
+      site.push(state.zhandians[11])
+
+      console.log('site', site)
+      return site
     }
   },
   mutations: {
@@ -262,6 +301,15 @@ const store = new Vuex.Store({
      */
     setUserinfo (state, payload) {
       state.userinfo = Object.assign(state.userinfo, payload)
+      wx.setStorageSync('state', JSON.stringify(state))
+    },
+    /**
+     * 设置站点信息
+     * @param {*} state
+     * @param {*} payload
+     */
+    setSite (state, payload) {
+      state.sites = payload
       wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
@@ -363,7 +411,7 @@ const store = new Vuex.Store({
     async login (store) {
       try {
         var code = await $util.wxApi.login()
-        var result = await $api.login({ code })
+        var result = await $api.login({ js_code: code })
         if (result.err_code === 0 || result.err_code === '0') {
           this.commit('setUserinfo', result)
         } else {
@@ -410,6 +458,7 @@ const store = new Vuex.Store({
             total_step: result.total_step,
             can_auth_werundata: 0
           })
+          this.commit('setSite', result.site)
         } else {
           $util.catchError('获取步数失败')
         }
@@ -424,7 +473,17 @@ const store = new Vuex.Store({
      * @param {*} store
      */
     async jiasu (store) {
-
+      let result = await $api.jiasu()
+      if (result.err_code === 0 || result.err_code === '0') {
+        if (result.register > 0) {
+          this.commit('openDial', 8)
+          // TODO:加速成功更新步数
+        } else {
+          this.commit('openDial', 9)
+        }
+      } else {
+        $util.catchError('加速失败')
+      }
     },
     /**
      * 获取排行榜

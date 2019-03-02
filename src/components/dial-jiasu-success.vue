@@ -11,10 +11,9 @@
           <div class="sub-title">快跑起来，感受飞的感觉吧~</div>
         </div>
       </div>
-      <div class="btns">
+      <div class="btns"  @click="closeDial">
         <div class="btn">朕了解了</div>
       </div>
-      <div class="close" @click="closeDial"></div>
     </div>
   </div>
 </template>

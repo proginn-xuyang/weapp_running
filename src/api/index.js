@@ -60,6 +60,11 @@ const donateStep = data => {
   return post(`/os/step/donation`, data)
 }
 
+// 加速
+const jiasu = data => {
+  return post(`/os/step/speed`, data)
+}
+
 export default {
   login, // 登录
   getWeRunData, // 获取运动数据
@@ -72,5 +77,6 @@ export default {
   getAllStepLogs, // 获取我的步数记录
   getFriendStepLogs, // 获取朋友赠送的步数记录
   getFriendStep, // 获取好友的步数
-  donateStep // 赠送步数
+  donateStep, // 赠送步数
+  jiasu // 加速
 }

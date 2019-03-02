@@ -2,7 +2,8 @@
 // import toast from './../utils/msg'
 
 export default function (url, data, msg) {
-  url = 'http://rap2api.taobao.org/app/mock/160507' + url
+  // url = 'http://rap2api.taobao.org/app/mock/160507' + url
+  url = 'https://oschongma.e2capp.com' + url
   var promise = new Promise((resolve, reject) => {
     var postData = data || {}
     if (postData.custom_loading_tip) {
@@ -13,9 +14,10 @@ export default function (url, data, msg) {
     }
 
     var stateStr = wx.getStorageSync('state')
+    var token = ''
     if (stateStr) {
       var state = JSON.parse(stateStr)
-      postData.token = state.userinfo.token
+      token = state.userinfo.token
     }
 
     console.log('postData', postData)
@@ -24,7 +26,11 @@ export default function (url, data, msg) {
       url: url,
       data: postData,
       method: 'POST',
-      header: { 'content-type': 'application/x-www-form-urlencoded' },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'token': token
+      },
+
       success: function (res) { // 服务器返回数据
         resolve(res.data)
       },

@@ -30,7 +30,7 @@
           <img class="licheng-logo" src="/static/images/licheng-logo.png" alt mode="scaleToFill">
           <div class="licheng-tip1">
             离下一个里程碑还差
-            <span class="licheng-left-count">4KM</span>
+            <span class="licheng-left-count">{{getters.left_all_step}}KM</span>
           </div>
 
           <div class="licheng-tip2">每日红包收益将直接存入微信零钱账户</div>
@@ -43,19 +43,22 @@
               srcset
               mode="scaleToFill"
             >
-            <p>已达50000步</p>
+            <p>已达{{state.userinfo.total_step}}步</p>
           </div>
 
           <div class="h-center licheng-map">
             <div class="abs h-center licheng-map-steps normal"></div>
             <div class="abs h-center licheng-map-steps steps">
-              <div class="abs licheng-map-steps progress"></div>
+              <div class="abs licheng-map-steps progress" :style="{'width': getters.progress + '%'}"></div>
               <div class="abs h-center step-box">
-                <div class="licheng-map-step actived"></div>
-                <div class="licheng-map-step actived"></div>
-                <div class="licheng-map-step actived"></div>
-                <div class="licheng-map-step"></div>
-                <div class="licheng-map-step"></div>
+               <!-- :class="{'actived': state.userinfo.total_step > getters.key_sites[i].mileage } -->
+                <!-- <div class="licheng-map-step"  v-for="i in 5" :key="i">
+                  {{getters.key_zhandians[0]}}
+                </div> -->
+
+                <!-- <div class="licheng-map-step"  v-for="i in 5" :key="i">
+                  {{getters.key_zhandians[0]}}
+                </div> -->
               </div>
             </div>
 
@@ -89,7 +92,8 @@
           <img class="zhandian-map" src="/static/images/zhandian.png" alt srcset mode="scaleToFill">
 
           <div class="abs zhandian-step" :class="'zhandian-step' + (i+2) " v-for="i in 11" :key="i">
-            <img class="address-small-icon" src="/static/images/address-small-icon0.png" alt mode="scaleToFill" >
+            <!-- <img class="address-small-icon"  src="/static/images/address-small-icon1.png" alt mode="scaleToFill" v-if="state.userinfo.total_step > state.zhandians[i + i].step"> -->
+            <!-- <img class="address-small-icon"  src="/static/images/address-small-icon0.png" alt mode="scaleToFill" v-else> -->
           </div>
 
           <div class="abs zhandian-view" :class="'zhandian-view' + (i+1) " v-for="i in 12" :key="i" @click="clickZhanInfo(i)">
@@ -163,6 +167,9 @@ export default {
   computed: {
     state () {
       return this.$store.state
+    },
+    getters () {
+      return this.$store.getters
     }
   }
 }
