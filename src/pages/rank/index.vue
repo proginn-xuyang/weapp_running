@@ -54,18 +54,17 @@
         </div>
       </div>
     </div>
-    <div class="footer">
-      <div class="btn-back" @click="btnBackHome">返回首页 >></div>
-    </div>
+    <com-tabbar></com-tabbar>
   </div>
 </template> 
 
 <script>
 import ComHeader from './../../components/com-header'
-
+import ComTabbar from './../../components/com-tabbar'
 export default {
   components: {
-    comheader: ComHeader
+    comheader: ComHeader,
+    ComTabbar
   },
   onShow () {
     this.$store.dispatch('getRank')

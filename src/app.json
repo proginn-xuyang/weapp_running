@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/invite/main",
     "pages/index/main",
+    "pages/rank/main",
     "pages/gift/main",
-    "pages/rank/main"
+    "pages/invite/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

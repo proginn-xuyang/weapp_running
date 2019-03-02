@@ -14,7 +14,11 @@ const store = new Vuex.Store({
     /**
      *  显示的对话框ID
      */
-    dial_id: 0, //
+    dial_id: 0,
+    /**
+     * tab
+     */
+    tab_id: 1,
     /**
      * 用户信息
      */
@@ -255,6 +259,16 @@ const store = new Vuex.Store({
       state.friend_userinfo.avasterUrl = 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIV8NmLonFjTsMrSPbw3uV6SkcMibuVPUyW8T6RmX9hYGg4TA78FfYHbp44Fyben2nqe9jpRDeZrFg/64'
       state.friend_userinfo.today_step = '...'
       state.friend_userinfo.total_step = '...'
+    },
+    setTabId (state, payload) {
+      state.tab_id = payload
+      if (state.tab_id === 1) {
+        wx.redirectTo({url: `/pages/index/main?t=${Date.now()}`})
+      } else if (state.tab_id === 2) {
+        wx.redirectTo({url: `/pages/gift/main?t=${Date.now()}`})
+      } else if (state.tab_id === 3) {
+        wx.redirectTo({url: `/pages/rank/main?t=${Date.now()}`})
+      }
     }
   },
   actions: {

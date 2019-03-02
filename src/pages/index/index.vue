@@ -1,101 +1,104 @@
 <template>
-  <div>
-    <scroll-view class="container container-index">
-      <img class="abs home-bg" src="/static/images/home-bg.png" alt srcset mode="scaleToFill"></img>
-      <img class="abs logo" src="/static/images/logo.png" alt="" srcset="">
-      <img class="abs h-center banner" src="/static/images/banner.png" alt="" srcset="">
+  <div class="container-wrapper">
+    <div class="scroll-wrapper">
+        <scroll-view class="container container-index">
+        <img class="abs home-bg" src="/static/images/home-bg.png" alt srcset mode="scaleToFill"></img>
+        <img class="abs logo" src="/static/images/logo.png" alt="" srcset="">
+        <img class="abs h-center banner" src="/static/images/banner.png" alt="" srcset="">
 
-      <!-- 用户的步数情况 -->
-      <com-userinfo :isOwner="true"></com-userinfo>
+        <!-- 用户的步数情况 -->
+        <com-userinfo :isOwner="true"></com-userinfo>
 
-      <!-- 加速按键 -->
-      <com-btn-jiasu></com-btn-jiasu>
+        <!-- 加速按键 -->
+        <com-btn-jiasu></com-btn-jiasu>
 
-      <!-- 规则按键 -->
-      <com-btn-rule></com-btn-rule>
+        <!-- 规则按键 -->
+        <com-btn-rule></com-btn-rule>
 
-      <!-- 邀请好友 -->
-      <!-- <div class="abs h-center invite-box" @click="clickDial">
-        <img class="btn-invite" src="/static/images/btn-invite.png" alt srcset mode="scaleToFill">
-         <button class="btn" open-type="share"></button>
-      </div> -->
+        <!-- 邀请好友 -->
+        <!-- <div class="abs h-center invite-box" @click="clickDial">
+          <img class="btn-invite" src="/static/images/btn-invite.png" alt srcset mode="scaleToFill">
+          <button class="btn" open-type="share"></button>
+        </div> -->
 
-      <button class="abs h-center invite-box" open-type="share">
-        <img class="btn-invite" src="/static/images/btn-invite.png" alt srcset mode="scaleToFill">
-      </button>
+        <button class="abs h-center invite-box" open-type="share">
+          <img class="btn-invite" src="/static/images/btn-invite.png" alt srcset mode="scaleToFill">
+        </button>
 
-      <!-- 里程 -->
-      <div class="abs h-center licheng">
-        <img class="licheng-logo" src="/static/images/licheng-logo.png" alt mode="scaleToFill">
-        <div class="licheng-tip1">
-          离下一个里程碑还差
-          <span class="licheng-left-count">4KM</span>
-        </div>
-
-        <div class="licheng-tip2">每日红包收益将直接存入微信零钱账户</div>
-
-        <div class="licheng-total-count">
-          <img
-            class="licheng-address-icon"
-            src="/static/images/licheng-address-icon.png"
-            alt
-            srcset
-            mode="scaleToFill"
-          >
-          <p>已达50000步</p>
-        </div>
-
-        <div class="h-center licheng-map">
-          <div class="abs h-center licheng-map-steps normal"></div>
-          <div class="abs h-center licheng-map-steps steps">
-            <div class="abs licheng-map-steps progress"></div>
-            <div class="abs h-center step-box">
-              <div class="licheng-map-step actived"></div>
-              <div class="licheng-map-step actived"></div>
-              <div class="licheng-map-step actived"></div>
-              <div class="licheng-map-step"></div>
-              <div class="licheng-map-step"></div>
-            </div>
+        <!-- 里程 -->
+        <div class="abs h-center licheng">
+          <img class="licheng-logo" src="/static/images/licheng-logo.png" alt mode="scaleToFill">
+          <div class="licheng-tip1">
+            离下一个里程碑还差
+            <span class="licheng-left-count">4KM</span>
           </div>
 
-          <div class="licheng-map-infos">
-            <div class="licheng-map-info">
-              <div class="address">南滨公园</div>
-              <div class="distance">起点</div>
+          <div class="licheng-tip2">每日红包收益将直接存入微信零钱账户</div>
+
+          <div class="licheng-total-count">
+            <img
+              class="licheng-address-icon"
+              src="/static/images/licheng-address-icon.png"
+              alt
+              srcset
+              mode="scaleToFill"
+            >
+            <p>已达50000步</p>
+          </div>
+
+          <div class="h-center licheng-map">
+            <div class="abs h-center licheng-map-steps normal"></div>
+            <div class="abs h-center licheng-map-steps steps">
+              <div class="abs licheng-map-steps progress"></div>
+              <div class="abs h-center step-box">
+                <div class="licheng-map-step actived"></div>
+                <div class="licheng-map-step actived"></div>
+                <div class="licheng-map-step actived"></div>
+                <div class="licheng-map-step"></div>
+                <div class="licheng-map-step"></div>
+              </div>
             </div>
-            <div class="licheng-map-info">
-              <div class="address">洪崖洞</div>
-              <div class="distance">5KM</div>
-            </div>
-            <div class="licheng-map-info">
-              <div class="address">李子坝</div>
-              <div class="distance">10KM</div>
-            </div>
-            <div class="licheng-map-info">
-              <div class="address">磁器口</div>
-              <div class="distance">45KM</div>
-            </div>
-            <div class="licheng-map-info">
-              <div class="address">欧尚X-house</div>
-              <div class="distance">46KM</div>
+
+            <div class="licheng-map-infos">
+              <div class="licheng-map-info">
+                <div class="address">南滨公园</div>
+                <div class="distance">起点</div>
+              </div>
+              <div class="licheng-map-info">
+                <div class="address">洪崖洞</div>
+                <div class="distance">5KM</div>
+              </div>
+              <div class="licheng-map-info">
+                <div class="address">李子坝</div>
+                <div class="distance">10KM</div>
+              </div>
+              <div class="licheng-map-info">
+                <div class="address">磁器口</div>
+                <div class="distance">45KM</div>
+              </div>
+              <div class="licheng-map-info">
+                <div class="address">欧尚X-house</div>
+                <div class="distance">46KM</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 站点 -->
-      <div class="abs zhandian">
-        <img class="zhandian-map" src="/static/images/zhandian.png" alt srcset mode="scaleToFill">
+        <!-- 站点 -->
+        <div class="abs zhandian">
+          <img class="zhandian-map" src="/static/images/zhandian.png" alt srcset mode="scaleToFill">
 
-        <div class="abs zhandian-step" :class="'zhandian-step' + (i+2) " v-for="i in 11" :key="i">
-          <img class="address-small-icon" src="/static/images/address-small-icon0.png" alt mode="scaleToFill" >
+          <div class="abs zhandian-step" :class="'zhandian-step' + (i+2) " v-for="i in 11" :key="i">
+            <img class="address-small-icon" src="/static/images/address-small-icon0.png" alt mode="scaleToFill" >
+          </div>
+
+          <div class="abs address-tip address-tip1" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
+            已领取奖品
+          </div>
         </div>
-
-        <div class="abs address-tip address-tip1" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
-          已领取奖品
-        </div>
-      </div>
-    </scroll-view>
+      </scroll-view>
+    </div>
+    <com-tabbar></com-tabbar>
     <div :class="{'loading': loading}"></div>
     <dial-all></dial-all>
     <!-- <button v-if="!state.userinfo.phone" class="abs h-center v-center getPhoneNumber" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button> -->
@@ -104,17 +107,18 @@
 </template>
 
 <script>
-
 import DialAll from './../../components/dial-all'
 import ComUserinfo from './../../components/com-userinfo'
 import ComBtnJiasu from './../../components/com-btn-jiasu'
 import ComBtnRule from './../../components/com-btn-rule'
+import ComTabbar from './../../components/com-tabbar'
 export default {
   components: {
     DialAll,
     ComUserinfo,
     ComBtnJiasu,
-    ComBtnRule
+    ComBtnRule,
+    ComTabbar
   },
   data () {
     return {
@@ -176,9 +180,22 @@ cwh(x, y) {
   background #ffffff
 }
 
+.container-wrapper{
+  width 100%
+  height 100%
+
+  display flex
+  flex-direction column
+}
+
+.scroll-wrapper{
+  flex 1
+  overflow hidden
+}
+
 .container-index {
   width c(750)
-  height c(3113)
+  // height c(3113)
   background #025527
   display flex
   flex-direction column
