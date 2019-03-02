@@ -5,6 +5,10 @@ const login = data => {
   return post(`/os/user/login`, data)
 }
 
+const wxAdd = data => {
+  return post(`os/user/wx/add`, data)
+}
+
 // 获取用户的运动数据
 const getWeRunData = data => {
   return post(`/os/step/get`, data)
@@ -67,6 +71,7 @@ const jiasu = data => {
 
 export default {
   login, // 登录
+  wxAdd, // 微信用户授权
   getWeRunData, // 获取运动数据
   getPhoneNumber, // 获取手机号
   // getUserInfo, // 获取用户的基本信息

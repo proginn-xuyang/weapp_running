@@ -264,8 +264,7 @@ const store = new Vuex.Store({
       site.push(state.zhandians[5])
       site.push(state.zhandians[8])
       site.push(state.zhandians[11])
-
-      console.log('site', site)
+      console.log('key_zhandians', site)
       return site
     }
   },
@@ -477,6 +476,9 @@ const store = new Vuex.Store({
       if (result.err_code === 0 || result.err_code === '0') {
         if (result.register > 0) {
           this.commit('openDial', 8)
+          this.commit('setUserinfo', {
+            today_step: result.today_step
+          })
           // TODO:加速成功更新步数
         } else {
           this.commit('openDial', 9)

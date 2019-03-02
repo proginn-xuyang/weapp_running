@@ -67,7 +67,7 @@ export default {
   async onLoad () {
     this.openid = this.$root.$mp.query.openid
     // TODO:测试
-    this.openid = 123123
+    this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
     if (!this.openid) {
       this.clickBackHome()
     }

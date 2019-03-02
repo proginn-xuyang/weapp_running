@@ -92,7 +92,9 @@
           <img class="zhandian-map" src="/static/images/zhandian.png" alt srcset mode="scaleToFill">
 
           <div class="abs zhandian-step" :class="'zhandian-step' + (i+2) " v-for="i in 11" :key="i">
-            <!-- <img class="address-small-icon"  src="/static/images/address-small-icon1.png" alt mode="scaleToFill" v-if="state.userinfo.total_step > state.zhandians[i + i].step"> -->
+            {{i + 1}}
+            {{state.zhandians[(i+1)  >= 11 ? 11 : (i+1) ].step }}
+            <!-- <img class="address-small-icon"  src="/static/images/address-small-icon1.png" alt mode="scaleToFill" v-if="state.userinfo.total_step > state.zhandians[i].step"> -->
             <!-- <img class="address-small-icon"  src="/static/images/address-small-icon0.png" alt mode="scaleToFill" v-else> -->
           </div>
 
@@ -108,13 +110,15 @@
     <com-tabbar></com-tabbar>
     <div :class="{'loading': loading}"></div>
     <dial-all></dial-all>
-    <!-- <button v-if="!state.userinfo.phone" class="abs h-center v-center getPhoneNumber" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button> -->
+    <dial-auth></dial-auth>
+    <button v-if="!state.userinfo.phone" class="abs h-center v-center getPhoneNumber" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button>
   </div>
  
 </template>
 
 <script>
 import DialAll from './../../components/dial-all'
+import DialAuth from './../../components/dial-auth'
 import ComUserinfo from './../../components/com-userinfo'
 import ComBtnJiasu from './../../components/com-btn-jiasu'
 import ComBtnRule from './../../components/com-btn-rule'
@@ -122,6 +126,7 @@ import ComTabbar from './../../components/com-tabbar'
 export default {
   components: {
     DialAll,
+    DialAuth,
     ComUserinfo,
     ComBtnJiasu,
     ComBtnRule,
@@ -190,7 +195,7 @@ cwh(x, y) {
 
 .getPhoneNumber{
   z-index 10000
-  background #ffffff
+  background rgba(0,0,0,0.6)
 }
 
 .container-wrapper{
