@@ -38,6 +38,9 @@
 
     <!-- 授权获取步数  -->
     <dial-auth v-if="state.dial_id===13"></dial-auth>
+
+    <!-- 站点 -->
+    <dial-zhandian v-if="state.dial_id===14"></dial-zhandian>
   </div>
 </template>
 
@@ -55,6 +58,7 @@ import DialDonateSuccess from './dial-donate-success' // 10
 import DialDonateFailed from './dial-donate-failed' // 11
 import DialRule from './dial-rule' // 12
 import DialAuth from './dial-auth' // 13
+import DialZhandian from './dial-zhandian' // 14
 export default {
   components: {
     DialStepLog, // 步数明细 1
@@ -69,7 +73,8 @@ export default {
     DialDonateSuccess, // 赠送成功 10
     DialDonateFailed, // 赠送失败 11
     DialRule, // 规则 12
-    DialAuth // 授权获取步数 13
+    DialAuth, // 授权获取步数 13
+    DialZhandian // 站点
   },
   computed: {
     state () {

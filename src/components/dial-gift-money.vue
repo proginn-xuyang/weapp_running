@@ -1,4 +1,5 @@
 
+
 <template>
   <div class="com-dial dial-gift-money" catchtouchmove="true">
     <div class="com-dial-box">

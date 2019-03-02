@@ -1,7 +1,7 @@
 <template>
-  <div class="container-wrapper">
+  <div class="container container-wrapper">
     <div class="scroll-wrapper">
-        <scroll-view class="container container-index">
+        <scroll-view class="container-index">
         <img class="abs home-bg" src="/static/images/home-bg.png" alt srcset mode="scaleToFill"></img>
         <img class="abs logo" src="/static/images/logo.png" alt="" srcset="">
         <img class="abs h-center banner" src="/static/images/banner.png" alt="" srcset="">
@@ -85,11 +85,14 @@
         </div>
 
         <!-- 站点 -->
-        <div class="abs zhandian">
+        <div class="abs h-center zhandian">
           <img class="zhandian-map" src="/static/images/zhandian.png" alt srcset mode="scaleToFill">
 
           <div class="abs zhandian-step" :class="'zhandian-step' + (i+2) " v-for="i in 11" :key="i">
             <img class="address-small-icon" src="/static/images/address-small-icon0.png" alt mode="scaleToFill" >
+          </div>
+
+          <div class="abs zhandian-view" :class="'zhandian-view' + (i+1) " v-for="i in 12" :key="i" @click="clickZhanInfo(i)">
           </div>
 
           <div class="abs address-tip address-tip1" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
@@ -152,6 +155,9 @@ export default {
      */
     async getPhoneNumber (e) {
       await this.$store.dispatch('getPhoneNumber', e)
+    },
+    clickZhanInfo (i) {
+      this.$store.commit('openDialZhanDianInfo', i)
     }
   },
   computed: {
@@ -190,12 +196,12 @@ cwh(x, y) {
 
 .scroll-wrapper{
   flex 1
-  overflow hidden
+  overflow-y auto
 }
 
 .container-index {
   width c(750)
-  // height c(3113)
+  height c(3113)
   background #025527
   display flex
   flex-direction column
@@ -218,71 +224,6 @@ cwh(x, y) {
 .banner{
   cwh(668, 231)
   top c(136)
-}
-.summary {
-  top c(379)
-  width c(750)
-  height c(699)
-  display flex
-  flex-direction column
-  justify-content center
-  align-items center
-  w = 300
-  .summary-detail {
-    top: c(80)
-    width c(w)
-    height c(w)
-    background #ffffff
-    border-radius c((w / 2))
-    display flex
-    flex-direction column
-    justify-content center
-    align-items center
-  }
-  .summary-bg {
-    width c(750)
-    height c(699)
-    position absolute
-    top 0
-  }
-  .summary-title {
-    font-size c(36)
-    font-weight 800
-    line-height 1.5
-    letter-spacing c(4)
-    color #007e38
-  }
-  .summary-today-total-count {
-    font-size c(115)
-    font-weight 800
-    color #ed7d32
-  }
-  .summary-today-left-count {
-    font-size c(26)
-    color #7cc39b
-    margin-bottom c(24)
-  }
-  .btn-log {
-    width c(159)
-    height c(42)
-    background-image linear-gradient(
-      90deg,
-      #3ea26d 0%,
-      #85f5bc 99%
-    ), linear-gradient(
-      #b4b4b4,
-      #b4b4b4
-    )
-    background-blend-mode normal, normal
-    border-radius c(21)
-    font-size c(22)
-    line-height c(37)
-    letter-spacing c(2)
-    color #ffffff
-    display flex
-    justify-content center
-    align-items center
-  }
 }
 
 .invite-box {
@@ -486,12 +427,65 @@ cwh(x, y) {
  	background-color: #ee7d32;
 }
 
+.zhandian-view{
+  background rgba(0,0,0,0.5);
+  cwh(175,100)
+}
+
+.zhandian-view1{
+  ptl(135, 0)
+}
+
+.zhandian-view2{
+  ptl(276, 113)
+}
+
+.zhandian-view3{
+  ptl(497, 131)
+}
+
+.zhandian-view4{
+  ptl(350, 377)
+}
+
+.zhandian-view5{
+  ptl(510, 583)
+}
+
+.zhandian-view6{
+  ptl(27, 376)
+}
+
+.zhandian-view7{
+  ptl(175, 641)
+}
+
+.zhandian-view8{
+  ptl(320, 911)
+}
+
+.zhandian-view9{
+  ptl(529, 692)
+}
+
+.zhandian-view10{
+  ptl(508, 1132)
+}
+
+.zhandian-view11{
+  ptl(17, 932)
+}
+
+.zhandian-view12{
+  ptl(200, 1214)
+}
+
 .loading{
   position absolute 
   top 0
   bottom 0
   left 0
   right 0
-  background rgba(255,255,255, 0.8)
+  // background rgba(255,255,255, 0.8)
 }
 </style> 
