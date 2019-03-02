@@ -1,3 +1,6 @@
+import $api from './../api'
+import wxApi from './wx-api'
+import constant from './constant'
 function formatNumber (n) {
   const str = n.toString()
   return str[1] ? str : `0${str}`
@@ -18,7 +21,26 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
+/**
+ * 全局异常的处理
+ * @param {*} error
+ */
+function catchError (error) {
+  console.log('----------')
+  console.log(error)
+}
+
+async function click (type, callback) {
+  // 统计数据
+  await $api.setStatics({type})
+  callback && callback()
+}
+
 export default {
   formatNumber,
-  formatTime
+  formatTime,
+  click, // 点击
+  catchError, // 捕获异常
+  constant, // 常量
+  wxApi
 }

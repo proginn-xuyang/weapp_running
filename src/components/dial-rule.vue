@@ -23,18 +23,19 @@
         </div>
       </div>
       <div class="btns">
-        <div class="btn">知道了</div>
+        <div class="btn" @click="closeDial">知道了</div>
       </div>
-      <div class="close" @click="closeDial"></div>
+      <div class="close"></div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  id: 12,
   methods: {
     closeDial () {
-      this.$store.commit('toggleDial')
+      this.$store.commit('closeDial')
     }
   },
   computed: {

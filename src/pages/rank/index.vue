@@ -1,10 +1,9 @@
 <template>
   <div class="container container-rank">
     <comheader></comheader>
-
     <div class="btns">
-      <div class="btn btn-left" :class="{'actived': state.rank.type === 0}" @click="toggleRankType">今日排行榜</div>
-      <div class="btn btn-right" :class="{'actived': state.rank.type === 1}" @click="toggleRankType">里程排行榜</div>
+      <div class="btn btn-left" :class="{'actived': state.rank_type === 0}" @click="toggleRankType">今日排行榜</div>
+      <div class="btn btn-right" :class="{'actived': state.rank_type === 1}" @click="toggleRankType">里程排行榜</div>
     </div>
     <div class="content">
       <div class="none-data-box" v-if="false">
@@ -36,20 +35,18 @@
         <div class="rank-items">
           <scroll-view
             class="scroll-view"
-            @scrolltoupper="scrolltoupper"
-            @scrolltolower="scrolltolower"
             scroll-y
           >
-            <div class="rank-item" v-for="i in 20" :key="i">
+            <div class="rank-item" v-for="(item, index) in getters.ranks" :key="index">
               <div class="rank-item-box">
                 <div class="rank-item-num">
-                  <div :class="{'actived': i < 3}">{{i + 1}}</div>
+                  <div :class="{'actived': index < 3}">{{index + 1}}</div>
                 </div>
                 <div class="rank-item-user">
-                  <img class="avaster" src="/static/images/header.png" alt="" srcset="" mode="aspectFill">
-                  <div class="nickname">许杨</div>
+                  <img class="avaster" :src="item.avatarUrl" alt="" srcset="" mode="aspectFill">
+                  <div class="nickname">{{item.nickName}}</div>
                 </div>
-                <div class="rank-item-step">{{i * 1000}}步</div>
+                <div class="rank-item-step">{{item.step}}步</div>
               </div>
               <div class="h-line"></div>
             </div>
@@ -59,10 +56,6 @@
     </div>
     <div class="footer">
       <div class="btn-back" @click="btnBackHome">返回首页 >></div>
-      <!-- <div class="footer-tip">
-        <p>实物奖励需要到欧尚Style APP</p>
-        <p>完善相关资料后，奖品才会邮寄到您手中</p>
-      </div>-->
     </div>
   </div>
 </template> 
@@ -74,33 +67,19 @@ export default {
   components: {
     comheader: ComHeader
   },
+  onShow () {
+    this.$store.dispatch('getRank')
+  },
   computed: {
     state () {
       return this.$store.state
     },
     getters () {
-      console.log(this.$store.getters)
       return this.$store.getters
     }
   },
   methods: {
     btnBackHome () {
-      // wx.showModal({
-      //   title: '提示',
-      //   content: '这是一个模态弹窗',
-      //   success (res) {
-      //     if (res.confirm) {
-      //       console.log('用户点击确定')
-      //     } else if (res.cancel) {
-      //       console.log('用户点击取消')
-      //     }
-      //   }
-      // })
-
-      wx.showNavigationBarLoading()
-      // setTimeout(() => {
-      //       wx.hideLoading()
-      //     }, 1000)
       wx.navigateTo({
         url: '/pages/index/main',
         complete: () => {
@@ -109,14 +88,6 @@ export default {
     },
     toggleRankType () {
       this.$store.commit('toggleRankType')
-    },
-    scrolltoupper () {
-      console.log('scrolltoupper')
-      // 加载最新的数据
-    },
-    scrolltolower () {
-      // 加载更多
-      console.log('scrolltolower')
     }
   }
 }
@@ -262,9 +233,6 @@ cwh(x, y) {
         align-items center
         .nickname{
           flex 1
-          // overflow hidden
-          // white-space: nowrap;
-          // text-overflow: ellipsis 
           padding-left c(15)
           font-size: c(26);
           color: #010101; 

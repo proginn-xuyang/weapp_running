@@ -1,11 +1,11 @@
-c(x) {
- (x / 2) px
-}
-ptl(x, y) {
-  left (x / 2) px
-  top (y / 2) px
-}
-cwh(x, y) {
-  width  x == 0 ? auto : (x / 2) px
-  height (y / 2) px
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translate3d(0, -100%, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
 }

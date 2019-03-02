@@ -12,24 +12,23 @@
             <div>变动值</div>
         </div>
         <scroll-view class="table-items">
-            <div class="table-item" v-for="(item, index) in getters.all_step" :key="index">
+            <div class="table-item" v-for="(item, index) in state.all_step_logs" :key="index">
               <div class="wrapper">
                 <div class="time">
                   <span>2018.02.23</span>
                   <span>12:30:22</span>
                 </div>
                 <div class="type">
-                  好友赠送
+                  {{item.type}}
                 </div>
                 <div class="steps">
-                  +1000
+                  {{item.step}}步
                 </div>
               </div>
               <div class="h-line"></div>
             </div>
         </scroll-view>
       </div>  
-      <div class="btns">btn</div>
       <div class="close" @click="closeDial">
         <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">
       </div>
@@ -39,10 +38,13 @@
 
 <script>
 export default {
-  name: 'comdial',
+  id: 1,
   methods: {
+    onShow () {
+      this.$store.dispatch('getGiftLog')
+    },
     closeDial () {
-      this.$store.commit('toggleDial')
+      this.$store.commit('closeDial')
     }
   },
   computed: {
@@ -71,10 +73,8 @@ cwh(x, y) {
 
 .dial-step-log{
   .content {
-    display flex
     flex-direction column
-    // max-height c(400)
-    height c(400)
+    height c(485)
     border-bottom-left-radius c(20)
     border-bottom-right-radius c(20)
   }
@@ -102,11 +102,12 @@ cwh(x, y) {
     flex-direction column
     justify-content  flex-start
     align-items flex-start
+    padding-bottom c(30)
   }
 
   .table-item{
       width c(491)
-      height c(67)
+      height c(90)
       text-align center
       color: #000000;
       display flex

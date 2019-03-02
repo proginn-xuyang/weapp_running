@@ -1,6 +1,6 @@
 
 <template>
-  <div class="com-dial" :class="{'actived': state.dial.is_show}" catchtouchmove="true">
+  <div class="com-dial dial-circle" :class="{'actived': state.dial.is_show}" catchtouchmove="true">
     <div class="com-dial-box">
       <div class="header">
         <div>步数增减明细</div>
@@ -40,7 +40,7 @@ export default {
   props: ['header', 'content'],
   methods: {
     closeDial () {
-      this.$store.commit('toggleDial')
+      this.$store.commit('closeDial')
     }
   },
   computed: {
@@ -64,7 +64,7 @@ cwh(x, y) {
   width x == 0 ? auto : ((((x / 2)))) px
   height (y / 2) px
 }
-.com-dial {
+.dial-circle {
   w = 442
   circle_w = 30
   .circle {

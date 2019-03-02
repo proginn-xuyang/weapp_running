@@ -7,11 +7,14 @@
       </div>
       <div class="content">
         <scroll-view class="table-items">
-            <div class="table-item" v-for="(item, index) in getters.all_step" :key="index">
+            <div class="table-item" v-for="(item, index) in state.friend_step_logs" :key="index">
               <div class="wrapper">
-                <com-user></com-user>
+                <div class="com-user">
+                  <img class="avaster" :src="item.avatarUrl" alt srcset mode="aspectFill">
+                  <div class="nickname">{{item.nickName}}</div>
+                </div>
                 <div class="steps">
-                  +1000
+                  +{{item.step}}步
                 </div>
               </div>
             </div>
@@ -27,20 +30,18 @@
 <script>
 import ComUser from './com-user'
 export default {
+  id: 2,
   components: {
     ComUser
   },
   methods: {
     closeDial () {
-      this.$store.commit('toggleDial')
+      this.$store.commit('closeDial')
     }
   },
   computed: {
     state () {
       return this.$store.state
-    },
-    getters () {
-      return this.$store.getters
     }
   }
 }
@@ -61,7 +62,6 @@ cwh(x, y) {
 
 .dial-friend-step-log{
   .content {
-    display flex
     flex-direction column
     height c(485)
     border-bottom-left-radius c(20)
@@ -83,10 +83,6 @@ cwh(x, y) {
    
     border 1px solid #28c1db
     border-radius c(20)
-    // border-image-source: linear-gradient(0deg, 
-		// #bacbf9 0%, 
-		// #28c1db 100%);
-	  // border-image-slice: 1;
   }
 
   .table-item{

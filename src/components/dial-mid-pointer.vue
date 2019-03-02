@@ -48,6 +48,7 @@
 
 <script>
 export default {
+  id: 4,
   data () {
     return {
       option: 0
@@ -55,7 +56,7 @@ export default {
   },
   methods: {
     closeDial () {
-      this.$store.commit('toggleDial')
+      this.$store.commit('closeDial')
     }
   },
   computed: {

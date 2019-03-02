@@ -1,42 +1,28 @@
 <template>
- 
   <div>
-    <!-- <div class="circle-outer">
-      <div class="circle-inner"></div>
-    </div> -->
     <scroll-view class="container container-index">
       <img class="abs home-bg" src="/static/images/home-bg.png" alt srcset mode="scaleToFill"></img>
       <img class="abs logo" src="/static/images/logo.png" alt="" srcset="">
       <img class="abs h-center banner" src="/static/images/banner.png" alt="" srcset="">
 
-      <!-- 步数 -->
-      <div class="abs summary">
-        <com-circle></com-circle>
-        <div class="abs h-center summary-detail">
-          <div class="summary-title">今日步数</div>
-          <div class="summary-today-total-count">16050</div>
-          <div class="summary-today-left-count">离每日红包还差5000步</div>
-          <div class="btn-log">
-            <span>获赠记录></span>
-          </div>
-        </div>
-        <img src="/static/images/home-summary.png" alt srcset class="summary-bg" mode="scaleToFill">
-      </div>
+      <!-- 用户的步数情况 -->
+      <com-userinfo :isOwner="true"></com-userinfo>
 
       <!-- 加速按键 -->
-      <div class="abs jiasu-box" @click="clickJiaSu">
-        <img class="btn-jiasu" src="/static/images/btn-jiasu.png" alt srcset>
-      </div>
+      <com-btn-jiasu></com-btn-jiasu>
 
       <!-- 规则按键 -->
-      <div class="abs rule-box" @click="clickRule">
-        <img class="btn-rule" src="/static/images/btn-rule.png" alt srcset>
-      </div>
+      <com-btn-rule></com-btn-rule>
 
       <!-- 邀请好友 -->
-      <div class="abs h-center invite-box" @click="clickDial">
+      <!-- <div class="abs h-center invite-box" @click="clickDial">
         <img class="btn-invite" src="/static/images/btn-invite.png" alt srcset mode="scaleToFill">
-      </div>
+         <button class="btn" open-type="share"></button>
+      </div> -->
+
+      <button class="abs h-center invite-box" open-type="share">
+        <img class="btn-invite" src="/static/images/btn-invite.png" alt srcset mode="scaleToFill">
+      </button>
 
       <!-- 里程 -->
       <div class="abs h-center licheng">
@@ -110,86 +96,25 @@
         </div>
       </div>
     </scroll-view>
-
     <div :class="{'loading': loading}"></div>
-
-    <!-- <com-dial v-if="state.dial.is_show"></com-dial> -->
-
-    <!-- 步数明细 -->
-    <!-- <dial-step-log></dial-step-log> -->
-
-    <!-- 好友赠送 -->
-    <!-- <dial-friend-step-log></dial-friend-step-log> -->
-
-    <!-- 现金奖励 -->
-    <!-- <dial-gift-money></dial-gift-money> -->
-
-    <!-- 到达终点 -->
-    <!-- <dial-end-pointer></dial-end-pointer> -->
-
-    <!-- 到达中点（其他站点） -->
-    <!-- <dial-mid-pointer></dial-mid-pointer> -->
-
-    <!-- 放弃站点奖励 -->
-    <!-- <dial-give-up></dial-give-up> -->
-
-    <!-- 确认奖励 -->
-    <!-- <dial-comfirm></dial-comfirm> -->
-
-    <!-- 加速成功 -->
-    <!-- <dial-jiasu-success></dial-jiasu-success> -->
-    
-    <!-- 加速失败 -->
-    <!-- <dial-jiasu-failed></dial-jiasu-failed> -->
-
-    <!-- 赠送成功 -->
-    <!-- <dial-donate-success></dial-donate-success> -->
-
-    <!-- 赠送失败 -->
-    <!-- <dial-donate-failed></dial-donate-failed> -->
-
-    <!-- 规则 -->
-    <!-- <dial-rule></dial-rule> -->
-
-    <!-- 测试圆盘  -->
-    <!-- <dial-circle></dial-circle> -->
-
-    
+    <dial-all></dial-all>
+    <!-- <button v-if="!state.userinfo.phone" class="abs h-center v-center getPhoneNumber" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button> -->
   </div>
  
 </template>
 
 <script>
-import DialStepLog from './../../components/dial-step-log'
-import DialFriendStepLog from './../../components/dial-friend-step-log'
-import DialGiftMoney from './../../components/dial-gift-money'
-import DialMidPointer from './../../components/dial-mid-pointer'
-import DialEndPointer from './../../components/dial-end-pointer'
-import DialGiveUp from './../../components/dial-give-up'
-import DialComfirm from './../../components/dial-comfirm'
-import DialJiasuSuccess from './../../components/dial-jiasu-success'
-import DialJiasuFailed from './../../components/dial-jiasu-failed'
-import DialDonateSuccess from './../../components/dial-donate-success'
-import DialDonateFailed from './../../components/dial-donate-failed'
-import DialRule from './../../components/dial-rule'
-import DialCircle from './../../components/dial-circle'
-import ComCircle from './../../components/com-circle'
+
+import DialAll from './../../components/dial-all'
+import ComUserinfo from './../../components/com-userinfo'
+import ComBtnJiasu from './../../components/com-btn-jiasu'
+import ComBtnRule from './../../components/com-btn-rule'
 export default {
   components: {
-    DialStepLog,
-    DialFriendStepLog,
-    DialGiftMoney,
-    DialMidPointer,
-    DialEndPointer,
-    DialGiveUp,
-    DialComfirm,
-    DialJiasuSuccess,
-    DialJiasuFailed,
-    DialDonateSuccess,
-    DialDonateFailed,
-    DialRule,
-    DialCircle,
-    ComCircle
+    DialAll,
+    ComUserinfo,
+    ComBtnJiasu,
+    ComBtnRule
   },
   data () {
     return {
@@ -208,50 +133,23 @@ export default {
       wx.hideLoading()
     }, 1000)
   },
-  methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
-      }
-    },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
-    },
-    clickJiaSu () {
-      console.log(1)
-      wx.navigateTo({
-        url: '/pages/rank/main',
-        complete: () => {
-        }
-      })
-    },
-    clickRule () {
-      console.log(2)
-      wx.navigateTo({
-        url: '/pages/gift/main',
-        complete: () => {
-        }
-      })
-    },
-    clickDial () {
-      this.$store.commit('toggleDial')
+  onShareAppMessage (res) {
+    if (res.from === 'button') {
+      console.log('来自页面内转发按钮')
+    }
+    return {
+      title: '还差几步我就能获得红包啦，求赠送~',
+      path: `/pages/invite/main?openid=${this.state.userinfo.openid}`
     }
   },
-
-  created () {
-    // let app = getApp()
-    wx.setTabBarStyle({
-      color: '#FF0000',
-      selectedColor: '#00FF00',
-      backgroundColor: '#0000FF',
-      borderStyle: 'white'
-    })
+  methods: {
+    /**
+     * 获取手机号
+     */
+    async getPhoneNumber (e) {
+      await this.$store.dispatch('getPhoneNumber', e)
+    }
   },
-
   computed: {
     state () {
       return this.$store.state
@@ -272,6 +170,12 @@ cwh(x, y) {
   width  x == 0 ? auto : (x / 2) px
   height (y / 2) px
 }
+
+.getPhoneNumber{
+  z-index 10000
+  background #ffffff
+}
+
 .container-index {
   width c(750)
   height c(3113)
@@ -297,23 +201,6 @@ cwh(x, y) {
 .banner{
   cwh(668, 231)
   top c(136)
-}
-
-.jiasu-box {
-  top c(412)
-  cwh(160, 68)
-  left 0
-  .btn-jiasu {
-    cwh(160, 68)
-  }
-}
-.rule-box {
-  top c(412)
-  cwh(160, 68)
-  right 0
-  .btn-rule {
-    cwh(160, 68)
-  }
 }
 .summary {
   top c(379)
@@ -383,7 +270,9 @@ cwh(x, y) {
 
 .invite-box {
   top c(890)
-  cwh(664, 113)
+  background transparent
+  border none
+  cwh(720, 113)
   .btn-invite {
     cwh(664, 113)
   }
@@ -536,7 +425,6 @@ cwh(x, y) {
 .zhandian-step12 {
   ptl(121, 1233)
 }
-
 .dazhandian-tip2{
   ptl(603, 249)
 }

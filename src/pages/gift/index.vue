@@ -1,9 +1,6 @@
 <template>
   <div class="container container-gift">
-    <div class="header">
-      <img class="header-img" src="/static/images/home-bg.png" alt srcset mode="widthFix">
-      <img class="abs logo" src="/static/images/logo.png" alt srcset>
-    </div>
+    <comheader></comheader>
     <div class="content">
       <div class="none-data-box" v-if="false">
         <img class="none-data" src="/static/images/none-data.png" alt srcset>
@@ -17,11 +14,11 @@
         </div>
 
         <div class="rank-items">
-          <scroll-view class="scroll-view" @scrolltoupper="scrolltoupper" @scrolltolower="scrolltolower" scroll-y>
-            <div class="rank-item" v-for="i in 20" :key="i">
+          <scroll-view class="scroll-view" scroll-y>
+            <div class="rank-item" v-for="(item,index) in state.gift_logs" :key="index">
               <div class="rank-item-box">
-                <div class="rank-item-time">2019年3月10日</div>
-                <div class="rank-item-name">{{i}}元</div>
+                <div class="rank-item-time">{{item.receive_time}}</div>
+                <div class="rank-item-name">{{item.prize_name}}</div>
               </div>
               <div class="h-line"></div>
             </div>
@@ -40,45 +37,26 @@
 </template> 
 
 <script>
-// Use Vuex
-
+import ComHeader from './../../components/com-header'
 export default {
+  components: {
+    comheader: ComHeader
+  },
   computed: {
     state () {
       return this.$store.state
     }
   },
+  onShow () {
+    this.$store.dispatch('getGiftLog')
+  },
   methods: {
     btnBackHome () {
-      // wx.showModal({
-      //   title: '提示',
-      //   content: '这是一个模态弹窗',
-      //   success (res) {
-      //     if (res.confirm) {
-      //       console.log('用户点击确定')
-      //     } else if (res.cancel) {
-      //       console.log('用户点击取消')
-      //     }
-      //   }
-      // })
-
-      // wx.showNavigationBarLoading()
-      // setTimeout(() => {
-      //       wx.hideLoading()
-      //     }, 1000)
       wx.navigateTo({
         url: '/pages/index/main',
         complete: () => {
         }
       })
-    },
-    scrolltoupper () {
-      console.log('scrolltoupper')
-      // 加载最新的数据
-    },
-    scrolltolower () {
-      // 加载更多
-      console.log('scrolltolower')
     }
   }
 }
@@ -102,14 +80,6 @@ cwh(x, y) {
   display flex
   flex-direction column
   background #ffffff
-  .header {
-    width 100%
-    height c(130)
-    overflow hidden
-    .header-img {
-      cwh(750, 130)
-    }
-  }
   .content {
     flex 1
     display flex

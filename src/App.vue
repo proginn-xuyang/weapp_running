@@ -1,9 +1,24 @@
 <script>
-export default {}
+export default {
+  async onShow () {
+    await this.$store.dispatch('login')
+    await this.$store.dispatch('getWeRunData')
+  }
+}
 </script>
 
+<style lang="stylus">
+@-webkit-keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
 
-<style lang="stylus" >
 c(x) {
   (((x / 2)) px)
 }
@@ -75,6 +90,15 @@ page {
   justify-content center
   align-items center
 
+  .com-dial-box{
+    animation-name: fadeInDown;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    &.disable{
+      animation-name: unset;
+    }
+  }
+
   .header {
     cwh(540, 110)
     display flex
@@ -136,6 +160,27 @@ page {
     .btn-close {
       cwh(71, 71)
     }
+  }
+}
+
+.com-user {
+  flex 1
+  display flex
+  justify-content flex-start
+  align-items center
+  .avaster{
+    cwh(46,46)
+    border-radius c(46 / 2)
+  }
+  .nickname {
+    flex 1
+    padding-left c(5)
+    font-size c(26)
+    color #010101
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width c(150)
   }
 }
 

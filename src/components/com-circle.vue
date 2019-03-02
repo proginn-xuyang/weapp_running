@@ -1,7 +1,6 @@
 <template>
   <div class="com-circle">
     <div class="circle"></div>
-
     <div class="con">
       <div class="percent-circle percent-circle-left">
         <div class="left-content"></div>
@@ -9,7 +8,7 @@
       <div class="percent-circle percent-circle-right">
         <div class="right-content"></div>
       </div>
-      <div class="text-circle">0%</div>
+      <div class="text-circle"></div>
     </div>
   </div>
 </template>

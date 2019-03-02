@@ -24,9 +24,10 @@
 
 <script>
 export default {
+  id: 9,
   methods: {
     closeDial () {
-      this.$store.commit('toggleDial')
+      this.$store.commit('closeDial')
     }
   },
   computed: {
