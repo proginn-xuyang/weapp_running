@@ -66,8 +66,9 @@ export default {
   },
   async onLoad () {
     this.openid = this.$root.$mp.query.openid
-    // TODO:测试
-    this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
+    console.log(this.openid)
+    // TODO:测试,自己进入跳转到主页
+    // this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
     if (!this.openid) {
       this.clickBackHome()
     }
@@ -82,7 +83,6 @@ export default {
     // TODO:BUG
     setTimeout(() => {
       this.select_option = Math.floor(parseInt(this.state.userinfo.today_step) / 1000)
-      console.log(this.select_option)
     }, 1000)
   },
   data () {

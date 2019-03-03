@@ -108,7 +108,7 @@ cwh(x, y) {
     color #007e38
   }
   .summary-today-total-count {
-    font-size c(115)
+    font-size c(100)
     font-weight 800
     color #ed7d32
   }

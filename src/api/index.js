@@ -5,8 +5,8 @@ const login = data => {
   return post(`/os/user/login`, data)
 }
 
-const wxAdd = data => {
-  return post(`os/user/wx/add`, data)
+const getUserInfo = data => {
+  return post(`/os/user/wx/add`, data)
 }
 
 // 获取用户的运动数据
@@ -69,9 +69,14 @@ const jiasu = data => {
   return post(`/os/step/speed`, data)
 }
 
+// 领取奖品
+const getPrize = data => {
+  return post(`/os/step/exchange`, data)
+}
+
 export default {
   login, // 登录
-  wxAdd, // 微信用户授权
+  getUserInfo, // 微信用户授权
   getWeRunData, // 获取运动数据
   getPhoneNumber, // 获取手机号
   // getUserInfo, // 获取用户的基本信息
@@ -83,5 +88,6 @@ export default {
   getFriendStepLogs, // 获取朋友赠送的步数记录
   getFriendStep, // 获取好友的步数
   donateStep, // 赠送步数
-  jiasu // 加速
+  jiasu, // 加速
+  getPrize // 领取奖品
 }

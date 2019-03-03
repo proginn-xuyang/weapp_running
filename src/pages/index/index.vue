@@ -51,37 +51,15 @@
             <div class="abs h-center licheng-map-steps steps">
               <div class="abs licheng-map-steps progress" :style="{'width': getters.progress + '%'}"></div>
               <div class="abs h-center step-box">
-               <!-- :class="{'actived': state.userinfo.total_step > getters.key_sites[i].mileage } -->
-                <!-- <div class="licheng-map-step"  v-for="i in 5" :key="i">
-                  {{getters.key_zhandians[0]}}
-                </div> -->
-
-                <!-- <div class="licheng-map-step"  v-for="i in 5" :key="i">
-                  {{getters.key_zhandians[0]}}
-                </div> -->
+                <div class="licheng-map-step" :class="{'actived': (state.userinfo.total_step  / state.step_to_mi) >= getters.key_zhandians[i >= 4 ? 4 : i].step}"  v-for="i in 5" :key="i">
+                </div>
               </div>
             </div>
 
             <div class="licheng-map-infos">
-              <div class="licheng-map-info">
-                <div class="address">南滨公园</div>
-                <div class="distance">起点</div>
-              </div>
-              <div class="licheng-map-info">
-                <div class="address">洪崖洞</div>
-                <div class="distance">5KM</div>
-              </div>
-              <div class="licheng-map-info">
-                <div class="address">李子坝</div>
-                <div class="distance">10KM</div>
-              </div>
-              <div class="licheng-map-info">
-                <div class="address">磁器口</div>
-                <div class="distance">45KM</div>
-              </div>
-              <div class="licheng-map-info">
-                <div class="address">欧尚X-house</div>
-                <div class="distance">46KM</div>
+              <div class="licheng-map-info" v-for="(item, index) in getters.key_zhandians" :key="index">
+                <div class="address">{{item.name}}</div>
+                <div class="distance">{{item.step === 0 ? '起点' : (item.step / 1000) + 'KM'}}</div>
               </div>
             </div>
           </div>
@@ -92,16 +70,14 @@
           <img class="zhandian-map" src="/static/images/zhandian.png" alt srcset mode="scaleToFill">
 
           <div class="abs zhandian-step" :class="'zhandian-step' + (i+2) " v-for="i in 11" :key="i">
-            {{i + 1}}
-            {{state.zhandians[(i+1)  >= 11 ? 11 : (i+1) ].step }}
-            <!-- <img class="address-small-icon"  src="/static/images/address-small-icon1.png" alt mode="scaleToFill" v-if="state.userinfo.total_step > state.zhandians[i].step"> -->
-            <!-- <img class="address-small-icon"  src="/static/images/address-small-icon0.png" alt mode="scaleToFill" v-else> -->
+            <img class="address-small-icon"  src="/static/images/address-small-icon1.png" alt mode="scaleToFill" v-if="(state.userinfo.total_step / state.step_to_mi) > state.zhandians[(i+1)  >= 11 ? 11 : (i+1) ].step">
+            <img class="address-small-icon"  src="/static/images/address-small-icon0.png" alt mode="scaleToFill" v-else>
           </div>
 
           <div class="abs zhandian-view" :class="'zhandian-view' + (i+1) " v-for="i in 12" :key="i" @click="clickZhanInfo(i)">
           </div>
 
-          <div class="abs address-tip address-tip1" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
+          <div class="abs address-tip address-tip2" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
             已领取奖品
           </div>
         </div>
@@ -110,8 +86,12 @@
     <com-tabbar></com-tabbar>
     <div :class="{'loading': loading}"></div>
     <dial-all></dial-all>
-    <dial-auth></dial-auth>
-    <button v-if="!state.userinfo.phone" class="abs h-center v-center getPhoneNumber" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button>
+    <!-- <dial-auth></dial-auth> -->
+    <!-- <dial-gift-money v-if="state.userinfo.phone && state.userinfo.user && getters.guafen.is_has_prize"></dial-gift-money> -->
+    <button v-if="!state.userinfo.phone && state.userinfo.user" class="abs h-center v-center getPhoneNumber" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button>
+    <button v-if="!state.userinfo.user" class="abs h-center v-center getUserInfo" open-type="getUserInfo" @getuserinfo="getUserInfo"></button>
+    <!-- <dial-dealer></dial-dealer> -->
+    <dial-mid-pointer></dial-mid-pointer>
   </div>
  
 </template>
@@ -119,6 +99,9 @@
 <script>
 import DialAll from './../../components/dial-all'
 import DialAuth from './../../components/dial-auth'
+import DialGiftMoney from './../../components/dial-gift-money'
+import DialMidPointer from './../../components/dial-mid-pointer'
+import DialDealer from './../../components/dial-dealer'
 import ComUserinfo from './../../components/com-userinfo'
 import ComBtnJiasu from './../../components/com-btn-jiasu'
 import ComBtnRule from './../../components/com-btn-rule'
@@ -127,6 +110,9 @@ export default {
   components: {
     DialAll,
     DialAuth,
+    DialGiftMoney,
+    DialMidPointer,
+    DialDealer,
     ComUserinfo,
     ComBtnJiasu,
     ComBtnRule,
@@ -165,6 +151,12 @@ export default {
     async getPhoneNumber (e) {
       await this.$store.dispatch('getPhoneNumber', e)
     },
+    /**
+     * 获取用户信息
+     */
+    async getUserInfo (e) {
+      await this.$store.dispatch('getUserInfo', e)
+    },
     clickZhanInfo (i) {
       this.$store.commit('openDialZhanDianInfo', i)
     }
@@ -194,6 +186,11 @@ cwh(x, y) {
 }
 
 .getPhoneNumber{
+  z-index 10000
+  background rgba(0,0,0,0.6)
+}
+
+.getUserInfo{
   z-index 10000
   background rgba(0,0,0,0.6)
 }
@@ -319,7 +316,7 @@ cwh(x, y) {
     }
     &.steps {
       .step-box {
-        top c(-8)
+        top c(-6)
         display flex
         justify-content space-between
         align-items center

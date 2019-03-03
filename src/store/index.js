@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    step_to_mi: 10,
     /**
      * 每天目标步数
      */
@@ -16,7 +17,7 @@ const store = new Vuex.Store({
      */
     dial_id: 0,
     /**
-     * tab
+     * 菜单Tab的ID
      */
     tab_id: 1,
     /**
@@ -25,8 +26,8 @@ const store = new Vuex.Store({
     userinfo: {
       token: '',
       openid: '',
-      today_step: 0, // 当前的步数
-      total_step: 0, // 总的部署
+      today_step: '...', // 当前的步数
+      total_step: '...', // 总的步数
 
       can_auth_werundata: 1, // 是否授权获取步数 0 否 1 是
       can_gufen: 0,
@@ -34,9 +35,12 @@ const store = new Vuex.Store({
       user: 0, // 是否已添加用户微信信息 0 否 1 是
       phone: 0, // 是否已获取手机号 0 否 1 是
 
-      nickname: '草摩雨大战咸蛋超人',
-      avaster: '/static/images/header.png'
+      nickname: '',
+      avaster: ''
     },
+    /**
+     * 好友信息
+     */
     friend_userinfo: {
       openid: '',
       today_step: '...',
@@ -51,6 +55,10 @@ const store = new Vuex.Store({
      */
     rank_today: [],
     /**
+     * 当前的排名
+     */
+    rank_today_count: '...',
+    /**
      * 当天排行榜榜最近一次获取时间
      */
     rank_today_last_time: 0,
@@ -58,6 +66,10 @@ const store = new Vuex.Store({
      * 总排行榜
      */
     rank_all: [],
+    /**
+     * 当前的总排行
+     */
+    rank_all_count: '...',
     /**
      * 总排行榜最近一次获取时间
      */
@@ -149,13 +161,9 @@ const store = new Vuex.Store({
      */
     zhandian_id: -1,
     /**
-     * 每天的瓜分数据
+     * 每天瓜分数据
      */
-    guafen: {
-      is_has_prize: 0, // 是否获得奖品
-      money: 1.98, // 奖金额度
-      time: '2019-3-2' // 获奖时间
-    },
+    guafens: [],
     /**
      * 终点
      */
@@ -167,20 +175,9 @@ const store = new Vuex.Store({
       is_get_prize: 0 // 0表示没有领取奖品，1表示已经领取奖品
     },
     /**
-     * 站点
+     * 错误信息
      */
-    mid_pointer: {
-      is_has_prize: 0, // 0表示没有奖品，1表示有奖品
-      rank: 123, // 到达本站的名次
-      pointer_name: '江北石子山体育公园站', // 站点名称
-      gift_name: '2.88元红包', // 本站奖品
-      next_pointer_gift_name: '欧尚车模',
-      free_step: 100 // 放弃本站奖品获得的步数
-    },
-    /**
-     * 需要依次打开的对话框
-     */
-    dials: []
+    err_msg: ''
   },
   getters: {
     /**
@@ -216,25 +213,49 @@ const store = new Vuex.Store({
      * 达到下一站的步数
      * @param {*} state
      */
-    left_all_step (state) {
-      // TODO:
-      return (10000 / 1000)
+    left_all_step (state, getters) {
+      var miles = state.userinfo.total_step / state.step_to_mi
+      var result = ''
+      for (let i = 0; i < getters.key_zhandians.length - 1; i++) {
+        const curr = getters.key_zhandians[i]
+        const next = getters.key_zhandians[i + 1]
+        if (miles > curr.step && miles <= next.step) {
+          result = ((next.step - miles) / 1000).toFixed(2)
+          break
+        }
+      }
+      if (!result) { return '恭喜您到达终点' }
+      return result
     },
     /**
      * 当前进度
      * @param {*} state
      */
-    progress (state) {
-      console.log('state.sites.length ', state.sites.length)
-      if (state.sites.length < 12) {
-        return 0
+    progress (state, getters) {
+      var result = 0
+      var percent = [22.64, 45.28, 67.92, 100]
+      let miles = state.userinfo.total_step / state.step_to_mi
+
+      if (miles < getters.key_zhandians[1].step) {
+        let duanMiles = miles
+        result = percent[0] * (duanMiles / getters.key_zhandians[1].step)
+      } else if (miles < getters.key_zhandians[2].step) {
+        let duanMiles = miles - getters.key_zhandians[1].step
+        result = percent[0] + (percent[1] - percent[0]) * (duanMiles / (getters.key_zhandians[2].step - getters.key_zhandians[1].step))
+      } else if (miles < getters.key_zhandians[3].step) {
+        let duanMiles = miles - getters.key_zhandians[2].step
+        result = percent[1] + (percent[2] - percent[1]) * (duanMiles / (getters.key_zhandians[3].step - getters.key_zhandians[2].step))
+      } else if (miles < getters.key_zhandians[4].step) {
+        let duanMiles = miles - getters.key_zhandians[3].step
+        result = percent[2] + (percent[3] - percent[2]) * (duanMiles / (getters.key_zhandians[4].step - getters.key_zhandians[3].step))
+      } else {
+        result = 100
       }
 
-      let progress = state.userinfo.total_step / state.sites[11].mileage * 100
-      if (progress > 100) {
+      if (result >= 100) {
         return 100
       } else {
-        return progress
+        return result
       }
     },
     /**
@@ -259,13 +280,54 @@ const store = new Vuex.Store({
      */
     key_zhandians (state) {
       var site = []
-      site.push(state.zhandians[0])
-      site.push(state.zhandians[2])
-      site.push(state.zhandians[5])
-      site.push(state.zhandians[8])
-      site.push(state.zhandians[11])
+      site.push(Object.assign(state.zhandians[0], {status: state.sites.length > 0 && state.sites[0].status}))
+      site.push(Object.assign(state.zhandians[2], {status: state.sites.length > 0 && state.sites[1].status}))
+      site.push(Object.assign(state.zhandians[5], {status: state.sites.length > 0 && state.sites[2].status}))
+      site.push(Object.assign(state.zhandians[8], {status: state.sites.length > 0 && state.sites[3].status}))
+      site.push(Object.assign(state.zhandians[11], {status: state.sites.length > 0 && state.sites[5].status}))
       console.log('key_zhandians', site)
       return site
+    },
+    /**
+     * 每天的瓜分数据
+     */
+    guafen (state) {
+      var len = state.guafens.length
+      if (len > 0) {
+        return state.guafens[len - 1]
+      }
+
+      return {
+        is_has_prize: 0, // 是否获得奖品
+        money: 0.00, // 奖金额度
+        time: '2019-3-2' // 获奖时间
+      }
+    },
+    /**
+     * 中间站点
+     * @param {*} state
+     */
+    mid_pointer (state) {
+      let lastItem = null
+      for (let i = state.sites.length - 1; i >= 0; --i) {
+        const item = state.sites[i]
+        if (item.status === 1) {
+          // this.commit('setSiteCode', item.site_code)
+          state.site_code = item.code
+          console.log('lastItem', lastItem)
+          return {
+            is_has_prize: item.prize_surplus > 0, // 0表示没有奖品，1表示有奖品
+            rank: 1400, // 到达本站的名次
+            pointer_name: item.name, // 站点名称
+            gift_name: item.prize_name, // 本站奖品
+            next_pointer_gift_name: lastItem ? lastItem.prize_name : '',
+            free_step: item.prev_reward // 放弃本站奖品获得的步数
+          }
+        }
+        lastItem = item
+      }
+
+      return null
     }
   },
   mutations: {
@@ -275,6 +337,15 @@ const store = new Vuex.Store({
      */
     closeDial (state) {
       state.dial_id = 0
+    },
+    /**
+     * 关闭奖品
+     * @param {*} state
+     */
+    closeGiftMoney (state) {
+      for (var item of state.guafens) {
+        item.is_has_prize = 0
+      }
     },
     /**
      * 打开对应ID的对话框
@@ -303,13 +374,40 @@ const store = new Vuex.Store({
       wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
-     * 设置站点信息
+     * 设置瓜分数据
      * @param {*} state
      * @param {*} payload
      */
+    setGuaFens (state, payload) {
+      for (var from of payload) {
+        for (var to of state.guafens) {
+          if (to.receive_time === from.receive_time) {
+            break
+          }
+        }
+
+        state.guafens.push(Object.assign({is_has_prize: 1}, from))
+      }
+      wx.setStorageSync('state', JSON.stringify(state))
+    },
     setSite (state, payload) {
       state.sites = payload
       wx.setStorageSync('state', JSON.stringify(state))
+    },
+    /**
+     * 领取奖品，设置站点CODE
+     * @param {*} state
+     * @param {*} payload
+     */
+    setSiteCode (state, payload) {
+      state.site_code = payload
+    },
+    resetSite (state, payload) {
+      for (var item of state.sites) {
+        if (state.site_code === item.code) {
+          item.status = payload
+        }
+      }
     },
     /**
      * 设置今日排行榜
@@ -317,7 +415,8 @@ const store = new Vuex.Store({
      * @param {*} payload
      */
     setRankToday (state, payload) {
-      state.rank_today = payload
+      state.rank_today = payload.rank
+      state.rank_today_count = payload.cu_rnum
       state.rank_today_last_time = Date.now()
       wx.setStorageSync('state', JSON.stringify(state))
     },
@@ -327,7 +426,8 @@ const store = new Vuex.Store({
      * @param {*} payload
      */
     setRankAll (state, payload) {
-      state.rank_all = payload
+      state.rank_all = payload.rank
+      state.rank_all_count = payload.cu_rnum
       state.rank_all_last_time = Date.now()
       wx.setStorageSync('state', JSON.stringify(state))
     },
@@ -400,6 +500,15 @@ const store = new Vuex.Store({
       } else if (state.tab_id === 3) {
         wx.redirectTo({url: `/pages/rank/main?t=${Date.now()}`})
       }
+    },
+    /**
+     * 设置错误信息
+     * @param {*} state
+     * @param {*} payload
+     */
+    setErrorMsg (state, payload) {
+      state.err_msg = payload
+      state.dial_id = 15
     }
   },
   actions: {
@@ -413,11 +522,11 @@ const store = new Vuex.Store({
         var result = await $api.login({ js_code: code })
         if (result.err_code === 0 || result.err_code === '0') {
           this.commit('setUserinfo', result)
+          this.commit('setGuaFens', result.redpack)
         } else {
           $util.catchError('登录失败')
         }
       } catch (error) {
-        console.log(error)
         $util.catchError(error)
       }
     },
@@ -435,6 +544,27 @@ const store = new Vuex.Store({
 
         if (result.err_code === 0 || result.err_code === '0') {
           this.commit('setUserinfo', { phone: 1 })
+        } else {
+          $util.catchError('手机号获取失败')
+        }
+      } catch (error) {
+        $util.catchError(error)
+      }
+    },
+    /**
+     * 获取用户信息
+     * @param {*} store
+     * @param {*} payload
+     */
+    async getUserInfo (store, payload) {
+      try {
+        var result = await $api.getUserInfo({
+          nickName: payload.mp.detail.userInfo.nickName,
+          avatarUrl: payload.mp.detail.userInfo.avatarUrl,
+          source: '测试'
+        })
+        if (result.err_code === 0 || result.err_code === '0') {
+          this.commit('setUserinfo', { user: 1 })
         } else {
           $util.catchError('手机号获取失败')
         }
@@ -477,9 +607,10 @@ const store = new Vuex.Store({
         if (result.register > 0) {
           this.commit('openDial', 8)
           this.commit('setUserinfo', {
-            today_step: result.today_step
+            // TODO: jiasu后返回总步数
+            today_step: result.today_step,
+            total_step: result.total_step
           })
-          // TODO:加速成功更新步数
         } else {
           this.commit('openDial', 9)
         }
@@ -555,7 +686,8 @@ const store = new Vuex.Store({
       if (result.err_code === 0 || result.err_code === '0') {
         this.commit('setDonateStep', payload.step)
       } else {
-        $util.catchError('赠送步数失败')
+        // $util.catchError('赠送步数失败')
+        $util.catchError(result.err_msg)
       }
     },
 
@@ -564,14 +696,35 @@ const store = new Vuex.Store({
      * @param {*} store
      */
     async getFriendUserinfo (store, payload) {
-      console.log(2)
       this.commit('clearFriendUserinfo')
       let result = await $api.getFriendStep(payload)
-      console.log(result)
       if (result.err_code === 0 || result.err_code === '0') {
         this.commit('setFriendUserinfo', result)
       } else {
         $util.catchError('获取好友信息失败')
+      }
+    },
+    /**
+     * 获取奖品
+     * @param {*} store
+     * @param {*} payload
+     */
+    async getPrize (store, payload) {
+      let result = await $api.getPrize({
+        site_code: store.state.site_code,
+        status: payload
+      })
+      if (result.err_code === 0 || result.err_code === '0') {
+        this.commit('setUserinfo', {
+          today_step: store.state.userinfo.today_step + result.reward_step,
+          total_step: result.total_step
+        })
+
+        // 领取成功后，把站点的状态设置为已经领取
+        this.commit('resetSite', payload)
+        this.commit('closeDial')
+      } else {
+        $util.catchError('获取奖品失败')
       }
     }
 

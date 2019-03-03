@@ -1,6 +1,6 @@
 <template>
   <div class="com-user">
-    <img class="avaster" src="/static/images/header.png" alt srcset mode="aspectFill">
+    <img class="avaster" src="" alt srcset mode="aspectFill">
     <div class="nickname">许许杨许杨许杨许杨许杨杨</div>
   </div>
 </template>

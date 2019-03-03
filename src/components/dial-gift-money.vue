@@ -7,12 +7,12 @@
         <img class="header-avaster" :src="state.userinfo.avaster" alt srcset>
         <div class="header-detail">
           <span class="nickname">{{state.userinfo.nickname}}</span>
-          <span class="time">在{{state.guafen.time}}的活动中瓜分到</span>
+          <span class="time">在{{getters.guafen.receive_time}}的活动中瓜分到</span>
         </div>
       </div>
       <div class="content">
         <div class="money">
-          <span>{{state.guafen.money}}</span>
+          <span>{{getters.guafen.prize_name}}</span>
           <span class="unit">元</span>
         </div>
         <div class="tip">已经存入微信零钱账户</div>
@@ -30,12 +30,15 @@ export default {
   id: 3,
   methods: {
     closeDial () {
-      this.$store.commit('closeDial')
+      this.$store.commit('closeGiftMoney')
     }
   },
   computed: {
     state () {
       return this.$store.state
+    },
+    getters () {
+      return this.$store.getters
     }
   }
 }
@@ -55,26 +58,8 @@ cwh(x, y) {
   height (y / 2) px
 }
 .dial-gift-money {
-  position fixed
-  z-index 100000
-  top 0
-  bottom 0
-  left 0
-  right 0
-  margin auto
-  background rgba(0, 0, 0, 0.8)
-  display flex
-  justify-content center
-  align-items center
   .header {
     cwh(540, 150)
-    display flex
-    justify-content center
-    align-items center
-    margin auto
-    background-image linear-gradient(90deg, #85f5bc 1%, #3ea26d 100%), linear-gradient(#000000, #000000)
-    border-top-left-radius c(20)
-    border-top-right-radius c(20)
     font-size c(38)
     font-weight 800
     color #ffffff
@@ -130,15 +115,6 @@ cwh(x, y) {
     .note {
       font-size c(30)
       color #333333
-    }
-  }
-  .close {
-    height c(160)
-    display flex
-    justify-content center
-    align-items center
-    .btn-close {
-      cwh(71, 71)
     }
   }
 }

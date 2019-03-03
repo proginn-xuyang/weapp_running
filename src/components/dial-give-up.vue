@@ -6,10 +6,10 @@
         <div>
           <div class="title">亲，你决定要放弃领取本站奖励继续前行了吗</div>
           <div class="sub-title">为你的勇气点赞，赠送你</div>
-          <div class="steps">{{state.mid_pointer.free_step}}步</div>
+          <div class="steps">{{getters.mid_pointer.free_step}}步</div>
         </div>
       </div>
-      <div class="btns">
+      <div class="btns" @click="getPrize">
         <div class="btn">确定放弃奖励</div>
       </div>
       <div class="close" @click="closeDial">
@@ -25,11 +25,17 @@ export default {
   methods: {
     closeDial () {
       this.$store.commit('closeDial')
+    },
+    getPrize () {
+      this.$store.dispatch('getPrize', 3)
     }
   },
   computed: {
     state () {
       return this.$store.state
+    },
+    getters () {
+      return this.$store.getters
     }
   }
 }

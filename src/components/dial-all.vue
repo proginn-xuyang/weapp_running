@@ -41,6 +41,9 @@
 
     <!-- 站点 -->
     <dial-zhandian v-if="state.dial_id===14"></dial-zhandian>
+
+    <!-- 错误对话框 -->
+    <dial-error v-if="state.dial_id===15"></dial-error>
   </div>
 </template>
 
@@ -59,6 +62,7 @@ import DialDonateFailed from './dial-donate-failed' // 11
 import DialRule from './dial-rule' // 12
 import DialAuth from './dial-auth' // 13
 import DialZhandian from './dial-zhandian' // 14
+import DialError from './dial-error' // 14
 export default {
   components: {
     DialStepLog, // 步数明细 1
@@ -74,7 +78,8 @@ export default {
     DialDonateFailed, // 赠送失败 11
     DialRule, // 规则 12
     DialAuth, // 授权获取步数 13
-    DialZhandian // 站点
+    DialZhandian, // 站点
+    DialError // 错误对话框
   },
   computed: {
     state () {

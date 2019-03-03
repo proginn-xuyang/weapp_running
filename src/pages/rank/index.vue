@@ -20,14 +20,16 @@
         <div class="my-rank">
           <div class="rank-items">
             <div class="userinfo">
-              <img class="avaster" src="/static/images/header.png" alt="" srcset="" mode="aspectFill">
+              <img class="avaster" :src="state.userinfo.avaster" alt="" srcset="" mode="aspectFill">
               <div class="userinfo-defail">
-                <div>序言</div>
-                <div>123名</div>
+                <div>{{state.userinfo.nickName}}</div>
+                <div>
+                    {{state.rank_type ? state.rank_today_count : state.rank_all_count}}名
+                </div>
               </div>
             </div>
             <div class="steps">
-              123123步
+              {{state.rank_type ? state.userinfo.today_step : state.userinfo.total_step}}步
             </div>
           </div>
         </div>
@@ -238,7 +240,7 @@ cwh(x, y) {
         }
       }
       .rank-item-step{
-        width c(150)
+        width c(170)
         font-size c(36)
         text-align right
       }

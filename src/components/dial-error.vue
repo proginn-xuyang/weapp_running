@@ -1,32 +1,29 @@
 
 <template>
-  <div class="com-dial dial-comfirm" catchtouchmove="true">
+  <div class="com-dial dial-donate-success" catchtouchmove="true">
     <div class="com-dial-box">
+      <div class="header">
+        <div>提示</div>
+      </div>
       <div class="content">
         <div>
-          <div class="title">亲，确认领取本站奖励</div>
-          <div class="sub-title">并返回上一站点开始吗？</div>
+          <div class="title">{{state.err_msg}}</div>
         </div>
       </div>
-      <div class="btns">
-        <div class="btn" @click="getPrize">确定</div>
+      <div class="btns" @click="closeDial">
+        <div class="btn">知道了</div>
       </div>
-      <div class="close" @click="closeDial">
-        <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">
-      </div>
+      <div class="close"></div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  id: 7,
+  id: 10,
   methods: {
     closeDial () {
       this.$store.commit('closeDial')
-    },
-    getPrize () {
-      this.$store.dispatch('getPrize', 2)
     }
   },
   computed: {
@@ -50,7 +47,7 @@ cwh(x, y) {
   width x == 0 ? auto : (((((x / 2))))) px
   height (y / 2) px
 }
-.dial-comfirm {
+.dial-donate-success {
   position fixed
   z-index 100000
   top 0
@@ -62,18 +59,18 @@ cwh(x, y) {
   display flex
   justify-content center
   align-items center
+ 
   .content {
-    width c(540)
     flex-direction column
     font-size c(30)
     text-align center
-    border-top-left-radius c(20)
-    border-top-right-radius c(20)
   }
   .title {
-    width c(410)
-    font-size: c(30);
+    width c(430)
     padding c(30) 0 c(0) 0
+    font-size c(48)
+    font-weight 800
+    color #40a570
   }
   .sub-title{
     padding c(10) 0 c(10) 0

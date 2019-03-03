@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "mpvue": "^2.0.0",
+    "mpvue-citypicker": "^1.0.2",
     "style-resources-loader": "^1.2.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
