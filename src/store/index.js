@@ -259,6 +259,39 @@ const store = new Vuex.Store({
       }
     },
     /**
+     * 地图上我的位置
+     */
+    locaiton (state) {
+      var miles = state.userinfo.total_step / state.step_to_mi
+
+      var next
+      for (let i = 0; i < state.zhandians.length; i++) {
+        var curr = state.zhandians[i]
+
+        if ((i + 1) >= state.zhandians.length) {
+          next = null
+        } else {
+          next = state.zhandians[i + 1]
+        }
+
+        if (miles > curr.step - 500 && miles <= curr.step + 500) {
+          return i * 2 + 1
+        } else {
+          if (next == null) {
+            if (miles > curr.step) {
+              return 23
+            } else {
+              return 22
+            }
+          } else {
+            if (miles > curr.step && miles <= next.step) {
+              return (i + 1) * 2
+            }
+          }
+        }
+      }
+    },
+    /**
      * 好友剩余步数
      * @param {*} state
      */
@@ -420,6 +453,8 @@ const store = new Vuex.Store({
     setRankToday (state, payload) {
       state.rank_today = payload.rank
       state.rank_today_count = payload.cu_rnum
+      state.userinfo.avatarUrl = payload.cu_avatarUrl
+      state.userinfo.nickName = payload.cu_nickName
       state.rank_today_last_time = Date.now()
       wx.setStorageSync('state', JSON.stringify(state))
     },
@@ -431,6 +466,8 @@ const store = new Vuex.Store({
     setRankAll (state, payload) {
       state.rank_all = payload.rank
       state.rank_all_count = payload.cu_rnum
+      state.userinfo.avatarUrl = payload.cu_avatarUrl
+      state.userinfo.nickName = payload.cu_nickName
       state.rank_all_last_time = Date.now()
       wx.setStorageSync('state', JSON.stringify(state))
     },
@@ -473,6 +510,7 @@ const store = new Vuex.Store({
      */
     setDonateStep (state, payload) {
       state.userinfo.today_step -= payload
+      state.friend_userinfo.today_step += payload
       wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
@@ -522,10 +560,22 @@ const store = new Vuex.Store({
     async login (store) {
       try {
         var code = await $util.wxApi.login()
-        var result = await $api.login({ js_code: code })
+        console.log(code)
+        // 是否有TOKEN
+
+        // var token = ''
+        // var stateStr = wx.getStorageSync('state')
+        // if (stateStr) {
+        //   var state = JSON.parse(stateStr)
+        //   token = state.userinfo.token
+        // }
+        // if (token) {
+        //   return
+        // }
+
+        var result = await $api.login({ js_code: code, controller: 'login' })
         if (result.err_code === 0 || result.err_code === '0') {
           this.commit('setUserinfo', result)
-          this.commit('setGuaFens', result.redpack)
         } else {
           $util.catchError('登录失败')
         }
@@ -588,9 +638,12 @@ const store = new Vuex.Store({
           this.commit('setUserinfo', {
             today_step: result.today_step,
             total_step: result.total_step,
+            phone: result.phone,
+            user: result.user,
             can_auth_werundata: 0
           })
           this.commit('setSite', result.site)
+          this.commit('setGuaFens', result.redpack)
         } else {
           $util.catchError('获取步数失败')
         }
@@ -692,6 +745,7 @@ const store = new Vuex.Store({
       let result = await $api.donateStep(payload)
       if (result.err_code === 0 || result.err_code === '0') {
         this.commit('setDonateStep', payload.step)
+        $util.catchError('赠送成功')
       } else {
         // $util.catchError('赠送步数失败')
         $util.catchError(result.err_msg)

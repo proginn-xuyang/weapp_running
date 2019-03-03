@@ -15,11 +15,15 @@
             <div class="table-item" v-for="(item, index) in state.all_step_logs" :key="index">
               <div class="wrapper">
                 <div class="time">
-                  <span>2018.02.23</span>
-                  <span>12:30:22</span>
+                  {{item.record_time}}
                 </div>
                 <div class="type">
-                  {{item.type}}
+                  {{
+                    item.type === 1 ? '运动步数' : 
+                    item.type === 2 ? '获赠步数' : 
+                    item.type === 3 ? '捐赠步数' : 
+                    item.type === 4 ? '兑换步数' :  '放弃兑换奖励步数'
+                  }}
                 </div>
                 <div class="steps">
                   {{item.step}}步

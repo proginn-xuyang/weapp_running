@@ -69,7 +69,6 @@ export default {
   },
   async onLoad () {
     this.openid = this.$root.$mp.query.openid
-    console.log(this.openid)
     // TODO:测试,自己进入跳转到主页
     // this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
     this.openid = 'okMDr4mFuAKaq78dNYhtsASCvKpo'

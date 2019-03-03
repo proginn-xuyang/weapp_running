@@ -75,29 +75,8 @@
           <div class="abs zhandian-view" :class="'zhandian-view' + (i+1) " v-for="i in 12" :key="i" @click="clickZhanInfo(i)">
           </div>
 
-          <div class="abs location001"></div>
-          <div class="abs location002"></div>
-          <div class="abs location003"></div>
-          <div class="abs location004"></div>
-          <div class="abs location005"></div>
-          <div class="abs location006"></div>
-          <div class="abs location007"></div>
-          <div class="abs location008"></div>
-          <div class="abs location009"></div>
-          <div class="abs location010"></div>
-          <div class="abs location011"></div>
-          <div class="abs location012"></div>
-          <div class="abs location013"></div>
-          <div class="abs location014"></div>
-          <div class="abs location015"></div>
-          <div class="abs location016"></div>
-          <div class="abs location017"></div>
-          <div class="abs location018"></div>
-          <div class="abs location019"></div>
-          <div class="abs location021"></div>
-          <div class="abs location022"></div>
-          <div class="abs location023"></div>
-          <div class="abs location024"></div>
+          <div class="abs" :class="'location0' + getters.locaiton"> </div>
+          
           <div class="abs address-tip address-tip0" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
             未完成
           </div>
@@ -109,10 +88,10 @@
     <dial-all></dial-all>
     <!-- <dial-auth></dial-auth> -->
     <!-- <dial-gift-money v-if="state.userinfo.phone && state.userinfo.user && getters.guafen.is_has_prize"></dial-gift-money> -->
+    <!-- <dial-mid-pointer></dial-mid-pointer> -->
     <!-- <button v-if="!state.userinfo.phone && state.userinfo.user" class="abs h-center v-center getPhoneNumber" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button> -->
     <!-- <button v-if="!state.userinfo.user" class="abs h-center v-center getUserInfo" open-type="getUserInfo" @getuserinfo="getUserInfo"></button> -->
     <!-- <dial-dealer></dial-dealer> -->
-    <!-- <dial-mid-pointer></dial-mid-pointer> -->
   </div>
  
 </template>
@@ -568,8 +547,11 @@ image006 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHUAAABoCAMAAAD4kk/LAA
   ptl(556, 299)
 }
 
-.location007,
-.location013,{
+.location007
+.location013
+.location018
+.location023
+{
   cwh(101,118)
   background-image url(image004)
   background-size 100% 100%
@@ -579,10 +561,14 @@ image006 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHUAAABoCAMAAAD4kk/LAA
   ptl(599, 387)
 }
 
-.location008,
-.location009,
-.location010,
-.location011{
+.location008
+.location009
+.location010
+.location011
+.location019
+.location020
+.location021
+{
   cwh(138,95)
   background-image url(image005)
   background-size 100% 100%
@@ -604,6 +590,7 @@ image006 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHUAAABoCAMAAAD4kk/LAA
   ptl(154, 498)
 }
 
+.location022
 .location012{
   cwh(117,104)
   background-image url(image006)
@@ -632,6 +619,30 @@ image006 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHUAAABoCAMAAAD4kk/LAA
 
 .location017{
   ptl(545, 830)
+}
+
+.location018{
+  ptl(583, 907)
+}
+
+.location019{
+  ptl(417, 1036)
+}
+
+.location020{
+  ptl(277, 1051)
+}
+
+.location021{
+  ptl(142, 1063)
+}
+
+.location022{
+  ptl(57, 1085)
+}
+
+.location023{
+  ptl(35, 1158)
 }
 
 .loading{

@@ -20,16 +20,16 @@
         <div class="my-rank">
           <div class="rank-items">
             <div class="userinfo">
-              <img class="avaster" :src="state.userinfo.avaster" alt="" srcset="" mode="aspectFill">
+              <img class="avaster" :src="state.userinfo.avatarUrl" alt="" srcset="" mode="aspectFill">
               <div class="userinfo-defail">
                 <div>{{state.userinfo.nickName}}</div>
                 <div>
-                    {{state.rank_type ? state.rank_today_count : state.rank_all_count}}名
+                    {{!state.rank_type ? state.rank_today_count : state.rank_all_count}}名
                 </div>
               </div>
             </div>
             <div class="steps">
-              {{state.rank_type ? state.userinfo.today_step : state.userinfo.total_step}}步
+              {{!state.rank_type ? state.userinfo.today_step : state.userinfo.total_step}}步
             </div>
           </div>
         </div>
