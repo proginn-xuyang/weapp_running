@@ -224,7 +224,7 @@ const store = new Vuex.Store({
           break
         }
       }
-      if (!result) { return '恭喜您到达终点' }
+      if (!result) { return '...' }
       return result
     },
     /**
@@ -274,6 +274,9 @@ const store = new Vuex.Store({
      */
     zhandian (state) {
       return state.zhandians[state.zhandian_id]
+    },
+    zhandian_pic (state, getters) {
+      return getters.zhandian && '/static/images/' + getters.zhandian.name + '.jpg'
     },
     /**
      * 关键站点
@@ -657,7 +660,7 @@ const store = new Vuex.Store({
      * @param {*} store
      */
     async getAllStepLogs (store) {
-      let result = await $api.getAllStepLogs()
+      let result = await $api.getAllStepLogs({page: 0})
       if (result.err_code === 0 || result.err_code === '0') {
         this.commit('setAllStepLogs', result.data)
       } else {
@@ -682,6 +685,10 @@ const store = new Vuex.Store({
      * @param {*} store
      */
     async donateStep (store, payload) {
+      if (payload.step <= 0) {
+        $util.catchError('请选择您赠送的步数')
+        return
+      }
       let result = await $api.donateStep(payload)
       if (result.err_code === 0 || result.err_code === '0') {
         this.commit('setDonateStep', payload.step)

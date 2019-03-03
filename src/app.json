@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/invite/main",
     "pages/index/main",
+    "pages/invite/main",
     "pages/rank/main",
     "pages/gift/main"
   ],

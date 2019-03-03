@@ -30,9 +30,12 @@
                 <div class="detail-box-content">{{steps}}</div>
                 <div>步</div>
               </div>
-              <div class="detail-box-left">
+              <div class="detail-box-left" v-if="(state.userinfo.today_step - steps) >= 0">
                 <div>剩余可赠送</div>
                 <div class="count">{{state.userinfo.today_step - steps}}步</div>
+              </div>
+              <div class="detail-box-left" v-else>
+                <div>赠送的步数不足</div>
               </div>
             </div>
           </div>
@@ -69,6 +72,7 @@ export default {
     console.log(this.openid)
     // TODO:测试,自己进入跳转到主页
     // this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
+    this.openid = 'okMDr4mFuAKaq78dNYhtsASCvKpo'
     if (!this.openid) {
       this.clickBackHome()
     }
@@ -116,8 +120,10 @@ export default {
     steps () {
       if (this.select_option >= 3) {
         return 3000
-      } else {
+      } else if (this.select_option >= 0) {
         return this.select_option * 1000
+      } else {
+        return 0
       }
     }
   }

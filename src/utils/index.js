@@ -1,5 +1,5 @@
 import $api from './../api'
-import $store from './../store'
+// import $store from './../store'
 import wxApi from './wx-api'
 import constant from './constant'
 function formatNumber (n) {
@@ -27,7 +27,10 @@ export function formatTime (date) {
  * @param {*} error
  */
 function catchError (error) {
-  $store.commit('setErrorMsg', error)
+  // $store.commit('setErrorMsg', error)
+  console.log('---catchError---')
+  console.log(error)
+  console.log('---catchError---')
 }
 
 async function click (type, callback) {

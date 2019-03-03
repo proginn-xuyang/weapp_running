@@ -6,7 +6,7 @@
         <div>{{getters.zhandian.name}}</div>
       </div>
       <div class="content">
-          <img class="banner" :src="'/static/images/' + getters.zhandian.name + '.jpg'" alt="" srcset="">
+          <img class="banner" :src="getters.zhandian_pic" alt="" srcset="">
          <div class="title">
             <div class="title-line"></div>
             <div class="title-name">站点介绍</div>

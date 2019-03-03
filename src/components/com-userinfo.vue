@@ -15,7 +15,7 @@
         <div class="summary-title">今日步数</div>
         <div class="summary-today-total-count">{{state.friend_userinfo.today_step}}</div>
         <div class="summary-userinfo">
-          <img class="summary-avaster" :src="state.friend_userinfo.avasterUrl" alt srcset>
+          <img class="summary-avaster" :src="state.friend_userinfo.avatarUrl" alt srcset>
           <div class="summary-nickname">{{state.friend_userinfo.nickName}}</div>
         </div>
         <div class="summary-today-left-count" v-if="getters.friend_left_step > 0">离每日红包还差{{state.target_step - state.friend_userinfo.today_step}}步</div>
