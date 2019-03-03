@@ -13,12 +13,7 @@ export default function (url, data, msg) {
       })
     }
 
-    var stateStr = wx.getStorageSync('state')
-    var token = ''
-    if (stateStr) {
-      var state = JSON.parse(stateStr)
-      token = state.userinfo.token
-    }
+    var token = wx.getStorageSync('token')
 
     console.log('postData', postData)
     // 网络请求

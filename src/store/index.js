@@ -29,7 +29,7 @@ const store = new Vuex.Store({
       today_step: '...', // 当前的步数
       total_step: '...', // 总的步数
 
-      can_auth_werundata: 1, // 是否授权获取步数 0 否 1 是
+      can_auth_werundata: 0, // 是否授权获取步数 0 否 1 是
       can_gufen: 0,
 
       user: 0, // 是否已添加用户微信信息 0 否 1 是
@@ -309,7 +309,8 @@ const store = new Vuex.Store({
       return state.zhandians[state.zhandian_id]
     },
     zhandian_pic (state, getters) {
-      return getters.zhandian && '/static/images/' + getters.zhandian.name + '.jpg'
+      // return getters.zhandian && '/static/images/' + getters.zhandian.name + '.jpg'
+      return getters.zhandian && 'https://oschongma.e2capp.com/web-images/' + getters.zhandian.name + '.jpg'
     },
     /**
      * 关键站点
@@ -406,8 +407,11 @@ const store = new Vuex.Store({
      * @param {*} payload
      */
     setUserinfo (state, payload) {
+      console.log('state.userinfo', payload)
       state.userinfo = Object.assign(state.userinfo, payload)
-      wx.setStorageSync('state', JSON.stringify(state))
+      if (payload.token) {
+        wx.setStorageSync('token', payload.token)
+      }
     },
     /**
      * 设置瓜分数据
@@ -416,12 +420,14 @@ const store = new Vuex.Store({
      */
     setGuaFens (state, payload) {
       for (var from of payload) {
-        for (var to of state.guafens) {
-          if (to.receive_time === from.receive_time) {
-            break
+        if (state.guafens.length > 0) {
+          for (let i = 0; i < state.guafens.length; i++) {
+            const to = state.guafens[i]
+            if (to.receive_time === from.receive_time) {
+              break
+            }
           }
         }
-
         state.guafens.push(Object.assign({is_has_prize: 1}, from))
       }
       wx.setStorageSync('state', JSON.stringify(state))
@@ -559,21 +565,12 @@ const store = new Vuex.Store({
      */
     async login (store) {
       try {
+        var token = wx.getStorageSync('token')
+        var valid = await $util.wxApi.checkSession()
+        if (valid && token) return
+
         var code = await $util.wxApi.login()
-        console.log(code)
-        // 是否有TOKEN
-
-        // var token = ''
-        // var stateStr = wx.getStorageSync('state')
-        // if (stateStr) {
-        //   var state = JSON.parse(stateStr)
-        //   token = state.userinfo.token
-        // }
-        // if (token) {
-        //   return
-        // }
-
-        var result = await $api.login({ js_code: code, controller: 'login' })
+        var result = await $api.login({ js_code: code })
         if (result.err_code === 0 || result.err_code === '0') {
           this.commit('setUserinfo', result)
         } else {
@@ -635,20 +632,21 @@ const store = new Vuex.Store({
         var runData = await $util.wxApi.getWeRunData()
         var result = await $api.getWeRunData(runData)
         if (result.err_code === 0 || result.err_code === '0') {
-          this.commit('setUserinfo', {
+          store.commit('setUserinfo', {
             today_step: result.today_step,
             total_step: result.total_step,
             phone: result.phone,
             user: result.user,
             can_auth_werundata: 0
           })
-          this.commit('setSite', result.site)
-          this.commit('setGuaFens', result.redpack)
+          store.commit('setSite', result.site)
+          // store.commit('setGuaFens', result.redpack)
         } else {
           $util.catchError('获取步数失败')
         }
       } catch (error) {
-        this.commit('setUserinfo', {
+        console.log('error', error)
+        store.commit('setUserinfo', {
           can_auth_werundata: 1
         })
       }

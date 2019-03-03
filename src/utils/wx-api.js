@@ -17,6 +17,19 @@ wxApi.login = function () {
   })
 }
 
+wxApi.checkSession = function () {
+  return new Promise((resolve, reject) => {
+    wx.checkSession({
+      success () {
+        resolve(true)
+      },
+      fail () {
+        resolve(false)
+      }
+    })
+  })
+}
+
 /**
  * 获取微信步数
  */

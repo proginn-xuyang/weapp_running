@@ -86,22 +86,15 @@
     <com-tabbar></com-tabbar>
     <div :class="{'loading': loading}"></div>
     <dial-all></dial-all>
-    <!-- <dial-auth></dial-auth> -->
-    <!-- <dial-gift-money v-if="state.userinfo.phone && state.userinfo.user && getters.guafen.is_has_prize"></dial-gift-money> -->
-    <!-- <dial-mid-pointer></dial-mid-pointer> -->
-    <!-- <button v-if="!state.userinfo.phone && state.userinfo.user" class="abs h-center v-center getPhoneNumber" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button> -->
-    <!-- <button v-if="!state.userinfo.user" class="abs h-center v-center getUserInfo" open-type="getUserInfo" @getuserinfo="getUserInfo"></button> -->
-    <!-- <dial-dealer></dial-dealer> -->
+    <dial-custom></dial-custom>
   </div>
  
 </template>
 
 <script>
 import DialAll from './../../components/dial-all'
-import DialAuth from './../../components/dial-auth'
-import DialGiftMoney from './../../components/dial-gift-money'
-import DialMidPointer from './../../components/dial-mid-pointer'
-import DialDealer from './../../components/dial-dealer'
+import DialCustom from './../../components/dial-custom'
+
 import ComUserinfo from './../../components/com-userinfo'
 import ComBtnJiasu from './../../components/com-btn-jiasu'
 import ComBtnRule from './../../components/com-btn-rule'
@@ -109,10 +102,7 @@ import ComTabbar from './../../components/com-tabbar'
 export default {
   components: {
     DialAll,
-    DialAuth,
-    DialGiftMoney,
-    DialMidPointer,
-    DialDealer,
+    DialCustom,
     ComUserinfo,
     ComBtnJiasu,
     ComBtnRule,
@@ -120,8 +110,7 @@ export default {
   },
   data () {
     return {
-      loading: true,
-      zhandian: [{ name: '', distancs: '' }]
+      loading: true
     }
   },
   onShow () {
@@ -129,7 +118,6 @@ export default {
     wx.showLoading({
       title: '加载中'
     })
-
     setTimeout(() => {
       this.loading = false
       wx.hideLoading()
@@ -148,18 +136,6 @@ export default {
     }
   },
   methods: {
-    /**
-     * 获取手机号
-     */
-    async getPhoneNumber (e) {
-      await this.$store.dispatch('getPhoneNumber', e)
-    },
-    /**
-     * 获取用户信息
-     */
-    async getUserInfo (e) {
-      await this.$store.dispatch('getUserInfo', e)
-    },
     clickZhanInfo (i) {
       this.$store.commit('openDialZhanDianInfo', i)
     }

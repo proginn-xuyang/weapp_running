@@ -11,27 +11,29 @@
             <div>类型</div>
             <div>变动值</div>
         </div>
-        <scroll-view class="table-items">
-            <div class="table-item" v-for="(item, index) in state.all_step_logs" :key="index">
-              <div class="wrapper">
-                <div class="time">
-                  {{item.record_time}}
+        <div class="table-items">
+            <scroll-view>
+              <div class="table-item" v-for="(item, index) in state.all_step_logs" :key="index">
+                <div class="wrapper">
+                  <div class="time">
+                    {{item.record_time}}
+                  </div>
+                  <div class="type">
+                    {{
+                      item.type === 1 ? '运动步数' : 
+                      item.type === 2 ? '获赠步数' : 
+                      item.type === 3 ? '捐赠步数' : 
+                      item.type === 4 ? '兑换步数' :  '放弃兑换奖励步数'
+                    }}
+                  </div>
+                  <div class="steps">
+                    {{item.step}}步
+                  </div>
                 </div>
-                <div class="type">
-                  {{
-                    item.type === 1 ? '运动步数' : 
-                    item.type === 2 ? '获赠步数' : 
-                    item.type === 3 ? '捐赠步数' : 
-                    item.type === 4 ? '兑换步数' :  '放弃兑换奖励步数'
-                  }}
-                </div>
-                <div class="steps">
-                  {{item.step}}步
-                </div>
+                <div class="h-line"></div>
               </div>
-              <div class="h-line"></div>
-            </div>
-        </scroll-view>
+          </scroll-view>
+        </div>
       </div>  
       <div class="close" @click="closeDial">
         <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">

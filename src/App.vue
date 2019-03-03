@@ -1,8 +1,8 @@
 <script>
 export default {
   async onShow () {
-    // await this.$store.dispatch('login')
-    // await this.$store.dispatch('getWeRunData')
+    await this.$store.dispatch('login')
+    await this.$store.dispatch('getWeRunData')
   }
 }
 </script>

@@ -1,9 +1,9 @@
 
 <template>
-  <div class="com-dial dial-mid-pointer" catchtouchmove="true" v-if="state.dial_id <= 0 && getters.mid_pointer">
+  <div class="com-dial dial-mid-pointer" catchtouchmove="true">
     <div class="com-dial-box">
       <div class="header">
-          <div>恭喜你抵达 {{getters.mid_pointer}}</div>
+          <div>恭喜你抵达</div>
           <div>{{getters.mid_pointer.pointer_name}}</div>
       </div>
       <div class="content">
@@ -88,17 +88,6 @@ cwh(x, y) {
   height (y / 2) px
 }
 .dial-mid-pointer {
-  position fixed
-  z-index 100000
-  top 0
-  bottom 0
-  left 0
-  right 0
-  margin auto
-  background rgba(0, 0, 0, 0.8)
-  display flex
-  justify-content center
-  align-items center
   .header {
     width (540)
     height auto
@@ -108,9 +97,6 @@ cwh(x, y) {
     align-items center
     margin auto
     padding c(10) 0
-    background-image linear-gradient(90deg, #85f5bc 1%, #3ea26d 100%), linear-gradient(#000000, #000000)
-    border-top-left-radius c(20)
-    border-top-right-radius c(20)
     font-size c(38)
     font-weight 800
     color #ffffff

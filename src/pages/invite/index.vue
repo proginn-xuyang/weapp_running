@@ -11,7 +11,6 @@
       <!-- 规则按键 -->
       <com-btn-rule></com-btn-rule>
       
-      
       <!-- 赠送步数 -->
       <div class="abs h-center com-dial dial-invite">
         <div class="com-dial-box disable">
@@ -70,16 +69,16 @@ export default {
   async onLoad () {
     this.openid = this.$root.$mp.query.openid
     // TODO:测试,自己进入跳转到主页
-    // this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
-    this.openid = 'okMDr4mFuAKaq78dNYhtsASCvKpo'
+    this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
+    // this.openid = 'okMDr4mFuAKaq78dNYhtsASCvKpo'
     if (!this.openid) {
       this.clickBackHome()
     }
   },
   async onShow () {
-    this.$store.dispatch('login')
-    this.$store.dispatch('getWeRunData')
-    this.$store.dispatch('getFriendUserinfo', {
+    await this.$store.dispatch('login')
+    await this.$store.dispatch('getWeRunData')
+    await this.$store.dispatch('getFriendUserinfo', {
       friend: this.openid
     })
 

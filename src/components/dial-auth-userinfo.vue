@@ -1,14 +1,14 @@
 
 <template>
-  <div class="com-dial dial-auth" catchtouchmove="true">
+  <div class="com-dial dial-auth-userinfo" catchtouchmove="true">
     <div class="com-dial-box">
       <div class="content">
         <div>
-          <div class="title">授权获取运动步数后，才能参与活动哟！</div>
+          <div class="title">授权获取您的昵称头像，更好的体验活动！</div>
         </div>
       </div>
       <div class="btns">
-        <button class="btn" open-type="openSetting">知道了</button>
+        <button class="btn" open-type="getUserInfo" @getuserinfo="getUserInfo">知道了</button>
       </div>
       <div class="close" @click="closeDial"></div>
     </div>
@@ -21,6 +21,14 @@ export default {
   computed: {
     state () {
       return this.$store.state
+    }
+  },
+  methods: {
+    /**
+     * 获取用户信息
+     */
+    async getUserInfo (e) {
+      await this.$store.dispatch('getUserInfo', e)
     }
   }
 }
@@ -39,7 +47,7 @@ cwh(x, y) {
   width x == 0 ? auto : (((((x / 2))))) px
   height (y / 2) px
 }
-.dial-auth {
+.dial-auth-userinfo {
   .content {
     font-size c(34)
     text-align center
