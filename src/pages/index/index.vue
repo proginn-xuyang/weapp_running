@@ -87,12 +87,14 @@
     <div :class="{'loading': loading}"></div>
     <dial-all></dial-all>
     <dial-custom></dial-custom>
+    <dial-dealer></dial-dealer>
   </div>
 </template>
 
 <script>
 import DialAll from './../../components/dial-all'
 import DialCustom from './../../components/dial-custom'
+import DialDealer from './../../components/dial-dealer'
 
 import ComUserinfo from './../../components/com-userinfo'
 import ComBtnJiasu from './../../components/com-btn-jiasu'
@@ -102,6 +104,7 @@ export default {
   components: {
     DialAll,
     DialCustom,
+    DialDealer,
     ComUserinfo,
     ComBtnJiasu,
     ComBtnRule,

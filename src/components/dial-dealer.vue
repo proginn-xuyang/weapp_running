@@ -6,6 +6,12 @@
         <div>填写信息</div>
       </div>
       <div class="content">
+         <div class="input-box">
+          <div class="input-title">您的姓名</div>
+          <div class="input-content">
+            <input type="text"></input>
+          </div>
+        </div>
         <div class="input-box">
           <div class="input-title">意向车型</div>
           <div class="input-content">
@@ -38,6 +44,7 @@
 
 <script>
 import mpvueCityPicker from 'mpvue-citypicker'
+
 export default {
   data () {
     return {

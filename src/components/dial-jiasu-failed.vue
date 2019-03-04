@@ -7,8 +7,9 @@
       </div>
       <div class="content">
         <div>
-          <div class="title">嘻嘻，保存二维码图片扫码下载</div>
-          <div class="sub-title">并注册欧尚style App来获取吧~</div>
+          <div class="title">保存二维码图片</div>
+          <div class="sub-title">扫码下载注册并登录欧尚style App来获取吧~</div>
+          <div class="sub-title">每天登录之后再来才会加速哦~~</div>
           <img class="scan" src="/static/images/scan.jpg" alt="" srcset="" mode="aspectFill">
         </div>
       </div>
