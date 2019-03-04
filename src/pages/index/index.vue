@@ -85,9 +85,9 @@
     </div>
     <com-tabbar></com-tabbar>
     <div :class="{'loading': loading}"></div>
-    <dial-all></dial-all>
     <dial-custom></dial-custom>
-    <dial-dealer></dial-dealer>
+    <!-- <dial-dealer></dial-dealer> -->
+    <dial-all></dial-all>
   </div>
 </template>
 

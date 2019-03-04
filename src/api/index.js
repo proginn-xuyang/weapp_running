@@ -74,6 +74,11 @@ const getPrize = data => {
   return post(`/os/step/exchange`, data)
 }
 
+// 录入信息
+const addInfo = data => {
+  return post(`/os/user/info/add`, data)
+}
+
 export default {
   login, // 登录
   getUserInfo, // 微信用户授权
@@ -89,5 +94,6 @@ export default {
   getFriendStep, // 获取好友的步数
   donateStep, // 赠送步数
   jiasu, // 加速
-  getPrize // 领取奖品
+  getPrize, // 领取奖品
+  addInfo // 录入用户信息
 }

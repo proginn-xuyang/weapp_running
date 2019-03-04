@@ -47,6 +47,12 @@
 
     <!-- 授权获取相册 -->
     <dial-auth-photo v-if="state.dial_id===16"></dial-auth-photo>
+
+    <!-- 进入经销商的提示 -->
+    <dial-adduserinfo-tip v-if="state.dial_id===17"></dial-adduserinfo-tip>
+
+    <!-- 经销商信息 -->
+    <dial-dealer v-if="state.dial_id===18"></dial-dealer>
   </div>
 </template>
 
@@ -67,6 +73,8 @@ import DialAuth from './dial-auth' // 13
 import DialZhandian from './dial-zhandian' // 14
 import DialError from './dial-error' // 15
 import DialAuthPhoto from './dial-auth-photo' // 16
+import DialAdduserinfoTip from './dial-adduserinfo-tip' // 17
+import DialDealer from './dial-dealer' // 18
 export default {
   components: {
     DialStepLog, // 步数明细 1
@@ -84,7 +92,9 @@ export default {
     DialAuth, // 授权获取步数 13
     DialZhandian, // 站点 14
     DialError, // 错误对话框 15
-    DialAuthPhoto // 16
+    DialAuthPhoto, // 16
+    DialAdduserinfoTip, // 17 进入经销商对话框提示
+    DialDealer // 18 经销商对话框
   },
   computed: {
     state () {

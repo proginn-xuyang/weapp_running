@@ -415,6 +415,7 @@ const store = new Vuex.Store({
         item.is_has_prize = 0
       }
       wx.setStorageSync('state', JSON.stringify(state))
+      state.dial_id = 1
     },
     /**
      * 打开对应ID的对话框

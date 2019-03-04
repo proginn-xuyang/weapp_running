@@ -2,7 +2,7 @@ import $api from './../api'
 import $store from './../store'
 import wxApi from './wx-api'
 import constant from './constant'
-import dealer from './dealer'
+import dealers from './dealer'
 function formatNumber (n) {
   const str = n.toString()
   return str[1] ? str : `0${str}`
@@ -46,6 +46,6 @@ export default {
   click, // 点击
   catchError, // 捕获异常
   constant, // 常量
-  dealer, // 经销商数据
+  dealers, // 经销商数据
   wxApi
 }
