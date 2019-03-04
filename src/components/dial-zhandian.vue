@@ -15,10 +15,10 @@
         <div class="detail">
           {{getters.zhandian.detail}}
         </div>
-        <div class="jiangli">
+        <div class="jiangli" v-if="getters.zhandian.prize_name">
           站点奖励
-          <div>前500名到达可以获得： XXXX</div>
-          <div>剩余XXX份，加油冲鸭</div>
+          <div v-for="(item,index) of getters.zhandian.prize_name" :key="index" >{{item}}</div>
+          <!-- <div>剩余XXX份，加油冲鸭</div> -->
         </div>
       </div>
       <div class="close" @click="closeDial">

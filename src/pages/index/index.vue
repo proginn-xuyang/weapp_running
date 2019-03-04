@@ -75,7 +75,7 @@
           <div class="abs zhandian-view" :class="'zhandian-view' + (i+1) " v-for="i in 12" :key="i" @click="clickZhanInfo(i)">
           </div>
 
-          <div class="abs" :class="'location0' + getters.locaiton"> </div>
+          <div class="abs" :class="'location0' + (getters.locaiton < 10 ? '0' + getters.locaiton : getters.locaiton )"> </div>
           
           <div class="abs address-tip address-tip0" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
             未完成
@@ -88,7 +88,6 @@
     <dial-all></dial-all>
     <dial-custom></dial-custom>
   </div>
- 
 </template>
 
 <script>
@@ -129,7 +128,6 @@ export default {
     }
 
     var path = `/pages/invite/main?openid=${this.state.userinfo.openid}`
-    console.log(path)
     return {
       title: '还差几步我就能获得红包啦，求赠送~',
       path
@@ -416,7 +414,7 @@ cwh(x, y) {
 }
 
 .zhandian-view{
-  background rgba(0,0,0,0.5);
+  // background rgba(0,0,0,0.5);
   cwh(175,100)
 }
 

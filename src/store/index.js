@@ -8,6 +8,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     step_to_mi: 10,
+    game_today_step: 30000,
     /**
      * 每天目标步数
      */
@@ -29,7 +30,7 @@ const store = new Vuex.Store({
       today_step: '...', // 当前的步数
       total_step: '...', // 总的步数
 
-      can_auth_werundata: 0, // 是否授权获取步数 0 否 1 是
+      can_auth_werundata: 1, // 是否授权获取步数 0 否 1 是
       can_gufen: 0,
 
       user: 0, // 是否已添加用户微信信息 0 否 1 是
@@ -107,7 +108,8 @@ const store = new Vuex.Store({
         id: 3,
         name: '洪崖洞',
         detail: '洪崖洞，原名洪崖门，是古重庆城门之一，位于重庆市渝中区解放碑沧白路，地处长江、嘉陵江两江交汇的滨江地带，是兼具观光旅游、休闲度假等功能的旅游区  。以其巴渝传统建筑和民俗风貌特色而被评为国家AAAA级旅游景区。主要景点由吊脚楼、仿古商业街等景观组成，因形似电影《千与千寻》场景，而成为重庆网红打卡景点。',
-        step: 5000
+        step: 5000,
+        prize_name: ['订制速干运动T恤 X500']
       }, {
         id: 4,
         name: '大剧院',
@@ -122,7 +124,9 @@ const store = new Vuex.Store({
         id: 6,
         name: '李子坝',
         detail: '李子坝轻轨站位于嘉陵江畔的李子坝正街39号商住楼6-7层，其实它并非真正意义上的景点，但是因其“空中列车穿楼而过”成为蜚声中外的“网红车站”，吸引了广大有游客前来观光，大多数时候路过都能看到有人拿着手机在驻足拍摄，网红景点名不虚传。',
-        step: 10000
+        step: 10000,
+        prize_name: ['运动蓝牙耳机 X300'],
+        left_count: 300
       }, {
         id: 7,
         name: '鹅岭二厂',
@@ -137,7 +141,8 @@ const store = new Vuex.Store({
         id: 9,
         name: '磁器口',
         detail: '位于重庆沙坪坝区，每个城市都有一条主打当地美食的商业街，北京的王府井，成都的宽窄巷子，武汉的户部巷，重庆的磁器口也是这样的存在。磁器口古镇的主路两侧是各种摊贩店铺，人流拥挤嘈杂，也许很难感受到古老重庆的感觉。但深入其中，或转入旁边的小巷中，会探索它清净，古色古香的另一面；除了古老蜿蜒的石板路阶梯，老一辈重庆人真实生活展现在眼前。',
-        step: 21000
+        step: 21000,
+        prize_name: ['安德玛运动外套 X10']
       }, {
         id: 10,
         name: '石子山体育公园',
@@ -153,7 +158,8 @@ const store = new Vuex.Store({
         id: 12,
         name: '欧尚x-house',
         detail: 'X-House是欧尚汽车新零售模式线下的新型渠道之一，致力于提升欧尚汽车品牌形象，增强品牌溢价能力，具有车辆快保、养护等功能，同时也是品牌体验中心，将全方位打造客户生态圈。',
-        step: 42195
+        step: 42195,
+        prize_name: ['亚瑟士高端跑鞋 X5', '订制荣誉奖牌 X200']
       }
     ],
     /**
@@ -180,6 +186,24 @@ const store = new Vuex.Store({
     err_msg: ''
   },
   getters: {
+    me_circle1 (state) {
+      if (!state.userinfo) {
+        return 0
+      }
+      var c1 = (state.userinfo.today_step / state.game_today_step * 280) >= 180 ? 180 : (state.userinfo.today_step / state.game_today_step * 280)
+      return c1
+    },
+    me_circle2 (state, getters) {
+      if (!state.userinfo) {
+        return 0
+      }
+
+      if (getters.me_circle1 === 180) {
+        return (state.userinfo.today_step / state.game_today_step * 280) >= 280 ? 180 : (state.userinfo.today_step / state.game_today_step * 280 - 180)
+      } else {
+        return 0
+      }
+    },
     /**
      * 排行榜的类型
      * @param {*} state
@@ -306,6 +330,7 @@ const store = new Vuex.Store({
      * 获取站点信息
      */
     zhandian (state) {
+      console.log('state.zhandians[state.zhandian_id]', state.zhandians[state.zhandian_id])
       return state.zhandians[state.zhandian_id]
     },
     zhandian_pic (state, getters) {
@@ -336,6 +361,8 @@ const store = new Vuex.Store({
 
       return {
         is_has_prize: 0, // 是否获得奖品
+        nickName: '',
+        avatarUrl: '',
         money: 0.00, // 奖金额度
         time: '2019-3-2' // 获奖时间
       }
@@ -368,12 +395,16 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
+    reset (state, payload) {
+      state = Object.assign(state, payload)
+    },
     /**
      * 关闭对话框
      * @param {*} state
      */
     closeDial (state) {
       state.dial_id = 0
+      wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
      * 关闭奖品
@@ -383,6 +414,7 @@ const store = new Vuex.Store({
       for (var item of state.guafens) {
         item.is_has_prize = 0
       }
+      wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
      * 打开对应ID的对话框
@@ -391,6 +423,7 @@ const store = new Vuex.Store({
      */
     openDial (state, payload) {
       state.dial_id = payload
+      wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
      * 打开对应站点ID的对话框
@@ -400,6 +433,7 @@ const store = new Vuex.Store({
     openDialZhanDianInfo (state, payload) {
       state.dial_id = 14
       state.zhandian_id = payload - 1
+      wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
      * 设置用户信息
@@ -407,11 +441,11 @@ const store = new Vuex.Store({
      * @param {*} payload
      */
     setUserinfo (state, payload) {
-      console.log('state.userinfo', payload)
       state.userinfo = Object.assign(state.userinfo, payload)
       if (payload.token) {
         wx.setStorageSync('token', payload.token)
       }
+      wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
      * 设置瓜分数据
@@ -419,18 +453,10 @@ const store = new Vuex.Store({
      * @param {*} payload
      */
     setGuaFens (state, payload) {
-      for (var from of payload) {
-        if (state.guafens.length > 0) {
-          for (let i = 0; i < state.guafens.length; i++) {
-            const to = state.guafens[i]
-            if (to.receive_time === from.receive_time) {
-              break
-            }
-          }
-        }
-        state.guafens.push(Object.assign({is_has_prize: 1}, from))
+      if (payload) {
+        state.guafens.push(Object.assign({is_has_prize: 1}, payload))
       }
-      wx.setStorageSync('state', JSON.stringify(state))
+      console.log('state.userinfo', payload)
     },
     setSite (state, payload) {
       state.sites = payload
@@ -443,6 +469,7 @@ const store = new Vuex.Store({
      */
     setSiteCode (state, payload) {
       state.site_code = payload
+      console.log('state.userinfo', payload)
     },
     resetSite (state, payload) {
       for (var item of state.sites) {
@@ -450,6 +477,7 @@ const store = new Vuex.Store({
           item.status = payload
         }
       }
+      console.log('state.userinfo', payload)
     },
     /**
      * 设置今日排行榜
@@ -484,6 +512,7 @@ const store = new Vuex.Store({
     toggleRankType (state) {
       state.rank_type ^= 1
       this.dispatch('getRank')
+      wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
      * 设置奖品
@@ -540,13 +569,33 @@ const store = new Vuex.Store({
     },
     setTabId (state, payload) {
       state.tab_id = payload
+      var url = ''
       if (state.tab_id === 1) {
-        wx.redirectTo({url: `/pages/index/main?t=${Date.now()}`})
+        url = '/pages/index/main'
       } else if (state.tab_id === 2) {
-        wx.redirectTo({url: `/pages/gift/main?t=${Date.now()}`})
+        url = '/pages/gift/main'
       } else if (state.tab_id === 3) {
-        wx.redirectTo({url: `/pages/rank/main?t=${Date.now()}`})
+        url = '/pages/rank/main'
       }
+      wx.setStorageSync('state', JSON.stringify(state))
+
+      // eslint-disable-next-line
+      var pages = getCurrentPages()
+      if (pages) {
+        console.log(pages)
+        for (let i = pages.length; i >= 1; --i) {
+          const p = pages[i - 1]
+          if (('/' + p.route) === url) {
+            console.log('i:', pages.length - i)
+            wx.navigateBack({
+              delta: pages.length - i
+            })
+            return
+          }
+        }
+      }
+
+      wx.navigateTo({url})
     },
     /**
      * 设置错误信息
@@ -556,6 +605,7 @@ const store = new Vuex.Store({
     setErrorMsg (state, payload) {
       state.err_msg = payload
       state.dial_id = 15
+      wx.setStorageSync('state', JSON.stringify(state))
     }
   },
   actions: {
@@ -577,7 +627,7 @@ const store = new Vuex.Store({
           $util.catchError('登录失败')
         }
       } catch (error) {
-        $util.catchError(error)
+        $util.catchError('登录失败')
       }
     },
     /**
@@ -616,10 +666,10 @@ const store = new Vuex.Store({
         if (result.err_code === 0 || result.err_code === '0') {
           this.commit('setUserinfo', { user: 1 })
         } else {
-          $util.catchError('手机号获取失败')
+          $util.catchError('获取头像失败')
         }
       } catch (error) {
-        $util.catchError(error)
+        $util.catchError('获取头像失败')
       }
     },
 
@@ -637,15 +687,16 @@ const store = new Vuex.Store({
             total_step: result.total_step,
             phone: result.phone,
             user: result.user,
-            can_auth_werundata: 0
+            can_auth_werundata: 0,
+            openid: result.openid,
+            nickName: result.nickName
           })
           store.commit('setSite', result.site)
-          // store.commit('setGuaFens', result.redpack)
+          store.commit('setGuaFens', result.redpack)
         } else {
           $util.catchError('获取步数失败')
         }
       } catch (error) {
-        console.log('error', error)
         store.commit('setUserinfo', {
           can_auth_werundata: 1
         })
@@ -661,7 +712,7 @@ const store = new Vuex.Store({
         if (result.register > 0) {
           this.commit('openDial', 8)
           this.commit('setUserinfo', {
-            // TODO: jiasu后返回总步数
+          // TODO: jiasu后返回总步数
             today_step: result.today_step,
             total_step: result.total_step
           })
@@ -714,6 +765,10 @@ const store = new Vuex.Store({
       let result = await $api.getAllStepLogs({page: 0})
       if (result.err_code === 0 || result.err_code === '0') {
         this.commit('setAllStepLogs', result.data)
+        this.commit('setUserinfo', {
+          total_step: result.total_step,
+          today_step: result.today_step
+        })
       } else {
         $util.catchError('获取步数记录失败')
       }
@@ -726,6 +781,10 @@ const store = new Vuex.Store({
       let result = await $api.getFriendStepLogs()
       if (result.err_code === 0 || result.err_code === '0') {
         this.commit('setFriendStepLogs', result.data)
+        this.commit('setUserinfo', {
+          total_step: result.total_step,
+          today_step: result.today_step
+        })
       } else {
         $util.catchError('获取好友赠送记录失败')
       }

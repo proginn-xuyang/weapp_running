@@ -52,30 +52,36 @@
       </div>
     </scroll-view>
     <dial-all></dial-all>
+    <dial-custom></dial-custom>
   </div>
 </template>
 
 <script>
 import DialAll from './../../components/dial-all'
+import DialCustom from './../../components/dial-custom'
 import ComUserinfo from './../../components/com-userinfo'
 import ComBtnRule from './../../components/com-btn-rule'
 import { setTimeout } from 'timers'
 export default {
   components: {
     DialAll,
+    DialCustom,
     ComUserinfo,
     ComBtnRule
   },
   async onLoad () {
     this.openid = this.$root.$mp.query.openid
     // TODO:测试,自己进入跳转到主页
-    this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
+    // this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
     // this.openid = 'okMDr4mFuAKaq78dNYhtsASCvKpo'
     if (!this.openid) {
       this.clickBackHome()
     }
   },
   async onShow () {
+    if (!this.openid) {
+      return
+    }
     await this.$store.dispatch('login')
     await this.$store.dispatch('getWeRunData')
     await this.$store.dispatch('getFriendUserinfo', {

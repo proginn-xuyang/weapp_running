@@ -1,6 +1,10 @@
 <script>
 export default {
   async onShow () {
+    var stateStr = wx.getStorageSync('state')
+    if (stateStr) {
+      this.$store.commit('reset', JSON.parse(stateStr))
+    }
     await this.$store.dispatch('login')
     await this.$store.dispatch('getWeRunData')
   }

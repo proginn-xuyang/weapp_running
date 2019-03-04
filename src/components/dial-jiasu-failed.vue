@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="btns" @click="saveScan">
-        <div class="btn">保存二维码</div>
+          <div class="btn">保存二维码</div>
       </div>
       <div class="close" @click="closeDial">
         <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">
@@ -31,7 +31,8 @@ export default {
     },
     saveScan () {
       console.log('保存图片')
-      var imgSrc = 'https://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg'
+      var self = this
+      var imgSrc = 'https://oschongma.e2capp.com/web-images/scan-app.jpg'
       wx.downloadFile({
         url: imgSrc,
         success: function (res) {
@@ -46,24 +47,12 @@ export default {
                 duration: 2000
               })
             },
-            fail: function (err) {
-              console.log(err)
-              if (err.errMsg === 'saveImageToPhotosAlbum:fail auth deny') {
-                console.log('当初用户拒绝，再次发起授权')
-                wx.openSetting({
-                  success (settingdata) {
-                    console.log(settingdata)
-                    if (settingdata.authSetting['scope.writePhotosAlbum']) {
-                      console.log('获取权限成功，给出再次点击图片保存到相册的提示。')
-                    } else {
-                      console.log('获取权限失败，给出不给权限就无法正常使用的提示')
-                    }
-                  }
-                })
-              }
+            fail: function () {
             },
             complete (res) {
-              console.log(res)
+              if (res.errMsg === 'saveImageToPhotosAlbum:fail auth deny') {
+                self.$store.commit('openDial', 16)
+              }
             }
           })
         }

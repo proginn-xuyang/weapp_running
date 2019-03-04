@@ -3,15 +3,26 @@
     <div class="circle"></div>
     <div class="con">
       <div class="percent-circle percent-circle-left">
-        <div class="left-content"></div>
+        <div class="left-content"  :style="'transform:rotate(' + getters.me_circle1 + 'deg)'"></div>
       </div>
       <div class="percent-circle percent-circle-right">
-        <div class="right-content"></div>
+        <div class="right-content"  :style="'transform:rotate(' + getters.me_circle2 + 'deg)'"></div>
       </div>
       <div class="text-circle"></div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    getters () {
+      return this.$store.getters
+    }
+  }
+}
+</script>
+
 
 <style lang="stylus">
 c(x) {
@@ -112,7 +123,7 @@ cwh(x, y) {
     width 100%
     height 100%
     transform-origin left center
-    transform rotate(0deg)
+    // transform rotate(90deg)
     border-radius 0 c((w / 2)) c((w / 2)) 0
     background #e1edde
   }
@@ -126,7 +137,7 @@ cwh(x, y) {
     width 100%
     height 100%
     transform-origin right center
-    transform rotate(170deg)
+    // transform rotate(180deg)
     border-radius c((w / 2)) 0 0 c((w / 2))
     background #e1edde
   }
