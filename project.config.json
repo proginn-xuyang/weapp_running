@@ -10,7 +10,7 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "wx3ac64c64cfbc5526",
+	"appid": "wx8204e7eb54ab7f7a",
 	"projectname": "weapp_changan_run",
 	"condition": {
 		"search": {
