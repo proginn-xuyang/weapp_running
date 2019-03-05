@@ -6,7 +6,7 @@
         <div>获赠记录</div>
       </div>
       <div class="content">
-        <scroll-view class="table-items">
+        <scroll-view class="table-items" v-if="!state.friend_step_logs && state.friend_step_logs.length > 0">
             <div class="table-item" v-for="(item, index) in state.friend_step_logs" :key="index">
               <div class="wrapper">
                 <div class="com-user">
@@ -19,6 +19,11 @@
               </div>
             </div>
         </scroll-view>
+        <div class="none-data-box">
+          <img class="none-data" src="/static/images/none-data.png" alt srcset>
+          <p class="none-data-tip">亲，还没有好友给你赠送哦</p>
+          <p class="none-data-tip">快去分享吧！</p>
+        </div>
       </div>  
       <div class="close" @click="closeDial">
         <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">
@@ -110,6 +115,22 @@ cwh(x, y) {
         display flex
         flex-direction column
       }
+  }
+
+  .none-data-box{
+    display flex
+    flex-direction column
+    justify-content center
+    align-items center
+  }
+
+  .none-data {
+    cwh(156, 169)
+  }
+  .none-data-tip {
+    padding-top c(30)
+    font-size c(36)
+    color #333333
   }
 }
 

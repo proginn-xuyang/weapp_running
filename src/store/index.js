@@ -109,7 +109,7 @@ const store = new Vuex.Store({
         name: '洪崖洞',
         detail: '洪崖洞，原名洪崖门，是古重庆城门之一，位于重庆市渝中区解放碑沧白路，地处长江、嘉陵江两江交汇的滨江地带，是兼具观光旅游、休闲度假等功能的旅游区  。以其巴渝传统建筑和民俗风貌特色而被评为国家AAAA级旅游景区。主要景点由吊脚楼、仿古商业街等景观组成，因形似电影《千与千寻》场景，而成为重庆网红打卡景点。',
         step: 5000,
-        prize_name: ['订制速干运动T恤 X500']
+        prize_name: ['订制速干运动T恤 500件']
       }, {
         id: 4,
         name: '大剧院',
@@ -125,7 +125,7 @@ const store = new Vuex.Store({
         name: '李子坝',
         detail: '李子坝轻轨站位于嘉陵江畔的李子坝正街39号商住楼6-7层，其实它并非真正意义上的景点，但是因其“空中列车穿楼而过”成为蜚声中外的“网红车站”，吸引了广大有游客前来观光，大多数时候路过都能看到有人拿着手机在驻足拍摄，网红景点名不虚传。',
         step: 10000,
-        prize_name: ['运动蓝牙耳机 X300'],
+        prize_name: ['运动蓝牙耳机 300个'],
         left_count: 300
       }, {
         id: 7,
@@ -142,7 +142,7 @@ const store = new Vuex.Store({
         name: '磁器口',
         detail: '位于重庆沙坪坝区，每个城市都有一条主打当地美食的商业街，北京的王府井，成都的宽窄巷子，武汉的户部巷，重庆的磁器口也是这样的存在。磁器口古镇的主路两侧是各种摊贩店铺，人流拥挤嘈杂，也许很难感受到古老重庆的感觉。但深入其中，或转入旁边的小巷中，会探索它清净，古色古香的另一面；除了古老蜿蜒的石板路阶梯，老一辈重庆人真实生活展现在眼前。',
         step: 21000,
-        prize_name: ['安德玛运动外套 X10']
+        prize_name: ['安德玛运动外套 10套']
       }, {
         id: 10,
         name: '石子山体育公园',
@@ -159,7 +159,7 @@ const store = new Vuex.Store({
         name: '欧尚x-house',
         detail: 'X-House是欧尚汽车新零售模式线下的新型渠道之一，致力于提升欧尚汽车品牌形象，增强品牌溢价能力，具有车辆快保、养护等功能，同时也是品牌体验中心，将全方位打造客户生态圈。',
         step: 42195,
-        prize_name: ['亚瑟士高端跑鞋 X5', '订制荣誉奖牌 X200']
+        prize_name: ['亚瑟士高端跑鞋 5双', '订制荣誉奖牌 200个']
       }
     ],
     /**
@@ -197,7 +197,6 @@ const store = new Vuex.Store({
       if (!state.userinfo) {
         return 0
       }
-
       if (getters.me_circle1 === 180) {
         return (state.userinfo.today_step / state.game_today_step * 280) >= 280 ? 180 : (state.userinfo.today_step / state.game_today_step * 280 - 180)
       } else {
@@ -356,15 +355,15 @@ const store = new Vuex.Store({
     guafen (state) {
       var len = state.guafens.length
       if (len > 0) {
+        var obj = state.guafens[len - 1]
+        obj.receive_time = obj.receive_time.split(' ')[0]
         return state.guafens[len - 1]
       }
 
       return {
-        is_has_prize: 0, // 是否获得奖品
-        nickName: '',
-        avatarUrl: '',
-        money: 0.00, // 奖金额度
-        time: '2019-3-2' // 获奖时间
+        tips: -1, //  没有中奖记录
+        money: '...', // 奖金额度
+        time: '...' // 获奖时间
       }
     },
     /**
@@ -412,10 +411,10 @@ const store = new Vuex.Store({
      */
     closeGiftMoney (state) {
       for (var item of state.guafens) {
-        item.is_has_prize = 0
+        item.tips = 1
       }
       wx.setStorageSync('state', JSON.stringify(state))
-      state.dial_id = 1
+      state.dial_id = 17
     },
     /**
      * 打开对应ID的对话框
@@ -454,10 +453,9 @@ const store = new Vuex.Store({
      * @param {*} payload
      */
     setGuaFens (state, payload) {
-      if (payload) {
+      if (payload && payload.tips === 0) {
         state.guafens.push(Object.assign({is_has_prize: 1}, payload))
       }
-      console.log('state.userinfo', payload)
     },
     setSite (state, payload) {
       state.sites = payload
@@ -499,8 +497,18 @@ const store = new Vuex.Store({
      * @param {*} payload
      */
     setRankAll (state, payload) {
-      state.rank_all = payload.rank
+      if (!payload.rank) return
+
+      var ranks = []
+      for (var item of payload.rank) {
+        ranks.push(Object.assign(item, {
+          step_km: Math.round(item.step / 10000 * 100) / 100
+        }))
+      }
+      state.rank_all = ranks
       state.rank_all_count = payload.cu_rnum
+      state.userinfo.total_step = payload.cu_step
+      state.userinfo.total_step_km = Math.round(payload.cu_step / 10000 * 100) / 100
       state.userinfo.avatarUrl = payload.cu_avatarUrl
       state.userinfo.nickName = payload.cu_nickName
       state.rank_all_last_time = Date.now()
@@ -604,8 +612,8 @@ const store = new Vuex.Store({
      * @param {*} payload
      */
     setErrorMsg (state, payload) {
-      state.err_msg = payload
-      state.dial_id = 15
+      state.err_msg = payload.error
+      state.dial_id = payload.dialId || 15
       wx.setStorageSync('state', JSON.stringify(state))
     }
   },
@@ -622,6 +630,7 @@ const store = new Vuex.Store({
 
         var code = await $util.wxApi.login()
         var result = await $api.login({ js_code: code })
+
         if (result.err_code === 0 || result.err_code === '0') {
           this.commit('setUserinfo', result)
         } else {
@@ -713,7 +722,6 @@ const store = new Vuex.Store({
         if (result.register > 0) {
           this.commit('openDial', 8)
           this.commit('setUserinfo', {
-          // TODO: jiasu后返回总步数
             today_step: result.today_step,
             total_step: result.total_step
           })

@@ -94,7 +94,8 @@ cwh(x, y) {
   }
 
   .jiangli{
-    font-size c(24)
+    font-size c(30)
+    font-weight 800
     padding 0 c(40) c(40) c(40)
     color #45ab75
     text-align center

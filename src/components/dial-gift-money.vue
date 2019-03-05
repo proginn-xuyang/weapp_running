@@ -4,9 +4,15 @@
   <div class="com-dial dial-gift-money" catchtouchmove="true">
     <div class="com-dial-box">
       <div class="header">
-        <img class="header-avaster" :src="state.userinfo.avaster" alt srcset>
+        <!-- <img class="header-avaster" :src="state.userinfo.avaster" alt srcset> -->
+        <div class="header-avaster">
+           <open-data type="userAvatarUrl" lang="zh_CN" class="avaster"></open-data>
+        </div>
         <div class="header-detail">
-          <span class="nickname">{{state.userinfo.nickname}}</span>
+          <span class="nickname">
+              <!-- {{state.userinfo.nickname}} -->
+              <open-data type="userNickName" lang="zh_CN"></open-data>
+          </span>
           <span class="time">在{{getters.guafen.receive_time}}的活动中瓜分到</span>
         </div>
       </div>
@@ -116,6 +122,15 @@ cwh(x, y) {
       font-size c(30)
       color #333333
     }
+  }
+
+  .avaster{
+    overflow:hidden;
+    display: block;
+    cwh(100, 100)
+    border-radius: 50%;
+    border: c(2) solid #fff;
+    box-shadow: c(3) c(3) c(10) rgba(0, 0, 0, 0.2);
   }
 }
 </style>

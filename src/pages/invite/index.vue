@@ -6,7 +6,7 @@
       <img class="abs h-center banner" src="/static/images/banner.png" alt="" srcset="">
 
       <!-- 用户的步数情况 -->
-      <com-userinfo :isOwner="false"></com-userinfo>
+      <com-userinfo-friend></com-userinfo-friend>
 
       <!-- 规则按键 -->
       <com-btn-rule></com-btn-rule>
@@ -59,14 +59,14 @@
 <script>
 import DialAll from './../../components/dial-all'
 import DialCustom from './../../components/dial-custom'
-import ComUserinfo from './../../components/com-userinfo'
+import ComUserinfoFriend from './../../components/com-userinfo-friend'
 import ComBtnRule from './../../components/com-btn-rule'
 import { setTimeout } from 'timers'
 export default {
   components: {
     DialAll,
     DialCustom,
-    ComUserinfo,
+    ComUserinfoFriend,
     ComBtnRule
   },
   async onLoad () {

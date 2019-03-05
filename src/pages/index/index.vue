@@ -7,7 +7,7 @@
         <img class="abs h-center banner" src="/static/images/banner.png" alt="" srcset="">
 
         <!-- 用户的步数情况 -->
-        <com-userinfo :isOwner="true"></com-userinfo>
+        <com-userinfo></com-userinfo>
 
         <!-- 加速按键 -->
         <com-btn-jiasu></com-btn-jiasu>
@@ -50,7 +50,7 @@
             <div class="abs h-center licheng-map-steps steps">
               <div class="abs licheng-map-steps progress" :style="{'width': getters.progress + '%'}"></div>
               <div class="abs h-center step-box">
-                <div class="licheng-map-step" :class="{'actived': (state.userinfo.total_step  / state.step_to_mi) >= getters.key_zhandians[i >= 4 ? 4 : i].step}"  v-for="i in 5" :key="i">
+                <div class="licheng-map-step" :class="{'actived': (state.userinfo.total_step  / state.step_to_mi ) >= getters.key_zhandians[i >= 4 ? 4 : i].step}"  v-for="i in 5" :key="i">
                 </div>
               </div>
             </div>
@@ -132,6 +132,7 @@ export default {
 
     var path = `/pages/invite/main?openid=${this.state.userinfo.openid}`
     return {
+      imageUrl: '/static/images/share.jpg',
       title: '还差几步我就能获得红包啦，求赠送~',
       path
     }

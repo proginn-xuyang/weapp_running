@@ -4,14 +4,12 @@
     <div class="abs h-center summary-detail">
       <div>
         <div class="summary-title">今日步数</div>
-        <div class="summary-today-total-count" @click="clickStepLog">{{state.userinfo.today_step}}</div>
-        <div class="summary-today-left-count" v-if="getters.left_step > 0">离每日红包还差{{state.target_step - state.userinfo.today_step}}步</div>
-        <div class="summary-today-left-count" v-else-if="getters.guafen && getters.guafen.tips > 0">恭喜您今日分到{{getters.guafen.prize_name}}元</div>
-        <div class="summary-today-left-count" v-else>等待开奖</div>
-     
-        <div class="btn-log" @click="clickFriendLog">
-          <span>获赠记录></span>
+        <div class="summary-today-total-count">{{state.friend_userinfo.today_step}}</div>
+        <div class="summary-userinfo">
+          <img class="summary-avaster" :src="state.friend_userinfo.avatarUrl" alt srcset>
+          <div class="summary-nickname">{{state.friend_userinfo.nickName}}</div>
         </div>
+        <div class="summary-today-left-count" v-if="getters.friend_left_step > 0">离每日红包还差{{state.target_step - state.friend_userinfo.today_step}}步</div>
       </div>
     </div>
     <img src="/static/images/home-summary.png" alt srcset class="summary-bg" mode="scaleToFill">
@@ -21,22 +19,9 @@
 <script>
 import ComCircle from './com-circle'
 export default {
+  props: ['isOwner'],
   components: {
     ComCircle
-  },
-  methods: {
-    clickStepLog () {
-      this.$util.click(this.$util.constant.步数明细记录, async () => {
-        await this.$store.dispatch('getAllStepLogs')
-        await this.$store.commit('openDial', this.$util.constant.DialStepLog)
-      })
-    },
-    clickFriendLog () {
-      this.$util.click(this.$util.constant.好友赠送记录, async () => {
-        await this.$store.dispatch('getFriendStepLogs')
-        await this.$store.commit('openDial', this.$util.constant.DialFriendStepLog)
-      })
-    }
   },
   computed: {
     state () {
@@ -118,7 +103,7 @@ cwh(x, y) {
   .summary-avaster {
     cwh(80, 80)
     border-radius c(40)
-    margin-top c(-20)
+    // margin-top c(-20)
     z-index 100
   }
   .summary-nickname {

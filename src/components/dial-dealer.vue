@@ -9,7 +9,7 @@
          <div class="input-box">
           <div class="input-title">您的姓名</div>
           <div class="input-content">
-            <input type="text" v-model="username" placeholder="请输入您的姓名"></input>
+            <input type="text" v-model="username" placeholder="请输入您的姓名" placeholder-style="color:#3fa46f;"></input>
           </div>
         </div>
         <div class="input-box">
@@ -118,19 +118,19 @@ export default {
       }
 
       if (!postData.username) {
-        this.$util.catchError('请输入您的姓名')
+        this.$util.catchError('请输入您的姓名', 19)
         return
       }
       if (postData.car_model === '请选择车型') {
-        this.$util.catchError('请选择车型')
+        this.$util.catchError('请选择车型', 19)
         return
       }
       if (postData.address === '请选择您的城市') {
-        this.$util.catchError('请选择您的城市')
+        this.$util.catchError('请选择您的城市', 19)
         return
       }
       if (postData.dealer_name === '请选择经销商') {
-        this.$util.catchError('请选择经销商')
+        this.$util.catchError('请选择经销商', 19)
         return
       }
 

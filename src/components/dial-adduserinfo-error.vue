@@ -1,3 +1,4 @@
+
 <template>
   <div class="com-dial dial-error" catchtouchmove="true">
     <div class="com-dial-box">
@@ -6,28 +7,23 @@
       </div>
       <div class="content">
         <div>
-          <div class="title">一个默默陪你跑的小可爱，愿意了解它一下吗？</div>
+          <div class="title">{{state.err_msg}}</div>
         </div>
       </div>
-      <div class="btns" @click="clickKnow">
-        <div class="btn">去了解</div>
+      <div class="btns" @click="closeDial">
+        <div class="btn">知道了</div>
       </div>
-      <div class="close" @click="closeDial">
-        <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">
-      </div>
+      <div class="close"></div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  id: 10,
+  id: 19,
   methods: {
-    clickKnow () {
-      this.$store.commit('openDial', 18)
-    },
     closeDial () {
-      this.$store.commit('closeDial')
+      this.$store.commit('openDial', 18)
     }
   },
   computed: {

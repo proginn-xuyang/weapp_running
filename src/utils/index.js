@@ -27,8 +27,8 @@ export function formatTime (date) {
  * 全局异常的处理
  * @param {*} error
  */
-function catchError (error) {
-  $store.commit('setErrorMsg', error)
+function catchError (error, dialId) {
+  $store.commit('setErrorMsg', {error, dialId})
   console.log('---catchError---')
   console.log(error)
   console.log('---catchError---')

@@ -28,8 +28,11 @@
                 </div>
               </div>
             </div>
-            <div class="steps">
-              {{!state.rank_type ? state.userinfo.today_step : state.userinfo.total_step}}步
+            <div class="steps" v-if="!state.rank_type">
+              {{state.userinfo.today_step}}步 
+            </div>
+            <div class="steps" v-else>
+              {{state.userinfo.total_step_km}}KM
             </div>
           </div>
         </div>
@@ -48,7 +51,13 @@
                   <img class="avaster" :src="item.avatarUrl" alt="" srcset="" mode="aspectFill">
                   <div class="nickname">{{item.nickName}}</div>
                 </div>
-                <div class="rank-item-step">{{item.step}}步</div>
+                <div class="rank-item-step" v-if="!state.rank_type">
+                    <div> {{item.step}}步</div>
+                </div>
+                <div class="rank-item-step" v-else>
+                  <div>{{item.step_km}}KM</div>
+                  <div>{{item.step}}步</div>
+                </div>
               </div>
               <div class="h-line"></div>
             </div>
@@ -243,6 +252,9 @@ cwh(x, y) {
         width c(170)
         font-size c(36)
         text-align right
+        > div:nth-of-type(2){
+          font-size c(20)
+        }
       }
     }
   }

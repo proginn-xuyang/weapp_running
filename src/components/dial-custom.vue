@@ -3,7 +3,7 @@
     <dial-auth v-if="state.dial_id <= 0 && state.userinfo.can_auth_werundata"></dial-auth>
     <dial-auth-userinfo v-if="state.dial_id <= 0 && !state.userinfo.can_auth_werundata && !state.userinfo.user"></dial-auth-userinfo>
     <dial-auth-telephone v-if="state.dial_id <= 0 &&  !state.userinfo.can_auth_werundata  && state.userinfo.user && !state.userinfo.phone"></dial-auth-telephone>
-    <dial-gift-money v-if="state.dial_id <= 0 && state.userinfo.phone && state.userinfo.user && getters.guafen.is_has_prize"></dial-gift-money>
+    <dial-gift-money v-if="state.dial_id <= 0 && state.userinfo.phone && state.userinfo.user && !getters.guafen.tips"></dial-gift-money>
     <dial-mid-pointer v-if="state.dial_id <= 0 && getters.mid_pointer"></dial-mid-pointer>
   </div>
 </template>

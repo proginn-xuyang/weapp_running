@@ -2,11 +2,11 @@
   <div class="container container-gift">
     <comheader></comheader>
     <div class="content">
-      <div class="none-data-box" v-if="false">
+      <div class="none-data-box" v-if="!state.gift_logs || state.gift_logs.length <= 0">
         <img class="none-data" src="/static/images/none-data.png" alt srcset>
         <p class="none-data-tip">亲，你还没有获得奖励呢</p>
       </div>
-      <div class="data-box">
+      <div class="data-box" v-else>
         <div class="title">
           <div class="title-line"></div>
           <div class="title-name">领奖记录</div>
@@ -18,7 +18,7 @@
             <div class="rank-item" v-for="(item,index) in state.gift_logs" :key="index">
               <div class="rank-item-box">
                 <div class="rank-item-time">{{item.receive_time}}</div>
-                <div class="rank-item-name">{{item.prize_name}}</div>
+                <div class="rank-item-name">{{item.prize_name}}元</div>
               </div>
               <div class="h-line"></div>
             </div>
