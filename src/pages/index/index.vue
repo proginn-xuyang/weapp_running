@@ -72,13 +72,17 @@
             <img class="address-small-icon"  src="/static/images/address-small-icon0.png" alt mode="scaleToFill" v-else>
           </div>
 
-          <div class="abs zhandian-view" :class="'zhandian-view' + (i+1) " v-for="i in 12" :key="i" @click="clickZhanInfo(i)">
-          </div>
+          <div class="abs zhandian-view" :class="'zhandian-view' + (i+1) " v-for="i in 12" :key="i" @click="clickZhanInfo(i)"></div>
 
-          <div class="abs" :class="'location0' + (getters.locaiton < 10 ? '0' + getters.locaiton : getters.locaiton )"> </div>
+          <div class="abs" :class="'location0' + (getters.locaiton < 10 ? '0' + getters.locaiton : getters.locaiton )"></div>
           
-          <div class="abs address-tip address-tip0" :class="'dazhandian-tip' + (i+2) " v-for="i in 4" :key="i">
-            未完成
+          <div class="abs address-tip " :class="'dazhandian-tip' + (i+2)  + ' address-tip' + getters.key_zhandians[i].status" v-for="i in 4" :key="i">
+            {{ 
+              (getters.key_zhandians[i].status === 0) ? '未完成' :
+              (getters.key_zhandians[i].status === 1) ? '可兑换' :
+              (getters.key_zhandians[i].status === 2) ? '已兑换奖品' : '放弃奖品'
+            
+            }}
           </div>
         </div>
       </scroll-view>
@@ -94,7 +98,7 @@
 <script>
 import DialAll from './../../components/dial-all'
 import DialCustom from './../../components/dial-custom'
-import DialDealer from './../../components/dial-dealer'
+// import DialDealer from './../../components/dial-dealer'
 
 import ComUserinfo from './../../components/com-userinfo'
 import ComBtnJiasu from './../../components/com-btn-jiasu'
@@ -104,7 +108,7 @@ export default {
   components: {
     DialAll,
     DialCustom,
-    DialDealer,
+    // DialDealer,
     ComUserinfo,
     ComBtnJiasu,
     ComBtnRule,
@@ -409,13 +413,17 @@ cwh(x, y) {
 	background-color: #939393;
 }
 
-.address-tip1{
-	background-color: #2bd46e;
+.address-tip1
+.address-tip3
+{
+ 	background-color: #ee7d32;
 }
 
 .address-tip2{
- 	background-color: #ee7d32;
+	background-color: #2bd46e;
 }
+
+
 
 .zhandian-view{
   // background rgba(0,0,0,0.5);

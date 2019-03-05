@@ -70,8 +70,8 @@ cwh(x, y) {
       linear,
       left top,
       right top,
-      color-stop(0, #077df8),
-      color-stop(1, #74baff)
+      color-stop(0, #3ea26d),
+      color-stop(1, #3ea26d)
     )
     background-clip content-box, padding-box
   }
@@ -95,8 +95,8 @@ cwh(x, y) {
       linear,
       left top,
       right top,
-      color-stop(0, #fff),
-      color-stop(1, #74baff)
+      color-stop(0, #3ea26d),
+      color-stop(1, #3ea26d)
     )
     background-clip content-box, padding-box
   }

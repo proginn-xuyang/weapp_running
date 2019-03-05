@@ -5,6 +5,7 @@ export default {
     if (stateStr) {
       var state = JSON.parse(stateStr)
       state.tab_id = 1
+      state.game_today_step = 30000
       state.zhandians = [
         {
           id: 1,

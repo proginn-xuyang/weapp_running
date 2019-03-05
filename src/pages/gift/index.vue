@@ -18,7 +18,7 @@
             <div class="rank-item" v-for="(item,index) in state.gift_logs" :key="index">
               <div class="rank-item-box">
                 <div class="rank-item-time">{{item.receive_time}}</div>
-                <div class="rank-item-name">{{item.prize_name}}元</div>
+                <div class="rank-item-name">{{item.prize_name}}</div>
               </div>
               <div class="h-line"></div>
             </div>

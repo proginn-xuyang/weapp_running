@@ -32,7 +32,8 @@
               {{state.userinfo.today_step}}步 
             </div>
             <div class="steps" v-else>
-              {{state.userinfo.total_step_km}}KM
+              <div> {{state.userinfo.total_step_km}}KM</div>
+              <div class="steps-total"> {{state.userinfo.total_step}}步 </div>
             </div>
           </div>
         </div>
@@ -254,6 +255,7 @@ cwh(x, y) {
         text-align right
         > div:nth-of-type(2){
           font-size c(20)
+          color #40a46f
         }
       }
     }
@@ -292,6 +294,11 @@ cwh(x, y) {
     .steps{
       font-size c(36)
       margin-right c(15)
+      text-align right
+      .steps-total{
+        font-size c(20)
+        color #40a46f
+      }
     }
   }
 
