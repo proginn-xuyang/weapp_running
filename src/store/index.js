@@ -728,7 +728,9 @@ const store = new Vuex.Store({
           store.commit('setSite', result.site)
           store.commit('setGuaFens', result.redpack)
         } else {
-          $util.catchError('获取步数失败')
+          if (result.err_code !== '001') {
+            $util.catchError('获取步数失败')
+          }
         }
       } catch (error) {
         store.commit('setUserinfo', {

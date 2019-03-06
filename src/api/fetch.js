@@ -1,5 +1,6 @@
 
 // import toast from './../utils/msg'
+import $store from './../store'
 
 export default function (url, data, msg) {
   // url = 'http://rap2api.taobao.org/app/mock/160507' + url
@@ -14,8 +15,8 @@ export default function (url, data, msg) {
     }
 
     var token = wx.getStorageSync('token')
-
     console.log('postData', postData)
+
     // 网络请求
     wx.request({
       url: url,
@@ -30,10 +31,14 @@ export default function (url, data, msg) {
         resolve(res.data)
       },
       error: function (e) {
-        console.error(e)
         reject(e)
       },
-      complete: function () {
+      complete: async function (res) {
+        if (res.data.err_code === '001') {
+          wx.setStorageSync('token', '')
+          await $store.dispatch('login')
+          await $store.dispatch('getWeRunData')
+        }
         wx.hideLoading()
       }
     })
