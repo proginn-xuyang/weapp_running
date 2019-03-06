@@ -22,7 +22,7 @@
         <div class="h-line"></div>
       
         <div v-if="getters.mid_pointer.is_has_prize">
-          <div class="rank">作为本站前{{getters.mid_pointer.rank}}名冲线者</div>
+          <div class="rank">作为本站前{{getters.mid_pointer.arrive}}名冲线者</div>
           <div class="select-tip">您可以选择：</div>
           <div class="select-option" :class="{'actived': !option}" @click="option = 0">
             <p>1、领取奖励，但活动需返回上一站点继续开始</p>
@@ -31,9 +31,8 @@
             <p>2、继续前进，并获得一定的步数奖励</p>
           </div>
         </div>
-
         <div v-else>
-          <div class="rank">您是本站{{getters.mid_pointer.rank}}名达到的用户</div>
+          <div class="rank">您是本站{{getters.mid_pointer.arrive}}名达到的用户</div>
           <div class="select-tip">该站点的奖励名额已经领取完毕</div>
         </div>
       </div>

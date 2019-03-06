@@ -56,6 +56,9 @@
 
     <!-- 经销商信息 -->
     <dial-adduserinfo-error v-if="state.dial_id===19"></dial-adduserinfo-error>
+
+    <!-- 经销商信息 -->
+    <dial-adduserinfo-tip-error v-if="state.dial_id===20"></dial-adduserinfo-tip-error>
   </div>
 </template>
 
@@ -77,6 +80,7 @@ import DialZhandian from './dial-zhandian' // 14
 import DialError from './dial-error' // 15
 import DialAuthPhoto from './dial-auth-photo' // 16
 import DialAdduserinfoTip from './dial-adduserinfo-tip' // 17
+import DialAdduserinfoTipError from './dial-adduserinfo-tip-error' // 17
 import DialDealer from './dial-dealer' // 18
 import DialAdduserinfoError from './dial-adduserinfo-error' // 18
 
@@ -99,6 +103,7 @@ export default {
     DialError, // 错误对话框 15
     DialAuthPhoto, // 16
     DialAdduserinfoTip, // 17 进入经销商对话框提示
+    DialAdduserinfoTipError, // 20
     DialDealer, // 18 经销商对话框
     DialAdduserinfoError // 19
   },

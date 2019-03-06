@@ -1,19 +1,21 @@
+
 <template>
   <div class="com-dial dial-error" catchtouchmove="true">
     <div class="com-dial-box">
       <div class="header">
-        <div>提示</div>
+        <div>很遗憾</div>
       </div>
       <div class="content">
         <div>
-          <div class="title">一个默默陪你跑的小可爱，愿意了解它一下吗？</div>
+          <div class="title">在今天的活动中</div>
+          <div class="sub-title">您的步数尚未达到三万步</div>
+          <div class="sub-title">请继续努力</div>
         </div>
       </div>
       <div class="btns" @click="clickKnow">
-        <div class="btn">去了解</div>
+        <div class="btn">确定</div>
       </div>
-      <div class="close" @click="closeDial">
-        <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">
+      <div class="close">
       </div>
     </div>
   </div>
@@ -21,18 +23,17 @@
 
 <script>
 export default {
-  id: 10,
   methods: {
     clickKnow () {
-      this.$store.commit('openDial', 18)
-    },
-    closeDial () {
-      this.$store.commit('closeNoGiftMoney')
+      this.$store.commit('openDial', 17)
     }
   },
   computed: {
     state () {
       return this.$store.state
+    },
+    getters () {
+      return this.$store.getters
     }
   }
 }
@@ -60,6 +61,13 @@ cwh(x, y) {
   .title {
     width c(430)
     padding c(30) 0 c(0) 0
+    font-size c(30)
+    font-weight 800
+    color #40a570
+  }
+   .sub-title {
+    width c(430)
+    padding c(10) 0 c(0) 0
     font-size c(30)
     font-weight 800
     color #40a570

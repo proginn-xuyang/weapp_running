@@ -146,7 +146,7 @@ export default {
       }
     },
     closeDial () {
-      this.$store.commit('closeDial')
+      this.$store.commit('closeNoGiftMoney')
     }
   },
   computed: {

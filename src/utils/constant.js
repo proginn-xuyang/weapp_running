@@ -6,6 +6,8 @@ export default {
   好友赠送记录: '好友赠送记录',
   马上赠送: '马上赠送',
   我也要参加: '我也要参加',
+  二维码下载: '二维码下载',
+  分享好友: '分享好友',
   DialStepLog: 1, // 步数明细 1
   DialFriendStepLog: 2, // 好友赠送 2
   DialGiftMoney: 3, // 现金奖励 3

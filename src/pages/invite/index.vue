@@ -71,10 +71,18 @@ export default {
   },
   async onLoad () {
     this.openid = this.$root.$mp.query.openid
+    this.source = this.$root.$mp.query.source
+    if (this.source) {
+      this.$store.commit('setSource', this.source)
+    }
+
+    console.log('-----invite----')
+    console.log(this.$store.state.source)
+    console.log('-----invite----')
+
     // TODO:测试,自己进入跳转到主页
     // this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
-    // this.openid = 'okMDr4mFuAKaq78dNYhtsASCvKpo'
-    if (!this.openid) {
+    if (!this.openid || this.openid === this.$store.state.userinfo.openid) {
       this.clickBackHome()
     }
   },

@@ -76,12 +76,11 @@
 
           <div class="abs" :class="'location0' + (getters.locaiton < 10 ? '0' + getters.locaiton : getters.locaiton )"></div>
           
-          <div class="abs address-tip " :class="'dazhandian-tip' + (i+2)  + ' address-tip' + getters.key_zhandians[i].status" v-for="i in 4" :key="i">
+          <div class="abs address-tip " :class="'dazhandian-tip' + (i+2)  + ' address-tip' + getters.key_zhandians[(i+1) >= 4 ? 4 : (i+1)].status" v-for="i in 4" :key="i">
             {{ 
-              (getters.key_zhandians[i].status === 0) ? '未完成' :
-              (getters.key_zhandians[i].status === 1) ? '可兑换' :
-              (getters.key_zhandians[i].status === 2) ? '已兑换奖品' : '放弃奖品'
-            
+              (getters.key_zhandians[(i+1) >= 4 ? 4 : (i+1)].status === 0) ? '未完成' :
+              (getters.key_zhandians[(i+1) >= 4 ? 4 : (i+1)].status === 1) ? '可兑换' :
+              (getters.key_zhandians[(i+1) >= 4 ? 4 : (i+1)].status === 2) ? '已兑换奖品' : '放弃奖品'
             }}
           </div>
         </div>
@@ -90,7 +89,6 @@
     <com-tabbar></com-tabbar>
     <div :class="{'loading': loading}"></div>
     <dial-custom></dial-custom>
-    <!-- <dial-dealer></dial-dealer> -->
     <dial-all></dial-all>
   </div>
 </template>
@@ -98,7 +96,6 @@
 <script>
 import DialAll from './../../components/dial-all'
 import DialCustom from './../../components/dial-custom'
-// import DialDealer from './../../components/dial-dealer'
 
 import ComUserinfo from './../../components/com-userinfo'
 import ComBtnJiasu from './../../components/com-btn-jiasu'
@@ -108,7 +105,6 @@ export default {
   components: {
     DialAll,
     DialCustom,
-    // DialDealer,
     ComUserinfo,
     ComBtnJiasu,
     ComBtnRule,
@@ -118,6 +114,16 @@ export default {
     return {
       loading: true
     }
+  },
+  async onLoad () {
+    this.source = this.$root.$mp.query.source
+    if (this.source) {
+      this.$store.commit('setSource', this.source)
+    }
+
+    console.log('-----index----')
+    console.log(this.$store.state.source)
+    console.log('-----index----')
   },
   onShow () {
     this.loading = true
@@ -134,7 +140,9 @@ export default {
       console.log('来自页面内转发按钮')
     }
 
-    var path = `/pages/invite/main?openid=${this.state.userinfo.openid}`
+    this.$util.click(this.$util.constant.分享好友)
+
+    var path = `/pages/invite/main?openid=${this.state.userinfo.openid}&source=${this.state.source}`
     return {
       imageUrl: '/static/images/share.jpg',
       title: '还差几步我就能获得红包啦，求赠送~',

@@ -9,7 +9,7 @@
         <div>
           <div class="title">保存二维码图片扫码下载</div>
           <div class="title">注册并登录欧尚style App来获取吧~</div>
-          <div class="title">每天登录之后再来才会加速哦~~</div>
+          <div class="title">每天签到之后再来才会加速哦~~</div>
           <img class="scan" src="/static/images/scan.jpg" alt="" srcset="" mode="aspectFill">
         </div>
       </div>
@@ -34,6 +34,7 @@ export default {
       console.log('保存图片')
       var self = this
       var imgSrc = 'https://oschongma.e2capp.com/web-images/scan-app.jpg'
+
       wx.downloadFile({
         url: imgSrc,
         success: function (res) {
@@ -52,6 +53,7 @@ export default {
                       icon: 'success',
                       duration: 2000
                     })
+                    self.$util.click(self.$util.constant.二维码下载)
                   },
                   fail: function () {
                   },

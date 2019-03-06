@@ -1,10 +1,22 @@
 <script>
 export default {
   async onShow () {
+    var obj = wx.getLaunchOptionsSync()
+    let source = '通用入口'
+    if (obj.query.source) {
+      source = obj.query.source
+    }
+
+    // TODO:测试,自己进入跳转到主页
     var stateStr = wx.getStorageSync('state')
     if (stateStr) {
       var state = JSON.parse(stateStr)
       state.tab_id = 1
+      state.guafens = []
+      if (source) {
+        state.source = source
+      }
+      // state.dial_id = 20
       state.game_today_step = 30000
       state.zhandians = [
         {

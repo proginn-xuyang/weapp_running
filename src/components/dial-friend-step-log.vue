@@ -6,7 +6,7 @@
         <div>获赠记录</div>
       </div>
       <div class="content">
-        <scroll-view class="table-items" v-if="!state.friend_step_logs && state.friend_step_logs.length > 0">
+        <scroll-view class="table-items" v-if="state.friend_step_logs && state.friend_step_logs.length > 0">
             <div class="table-item" v-for="(item, index) in state.friend_step_logs" :key="index">
               <div class="wrapper">
                 <div class="com-user">
@@ -19,7 +19,7 @@
               </div>
             </div>
         </scroll-view>
-        <div class="none-data-box">
+        <div class="none-data-box" v-else>
           <img class="none-data" src="/static/images/none-data.png" alt srcset>
           <p class="none-data-tip">亲，还没有好友给你赠送哦</p>
           <p class="none-data-tip">快去分享吧！</p>

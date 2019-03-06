@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    source: '通用入口',
     step_to_mi: 10,
     game_today_step: 30000,
     /**
@@ -242,7 +243,7 @@ const store = new Vuex.Store({
       for (let i = 0; i < getters.key_zhandians.length - 1; i++) {
         const curr = getters.key_zhandians[i]
         const next = getters.key_zhandians[i + 1]
-        if (miles > curr.step && miles <= next.step) {
+        if (miles >= curr.step && miles < next.step) {
           result = ((next.step - miles) / 1000).toFixed(2)
           break
         }
@@ -345,7 +346,7 @@ const store = new Vuex.Store({
       site.push(Object.assign(state.zhandians[2], {status: state.sites.length > 0 && state.sites[1].status}))
       site.push(Object.assign(state.zhandians[5], {status: state.sites.length > 0 && state.sites[2].status}))
       site.push(Object.assign(state.zhandians[8], {status: state.sites.length > 0 && state.sites[3].status}))
-      site.push(Object.assign(state.zhandians[11], {status: state.sites.length > 0 && state.sites[5].status}))
+      site.push(Object.assign(state.zhandians[11], {status: state.sites.length > 0 && state.sites[4].status}))
       console.log('key_zhandians', site)
       return site
     },
@@ -353,11 +354,19 @@ const store = new Vuex.Store({
      * 每天的瓜分数据
      */
     guafen (state) {
+      console.log('----guafen---')
+      console.log(state.guafens)
+      console.log('----guafen---')
       var len = state.guafens.length
       if (len > 0) {
         var obj = state.guafens[len - 1]
         obj.receive_time = obj.receive_time.split(' ')[0]
-        return state.guafens[len - 1]
+
+        var guafenItem = state.guafens[len - 1]
+        console.log('----guafen---')
+        console.log(guafenItem)
+        console.log('----guafen---')
+        return guafenItem
       }
 
       return {
@@ -380,7 +389,7 @@ const store = new Vuex.Store({
           console.log('lastItem', lastItem)
           return {
             is_has_prize: item.prize_surplus > 0, // 0表示没有奖品，1表示有奖品
-            rank: 1400, // 到达本站的名次
+            arrive: item.arrive + 1, // 到达本站的名次
             pointer_name: item.name, // 站点名称
             gift_name: item.prize_name, // 本站奖品
             next_pointer_gift_name: lastItem ? lastItem.prize_name : '',
@@ -394,6 +403,10 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
+    setSource (state, payload) {
+      state.source = payload
+      wx.setStorageSync('state', JSON.stringify(state))
+    },
     reset (state, payload) {
       state = Object.assign(state, payload)
     },
@@ -415,6 +428,13 @@ const store = new Vuex.Store({
       }
       wx.setStorageSync('state', JSON.stringify(state))
       state.dial_id = 17
+    },
+    closeNoGiftMoney (state) {
+      for (var item of state.guafens) {
+        item.tips = 1
+      }
+      state.dial_id = 0
+      wx.setStorageSync('state', JSON.stringify(state))
     },
     /**
      * 打开对应ID的对话框
@@ -453,8 +473,12 @@ const store = new Vuex.Store({
      * @param {*} payload
      */
     setGuaFens (state, payload) {
-      if (payload && payload.tips === 0) {
-        state.guafens.push(Object.assign({is_has_prize: 1}, payload))
+      if (payload) {
+        if (payload.tips === 0) {
+          state.guafens.push(Object.assign({is_has_prize: 1}, payload))
+        } else if (payload.tips === 2) {
+          state.guafens.push(Object.assign({is_has_prize: 0}, payload))
+        }
       }
     },
     setSite (state, payload) {
@@ -671,7 +695,7 @@ const store = new Vuex.Store({
         var result = await $api.getUserInfo({
           nickName: payload.mp.detail.userInfo.nickName,
           avatarUrl: payload.mp.detail.userInfo.avatarUrl,
-          source: '测试'
+          source: store.state.source || '通用入口'
         })
         if (result.err_code === 0 || result.err_code === '0') {
           this.commit('setUserinfo', { user: 1 })
