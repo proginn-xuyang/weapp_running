@@ -49,7 +49,7 @@
                   <div :class="{'actived': index < 3}">{{index + 1}}</div>
                 </div>
                 <div class="rank-item-user">
-                  <img class="avaster" :src="item.avatarUrl" alt="" srcset="" mode="aspectFill">
+                  <img class="avaster" lazy-load="true" :src="item.avatarUrl" alt="" srcset="" mode="aspectFill">
                   <div class="nickname">{{item.nickName}}</div>
                 </div>
                 <div class="rank-item-step" v-if="!state.rank_type">

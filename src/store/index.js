@@ -560,6 +560,10 @@ const store = new Vuex.Store({
      * @param {*} state
      */
     setFriendStepLogs (state, payload) {
+      // state.friend_step_logs = []
+      // for (let i = 0; i < 20; i++) {
+      //   state.friend_step_logs.push(payload[0])
+      // }
       state.friend_step_logs = payload
       wx.setStorageSync('state', JSON.stringify(state))
     },
@@ -729,7 +733,7 @@ const store = new Vuex.Store({
           store.commit('setGuaFens', result.redpack)
         } else {
           if (result.err_code !== '001') {
-            $util.catchError('获取步数失败')
+            $util.catchError(result.err_msg)
           }
         }
       } catch (error) {

@@ -35,6 +35,14 @@ export default {
   methods: {
     navTab (tabId) {
       if (this.state.tab_id !== tabId) {
+        if (tabId === 1) {
+          this.$util.click(this.$util.constant.菜单首页)
+        } else if (tabId === 2) {
+          this.$util.click(this.$util.constant.菜单我的奖励)
+        } else if (tabId === 3) {
+          this.$util.click(this.$util.constant.菜单排行榜)
+        }
+
         this.$store.commit('setTabId', tabId)
       }
     }

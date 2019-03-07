@@ -68,14 +68,19 @@ cwh(x, y) {
 .dial-friend-step-log{
   .content {
     flex-direction column
-    height c(485)
+    // height c(750)
+    min-height c(430)
+    max-height c(750)
     border-bottom-left-radius c(20)
     border-bottom-right-radius c(20)
   }
 
   .table-items{
     overflow-y auto
-    cwh(320,400)
+    cwh(320,430)
+    height auto
+    min-height c(430)
+    max-height c(750)
     font-size: c(24);
     color: #ffffff;
     display flex

@@ -11,7 +11,7 @@ export default {
     var stateStr = wx.getStorageSync('state')
     if (stateStr) {
       var state = JSON.parse(stateStr)
-      state.tab_id = 1
+      // state.tab_id = 1
       state.guafens = []
       if (source) {
         state.source = source

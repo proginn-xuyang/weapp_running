@@ -17,30 +17,21 @@
           <div class="header">
             <div>选择赠送的步数</div>
           </div>
+
           <div class="content">
             <div class="select-options">
-              <div :class="{'actived' : select_option === 1}" @click="select_option = 1;steps=1000">1000</div>
-              <div :class="{'actived' : select_option === 2}" @click="select_option = 2;steps=2000">2000</div>
-              <div :class="{'actived' : select_option >= 3}" @click="select_option = 3;steps=3000">3000</div>
-            </div>
-            <div class="detail-box">
-              <div class="detail-box-count">
-                <div>赠送</div>
-                <div class="detail-box-content">{{steps}}</div>
-                <div>步</div>
+              <div class="left" @click="addSteps(-1)">-</div>
+              <div class="mid">
+                <div class="abs show-count">{{steps}}步</div>
+                <slider :value="steps" @changing="sliderChange" min="1" max="3000" style="width:100%"/>
               </div>
-              <div class="detail-box-left" v-if="(state.userinfo.today_step - steps) >= 0">
-                <div>剩余可赠送</div>
-                <div class="count">{{state.userinfo.today_step - steps}}步</div>
-              </div>
-              <div class="detail-box-left" v-else>
-                <div>赠送的步数不足</div>
-              </div>
+              <div class="right" @click="addSteps(1)">+</div>
             </div>
           </div>
+
           <div class="btns" @click="clickDonateStep">
             <div class="btn">
-              马上赠送
+              马上赠送（{{stepsShow}}）
             </div>
           </div>
         </div>
@@ -70,23 +61,22 @@ export default {
     ComBtnRule
   },
   async onLoad () {
+    console.log('onLoad')
     this.openid = this.$root.$mp.query.openid
     this.source = this.$root.$mp.query.source
     if (this.source) {
       this.$store.commit('setSource', this.source)
     }
-
-    console.log('-----invite----')
-    console.log(this.$store.state.source)
-    console.log('-----invite----')
-
     // TODO:测试,自己进入跳转到主页
     // this.openid = 'okMDr4qlBPd5CFngyVmIJ7CBnmgA'
     if (!this.openid || this.openid === this.$store.state.userinfo.openid) {
+    // if (!this.openid) {
       this.clickBackHome()
     }
   },
   async onShow () {
+    console.log('onShow')
+
     if (!this.openid) {
       return
     }
@@ -98,24 +88,39 @@ export default {
 
     // TODO:BUG
     setTimeout(() => {
-      this.select_option = Math.floor(parseInt(this.state.userinfo.today_step) / 1000)
+      // this.select_option = Math.floor(parseInt(this.state.userinfo.today_step) / 1000)
+      this.steps = this.state.userinfo.today_step > 3000 ? 3000 : this.state.userinfo.today_step
     }, 1000)
   },
   data () {
     return {
       openid: '',
       select_option: 0,
-      today_step: 0
+      today_step: 0,
+      steps: 0
     }
   },
   methods: {
+    addSteps (i) {
+      console.log(i)
+      this.steps += i
+      if (this.steps < 0) {
+        this.steps = 0
+      } else if (this.steps > 3000) {
+        this.steps = 3000
+      }
+    },
     clickDonateStep () {
-      this.$util.click(this.$util.constant.马上赠送, () => {
-        this.$store.dispatch('donateStep', {
-          openid: this.openid,
-          step: this.steps
+      if ((this.state.userinfo.today_step - this.steps) > 0) {
+        this.$util.click(this.$util.constant.马上赠送, () => {
+          this.$store.dispatch('donateStep', {
+            openid: this.openid,
+            step: this.steps
+          })
         })
-      })
+      } else {
+        this.$util.catchError('您的步数不足')
+      }
     },
     clickBackHome () {
       this.$util.click(this.$util.constant.我也要参加, () => {
@@ -123,19 +128,29 @@ export default {
           url: '/pages/index/main'
         })
       })
+    },
+    sliderChange (e) {
+      console.log(e.mp.detail.value)
+      this.steps = e.mp.detail.value
     }
   },
   computed: {
     state () {
       return this.$store.state
     },
-    steps () {
-      if (this.select_option >= 3) {
-        return 3000
-      } else if (this.select_option >= 0) {
-        return this.select_option * 1000
+    stepsShow () {
+      // if (this.select_option >= 3) {
+      //   return 3000
+      // } else if (this.select_option >= 0) {
+      //   return this.select_option * 1000
+      // } else {
+      //   return 0
+      // }
+
+      if ((this.state.userinfo.today_step - this.steps) >= 0) {
+        return '剩余可赠送' + (this.state.userinfo.today_step - this.steps)
       } else {
-        return 0
+        return '赠送的步数不足'
       }
     }
   }
@@ -212,16 +227,18 @@ cwh(x, y) {
   }
 
   .select-options{
+    padding-top c(30)
     width c(480)
     display flex
     justify-content space-between
     margin c(30)
     > div{
-      cwh(144, 75)
-      line-height c(75)
-      border-radius: c(10);
-      background-color: #ffffff;
-      border: solid c(2) #3fa46f;
+      // cwh(144, 75)
+      // line-height c(75)
+      // border-radius: c(10);
+      // background-color: #ffffff;
+     
+      box-sizing border-box
       color #3fa46f
       text-align: center
       &.actived{
@@ -230,12 +247,50 @@ cwh(x, y) {
         color #ffffff
       }
     }
+
+    display flex
+    justify-content center
+    align-items center
+
+    .left{
+      cwh(50, 50)
+      line-height c(48)
+      border-radius c(24)
+      display flex
+      justify-content center
+      align-items center
+      border: solid c(1) #3fa46f;
+    }
+
+    .right{
+      cwh(50, 50)
+      line-height c(48)
+      border-radius c(24)
+      display flex
+      justify-content center
+      align-items center
+      border: solid c(1) #3fa46f;
+    }
+
+    .mid{
+      flex 1
+      display flex
+      justify-content center
+      align-items center
+
+      position relative
+    }
+
+    .show-count{
+      top c(-40)
+    }
   }
 
   .detail-box{
     width c(480)
     display flex
-    justify-content space-between
+    justify-content center
+    align-items center
   }
 
   .detail-box-count{
