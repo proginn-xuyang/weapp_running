@@ -79,6 +79,16 @@ const addInfo = data => {
   return post(`/os/user/info/add`, data)
 }
 
+// 录入信息
+const support = data => {
+  return post(`/os/data/praise`, data)
+}
+
+// 录入信息
+const getMoney = data => {
+  return post(`/os/data/redpack`, data)
+}
+
 export default {
   login, // 登录
   getUserInfo, // 微信用户授权
@@ -95,5 +105,7 @@ export default {
   donateStep, // 赠送步数
   jiasu, // 加速
   getPrize, // 领取奖品
-  addInfo // 录入用户信息
+  addInfo, // 录入用户信息
+  support, // 点赞
+  getMoney // 领取红包
 }

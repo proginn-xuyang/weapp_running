@@ -30,6 +30,7 @@ const store = new Vuex.Store({
       openid: '',
       today_step: '...', // 当前的步数
       total_step: '...', // 总的步数
+      praise_count: '...', // 用户的点赞
 
       can_auth_werundata: 1, // 是否授权获取步数 0 否 1 是
       can_gufen: 0,
@@ -511,6 +512,7 @@ const store = new Vuex.Store({
       state.rank_today = payload.rank
       state.rank_today_count = payload.cu_rnum
       state.userinfo.today_step = payload.cu_step
+      state.userinfo.praise_count = payload.cu_praise_count
       state.userinfo.avatarUrl = payload.cu_avatarUrl
       state.userinfo.nickName = payload.cu_nickName
       state.rank_today_last_time = Date.now()
@@ -534,6 +536,7 @@ const store = new Vuex.Store({
       state.rank_all_count = payload.cu_rnum
       state.userinfo.total_step = payload.cu_step
       state.userinfo.total_step_km = Math.round(payload.cu_step / 10000 * 100) / 100
+      state.userinfo.praise_count = payload.cu_praise_count
       state.userinfo.avatarUrl = payload.cu_avatarUrl
       state.userinfo.nickName = payload.cu_nickName
       state.rank_all_last_time = Date.now()

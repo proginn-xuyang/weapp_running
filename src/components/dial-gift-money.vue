@@ -21,8 +21,7 @@
           <span>{{getters.guafen.prize_name}}</span>
           <span class="unit">元</span>
         </div>
-        <div class="tip">已经存入微信零钱账户</div>
-        <div class="note">请再接再厉!</div>
+        <div class="tip">请到<span>我的奖励</span>里面领取</div>
       </div>
       <div class="close" @click="closeDial">
         <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">
@@ -117,6 +116,9 @@ cwh(x, y) {
       color #666666
       margin-top c(-25)
       line-height 2
+      span{
+        color #ec716c
+      }
     }
     .note {
       font-size c(30)

@@ -7,7 +7,7 @@
         <p class="none-data-tip">亲，你还没有获得奖励呢</p>
       </div>
       <div class="data-box" v-else>
-        <div class="title">
+        <div class="title-wrapper">
           <div class="title-line"></div>
           <div class="title-name">领奖记录</div>
           <div class="title-line"></div>
@@ -18,7 +18,10 @@
             <div class="rank-item" v-for="(item,index) in state.gift_logs" :key="index">
               <div class="rank-item-box">
                 <div class="rank-item-time">{{item.receive_time}}</div>
-                <div class="rank-item-name">{{item.prize_name}}</div>
+                <div class="rank-item-btn">
+                  <div class="rank-item-name">{{item.prize_name}}</div>
+                  <div v-if="item.trade_no" class="btn-get" :class="{ 'canot-btn-get': item.status == 1}" @click="getMoney(item)">{{item.status == 1 ? '已领取' : '领取'}}</div>
+                </div>
               </div>
               <div class="h-line"></div>
             </div>
@@ -33,14 +36,17 @@
       </div>
     </div>
     <com-tabbar></com-tabbar>
+    <dial-all></dial-all>
   </div>
 </template> 
 
 <script>
+import DialAll from './../../components/dial-all'
 import ComHeader from './../../components/com-header'
 import ComTabbar from './../../components/com-tabbar'
 export default {
   components: {
+    DialAll,
     comheader: ComHeader,
     ComTabbar
   },
@@ -51,6 +57,21 @@ export default {
   },
   onShow () {
     this.$store.dispatch('getGiftLog')
+  },
+  methods: {
+    async getMoney (item) {
+      if (item.status === 0) {
+        var result = await this.$api.getMoney({
+          trade_no: item.trade_no
+        })
+
+        if (result.err_code === 0 || result.err_code === '0') {
+          item.status = 1
+        } else {
+          this.$util.catchError(result.err_msg)
+        }
+      }
+    }
   }
 }
 </script>
@@ -98,7 +119,7 @@ cwh(x, y) {
       display flex
       flex-direction column
     }
-    .title {
+    .title-wrapper {
       display flex
       justify-content space-between
       align-items center
@@ -196,6 +217,23 @@ cwh(x, y) {
 
   .tabbar-icon3{
     cwh(32,32)
+  }
+}
+.rank-item-btn{
+  display flex
+  align-items center
+  .btn-get{
+    width c(120)
+    margin-left c(10)
+    padding c(5) c(0)
+    text-align center
+    border c(1) solid #40a46f
+    border-radius c(20)
+    color #40a46f
+    &.canot-btn-get{
+      color #a1a1a1
+      border none
+    }
   }
 }
 </style>
