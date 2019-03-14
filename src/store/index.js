@@ -510,6 +510,7 @@ const store = new Vuex.Store({
     setRankToday (state, payload) {
       state.rank_today = payload.rank
       state.rank_today_count = payload.cu_rnum
+      state.userinfo.today_step = payload.cu_step
       state.userinfo.avatarUrl = payload.cu_avatarUrl
       state.userinfo.nickName = payload.cu_nickName
       state.rank_today_last_time = Date.now()
@@ -881,10 +882,10 @@ const store = new Vuex.Store({
         this.commit('resetSite', payload)
         this.commit('closeDial')
       } else {
-        $util.catchError('获取奖品失败')
+        this.commit('resetSite', 3)
+        $util.catchError(result.err_msg)
       }
     }
-
   }
 })
 

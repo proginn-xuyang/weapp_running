@@ -16,7 +16,7 @@ export default {
       if (source) {
         state.source = source
       }
-      // state.dial_id = 20
+      // state.dial_id = 18
       state.game_today_step = 30000
       state.zhandians = [
         {
@@ -92,6 +92,8 @@ export default {
     }
     await this.$store.dispatch('login')
     await this.$store.dispatch('getWeRunData')
+
+    console.log('123123')
   }
 }
 </script>

@@ -140,7 +140,8 @@ export default {
 
       var result = await this.$api.addInfo(postData)
       if (result.err_code === 0 || result.err_code === '0') {
-        this.$util.catchError('信息录入成功')
+        // this.$util.catchError('信息录入成功')
+        this.$store.commit('closeNoGiftMoney')
       } else {
         this.$util.catchError(result.err_msg)
       }

@@ -55,8 +55,12 @@ export default {
   },
   methods: {
     openDial () {
-      if (this.option === 0) {
-        this.$store.commit('openDial', 7)
+      if (this.getters.mid_pointer.is_has_prize > 0) {
+        if (this.option === 0) {
+          this.$store.commit('openDial', 7)
+        } else {
+          this.$store.commit('openDial', 6)
+        }
       } else {
         this.$store.commit('openDial', 6)
       }

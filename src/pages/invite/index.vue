@@ -52,7 +52,6 @@ import DialAll from './../../components/dial-all'
 import DialCustom from './../../components/dial-custom'
 import ComUserinfoFriend from './../../components/com-userinfo-friend'
 import ComBtnRule from './../../components/com-btn-rule'
-import { setTimeout } from 'timers'
 export default {
   components: {
     DialAll,
@@ -63,7 +62,9 @@ export default {
   async onLoad () {
     console.log('onLoad')
     this.openid = this.$root.$mp.query.openid
-    this.source = this.$root.$mp.query.source
+    if (this.$root.$mp.query.source.indexOf('分享') < 0) {
+      this.source = this.$root.$mp.query.source + '分享'
+    }
     if (this.source) {
       this.$store.commit('setSource', this.source)
     }

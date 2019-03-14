@@ -15,7 +15,11 @@ export default function (url, data, msg) {
     }
 
     var token = wx.getStorageSync('token')
-    console.log('postData', postData)
+    // console.log('postData', postData)
+    // token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuaWQiOiJva01EcjRyWG8tUHpXTmNfT2kxc0lhdUZqczZNIiwiZXhwIjoxNTUyMDMyMTEwNjAxfQ.MjJeP6CcA4314l_je2o8_1kmNzH7UtAUi3kAtmrum4o'
+    // postData = Object.assign(postData, {
+    //   is_test: 1
+    // })
 
     // 网络请求
     wx.request({

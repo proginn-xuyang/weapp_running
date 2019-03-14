@@ -22,7 +22,7 @@
       <div class="btns">
         <div class="btn" @click="closeDial">知道了</div>
       </div>
-      <div class="close"></div>
+      <!-- <div class="close"></div> -->
     </div>
   </div>
 </template>
@@ -75,7 +75,7 @@ cwh(x, y) {
     flex-direction column
     font-size c(30)
     text-align center
-    max-height c(600)
+    max-height c(850)
     overflow auto
     display block
   }
