@@ -64,7 +64,9 @@
                     srcset
                     mode="aspectFill"
                   >
-                  <div class="nickname">{{item.nickName}}</div>
+                  <div class="nickname">
+                    {{item.nickName}}
+                  </div>
                 </div>
                 <div class="rank-item-step" v-if="!state.rank_type">
                   <div class="steps-total">{{item.step}}步</div>
@@ -98,8 +100,7 @@
                           :src="commentItem.avatarUrl"
                           alt
                           srcset
-                          mode="aspectFill"
-                        >
+                          mode="aspectFill">
                       <div class="nickname">{{commentItem.nickName}}</div>
                     </div>
                     <div class="comment-content-wrapper">
@@ -109,7 +110,7 @@
                   <div class="comment-input">
                     <input type="text" v-model="comment" />
                     <div class="comment-btn"  @click="sendComment(item)">
-                      <div>发送</div>
+                    <div>发送</div>
                     </div>
                   </div>
                 </div>
@@ -189,9 +190,8 @@ export default {
       if (result.err_code !== 0 && result.err_code !== '0') {
         this.$util.catchError(result.err_msg)
       } else {
-        item.comments.push({
-          content: '123123'
-        })
+        this.$util.catchError('评论成功，内容正在审核中...')
+        this.comment = ''
       }
     }
   }
@@ -468,7 +468,15 @@ cwh(x, y) {
 
 <style lang="stylus">
 c(x) {
- ((x / 2) px)
+  (x / 2) px
+}
+ptl(x, y) {
+  left (x / 2) px
+  top (y / 2) px
+}
+cwh(x, y) {
+  width x == 0 ? auto : (x / 2) px
+  height (y / 2) px
 }
 .comment-box{
   display flex
@@ -491,22 +499,36 @@ c(x) {
   // 评论内容
   .comment-content-box{
     display flex
-    width 100%
+    width c(490)
+    padding-left c(140)
     align-items  center
+    justify-content center
     .rank-item-user{
-      width c(200)
+      align-self flex-start
+      width c(120)
+      .avaster{
+        cwh(50,50)
+      }
       flex none!important
       flex-direction column
+      display flex 
+      align-items center
+      justify-content center
       .nickname{
         padding c(0)!important
+        font-size c(22)
+        overflow hidden
       }
     }
     .comment-content-wrapper{
       flex 1
       height auto
+      align-self:flex-start;
       .comment-content{
-        word-wrap:break-word;
-        padding c(10) c(0)
+        word-wrap break-word
+        padding 0 c(10) c(10) 0
+        font-size c(26)
+        line-height 1.2
       }
     }
   }
@@ -537,6 +559,4 @@ c(x) {
     }
   }
 }
-
-
 </style>

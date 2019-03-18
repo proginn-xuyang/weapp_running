@@ -411,11 +411,12 @@ const store = new Vuex.Store({
     resetRanks (state, payload) {
       if (state.rank_type === 0) {
         for (let i = 0; i < state.rank_today.length; i++) {
-          state.rank_today[i].openComment = false
           if (payload.openid === state.rank_today[i].openid) {
             // payload.openComment = !payload.openComment
-            // state.rank_today[i].openComment = payload.openComment
-            state.rank_today[i].openComment = true
+            state.rank_today[i].openComment = !payload.openComment
+            // state.rank_today[i].openComment = true
+          } else {
+            state.rank_today[i].openComment = false
           }
         }
       } else {
