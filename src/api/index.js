@@ -89,7 +89,19 @@ const getMoney = data => {
   return post(`/os/data/redpack`, data)
 }
 
+// 获取评论数据
+const getComment = data => {
+  return post(`/os/data/review/get`, Object.assign({page: 0}, data))
+}
+
+// 获取评论数据
+const sendComment = data => {
+  return post(`/os/data/review/save`, data)
+}
+
 export default {
+  getComment, // 获取评论数据
+  sendComment, // 发送评论数据
   login, // 登录
   getUserInfo, // 微信用户授权
   getWeRunData, // 获取运动数据

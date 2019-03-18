@@ -1,25 +1,23 @@
 
+import { TIMEOUT } from 'dns';
 <template>
   <div class="com-dial dial-end-pointer" catchtouchmove="true">
     <div class="com-dial-box">
       <div class="header">
-        <div>{{state.end_pointer. is_has_prize ? '太棒啦' : '棒棒哒'}}~恭喜您成功抵达终点</div>
+        <div>{{getters.end_pointer.is_has_prize ? '太棒啦' : '棒棒哒'}}~恭喜您成功抵达终点</div>
       </div>
       <div class="content">
-        <div v-if="state.end_pointer.is_has_prize">
-          <div class="rank">作为第{{state.end_pointer.rank}}名冲线的超人</div>
-          <div class="gift_name">你将获得欧尚汽车送出的{{state.end_pointer.gift_name}}哦~</div>
+        <div v-if="getters.end_pointer.is_has_prize">
+          <div class="rank">作为第{{getters.end_pointer.arrive}}名冲线的超人</div>
+          <div class="gift_name">你将获得欧尚汽车送出的{{getters.end_pointer.gift_name}}哦~</div>
         </div>
         <div v-else>
-          <div class="rank">你是本站第{{state.end_pointer.rank}}名，无缘大奖了</div>
+          <div class="rank">你是本站第{{getters.end_pointer.arrive}}名，无缘大奖了</div>
           <div class="gift_name">不过跑完全程的你，也是我们心中的英雄哦~</div>
         </div>
       </div>
-      <div class="btns">
-        <div class="btn">{{state.end_pointer. is_has_prize ? '领取' : '领取'}}</div>
-      </div>
-      <div class="close" @click="closeDial">
-        <img class="btn-close" src="/static/images/btn-close.png" alt srcset mode="aspectFill">
+      <div class="btns" @click="closeDial">
+        <div class="btn">{{getters.end_pointer.is_has_prize ? '领取' : '关闭'}}</div>
       </div>
     </div>
   </div>
@@ -30,12 +28,16 @@ export default {
   id: 5,
   methods: {
     closeDial () {
-      this.$store.commit('closeDial')
+      if (this.getters.end_pointer.is_has_prize) {
+        this.$store.dispatch('getPrize', 2)
+      } else {
+        this.$store.dispatch('getPrize', 3)
+      }
     }
   },
   computed: {
-    state () {
-      return this.$store.state
+    getters () {
+      return this.$store.getters
     }
   }
 }

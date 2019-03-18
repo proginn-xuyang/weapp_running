@@ -1,7 +1,7 @@
 <template>
   <div class="container container-rank">
     <comheader></comheader>
-    <div class="btns">
+    <div class="rank-btns">
       <div
         class="btn btn-left"
         :class="{'actived': state.rank_type === 0}"
@@ -13,7 +13,7 @@
         @click="toggleRankType"
       >里程排行榜</div>
     </div>
-    <div class="content">
+    <div class="rank-content">
       <div class="none-data-box" v-if="false">
         <img class="none-data" src="/static/images/none-data.png" alt srcset>
         <p class="none-data-tip">排行榜暂无数据</p>
@@ -50,7 +50,7 @@
 
         <div class="rank-items">
           <scroll-view class="scroll-view" scroll-y>
-            <div class="rank-item" v-for="(item, index) in getters.ranks" :key="index">
+            <div class="rank-item" v-for="item in getters.ranks" :key="item.openid">
               <div class="rank-item-box">
                 <div class="rank-item-num">
                   <div :class="{'actived': index < 3}">{{index + 1}}</div>
@@ -84,6 +84,36 @@
                   </div>
                 </div>
               </div>
+              <div class="comment-box">
+                <div class="comment-count" @click="getComment(item)">
+                  <!-- 评论：<span>1000</span> -->
+                  评论
+                </div>
+                <div v-if="item.openComment"> 
+                  <div class="comment-content-box" v-for="(commentItem,commentIndex) in item.comments" :key="commentIndex">
+                    <div class="rank-item-user">
+                        <img
+                          class="avaster"
+                          lazy-load="true"
+                          :src="commentItem.avatarUrl"
+                          alt
+                          srcset
+                          mode="aspectFill"
+                        >
+                      <div class="nickname">{{commentItem.nickName}}</div>
+                    </div>
+                    <div class="comment-content-wrapper">
+                      <div class="comment-content">{{commentItem.content}}</div>
+                    </div>
+                  </div>
+                  <div class="comment-input">
+                    <input type="text" v-model="comment" />
+                    <div class="comment-btn"  @click="sendComment(item)">
+                      <div>发送</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="h-line"></div>
             </div>
           </scroll-view>
@@ -91,19 +121,27 @@
       </div>
     </div>
     <com-tabbar></com-tabbar>
+    <dial-all></dial-all>
   </div>
 </template> 
 
 <script>
+import DialAll from './../../components/dial-all'
 import ComHeader from './../../components/com-header'
 import ComTabbar from './../../components/com-tabbar'
 export default {
   components: {
+    DialAll,
     comheader: ComHeader,
     ComTabbar
   },
   onShow () {
     this.$store.dispatch('getRank')
+  },
+  data () {
+    return {
+      comment: ''
+    }
   },
   computed: {
     state () {
@@ -131,6 +169,30 @@ export default {
           item.today_praise = 1
         }
       }
+    },
+    async getComment (item) {
+      this.$store.commit('resetRanks', item)
+      var result = await this.$api.getComment({
+        openid: item.openid
+      })
+      item.comments = result.data
+    },
+    async sendComment (item) {
+      if (!this.comment) {
+        this.$util.catchError('请输入评论内容')
+      }
+      var result = await this.$api.sendComment({
+        openid: item.openid,
+        content: this.comment
+      })
+
+      if (result.err_code !== 0 && result.err_code !== '0') {
+        this.$util.catchError(result.err_msg)
+      } else {
+        item.comments.push({
+          content: '123123'
+        })
+      }
     }
   }
 }
@@ -154,7 +216,7 @@ cwh(x, y) {
   display flex
   flex-direction column
   background #ffffff
-  .btns {
+  .rank-btns {
     cwh(676, 70)
     margin c(30) auto
     background #ffffff
@@ -185,7 +247,7 @@ cwh(x, y) {
       }
     }
   }
-  .content {
+  .rank-content {
     flex 1
     display flex
     justify-content center
@@ -402,4 +464,79 @@ cwh(x, y) {
   font-style:normal;
   src:url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAAV4AA0AAAAAB9gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAAFXAAAABoAAAAchwQ58UdERUYAAAVAAAAAGwAAAB4AJwALT1MvMgAAAaAAAABCAAAAVjyxSHZjbWFwAAAB+AAAAEUAAAFK5trpwWdhc3AAAAU4AAAACAAAAAj//wADZ2x5ZgAAAkwAAAFyAAABqJ4cARJoZWFkAAABMAAAADAAAAA2FHxW32hoZWEAAAFgAAAAHQAAACQHzQOFaG10eAAAAeQAAAARAAAAEgwgAA5sb2NhAAACQAAAAAwAAAAMAJQA1G1heHAAAAGAAAAAHgAAACABEQBtbmFtZQAAA8AAAAFJAAACiCnmEVVwb3N0AAAFDAAAACwAAABGhCKRHHjaY2BkYGAA4rxrE0Xi+W2+MnCzMIDAjQ2cJXCa7/9t5vfM8kAuBwMTSBQAKa8KqnjaY2BkYGBu+N/AEMPCAALM7xkYGVABCwBYswNbAAAAeNpjYGRgYGBlSGRgYgABEMkFhAwM/8F8BgASeAF/AAB42mNgZGFgnMDAysDA1Ml0hoGBoR9CM75mMGLkAIoysDIzYAUBaa4pDA7PnJ+1MDf8b2CIYW5gaAAKM4LkAOoIDKIAAHjaY2GAABYI5mNQAAAA5AA7AAAAeNpjYGBgZoBgGQZGBhBwAfIYwXwWBg0gzQakGRmYnjk/a/n/n4EBQksekGyAqgcCRjYGOIeRCUgwMaACRoZhDwCJlgtkAAAAAAAAAAAAAAAAlADUeNpVkM9LAkEUx+e9dXbc3XFmXYfdLMhQcEFETEGNoNJMOxRkKh2L/ojoIkJ0SfBSl+jUsTr0B9W5U4cI6qqNdoh4v3i89308PgSJmL4aH0aK5MgJIZANsyYzWQHCAuhqeoEf+CnwyzotQ+BXqqVqZWYeCJA69FImXSquhmmtCLNzK0B1A6oVrQyKq9r1/gYEM7lpjKXoPfekYJLp6tqnvdtGO6mcSMTAqBGlqqSooxZ2G3f9yWeqkQ5s37TdZAQQACmatko2N6/2u5TT7VFLWBnXC1qjpm6P9vDJE31oOpJx1sCe8G4mbxfreSEZIkQQkZrcshP59UtYmowWy75gFqVUn9Zj6sjc2vn3gDmsDWu2FboqUcO2PnX2pcGQlem78WJ4JPNHKfsf0pzPJvziMQYi1nnoiFhMHDx2Yvz48HprJ1DxKGeq6LlqoVm/7uB9XHSx7nDu1LEr3PHkY1jLS66/Qspsi8t8bQhxQn4ADHpCmwAAeNp9kD1OAzEQhZ/zByQSQiCoXVEA2vyUKRMp9Ailo0g23pBo1155nUg5AS0VB6DlGByAGyDRcgpelkmTImvt6PObmeexAZzjGwr/3yXuhBWO8ShcwREy4Sr1F+Ea+V24jhY+hRvUf4SbuFUD4RYu1BsdVO2Eu5vSbcsKZxgIV3CKJ+Eq9ZVwjfwqXMcVPoQb1L+EmxjjV7iFa2WpDOFhMEFgnEFjig3jAjEcLJIyBtahOfRmEsxMTzd6ETubOBso71dilwMeaDnngCntPbdmvkon/mDLgdSYbh4FS7YpjS4idCgbXyyc1d2oc7D9nu22tNi/a4E1x+xRDWzU/D3bM9JIbAyvkJI18jK3pBJTj2hrrPG7ZynW814IiU68y/SIx5o0dTr3bmniwOLn8owcfbS5kj33qBw+Y1kIeb/dTsQgil2GP5PYcRkAAAB42mNgYoAALjDJyIAOWMGiTIxMjMxcWaXFGfmlyYl56XwIZnpmWgkAilQKTQAAAAH//wACeNpjYGRgYOABYjEgZmJgBEIWMAbxGAADygAzAHjaY2BgYGQAgqtL1DlA9I0NnCUwGgA8XwW0AAA=) format('woff');
 }
+</style>
+
+<style lang="stylus">
+c(x) {
+ ((x / 2) px)
+}
+.comment-box{
+  display flex
+  flex-direction column
+  width:95%;
+  padding:0 c(10);
+  margin-top: c(-40)
+  >div {
+    flex 1
+  }
+  
+  // 评论数
+  .comment-count{
+    align-self flex-end
+    color:#40a570;
+    font-size c(24)
+    padding:c(5) c(20) c(20) 0;
+  }
+
+  // 评论内容
+  .comment-content-box{
+    display flex
+    width 100%
+    align-items  center
+    .rank-item-user{
+      width c(200)
+      flex none!important
+      flex-direction column
+      .nickname{
+        padding c(0)!important
+      }
+    }
+    .comment-content-wrapper{
+      flex 1
+      height auto
+      .comment-content{
+        word-wrap:break-word;
+        padding c(10) c(0)
+      }
+    }
+  }
+
+  // 发布评论
+  .comment-input{
+    display flex 
+    width:100%;
+    margin auto
+    padding-bottom c(15)
+    input{
+      padding 0 c(10)
+      min-height c(65)
+      height c(65)
+      flex 1
+      border-bottom 1px solid #ef8b3b
+    }
+    .comment-btn{
+      width c(120)
+      height c(60)
+      border-radius c(30)
+      display flex 
+      justify-content center
+      align-items center
+      background-image:linear-gradient(90deg, #ef8b3b 0%, #fbd565 100%), linear-gradient(90deg, #bccbf9 0%, #26c1db 100%);
+      background-blend-mode:normal, normal;
+      color #fff;
+    }
+  }
+}
+
+
 </style>

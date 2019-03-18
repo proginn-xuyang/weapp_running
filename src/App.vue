@@ -98,7 +98,7 @@ export default {
     var day = now.getDate()
     var tickTime = new Date(year, month, day, 21, 58, 0)
 
-    if (now < tickTime) {
+    if (now < tickTime && this.$store.state.userinfo.phone > 0) {
       if (this.$store.state.userinfo.today_step >= 30000) {
         this.$util.catchError('恭喜你获得瓜分每日红包的资格，继续向着站点奖励冲刺吧！')
       } else {

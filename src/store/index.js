@@ -173,16 +173,6 @@ const store = new Vuex.Store({
      */
     guafens: [],
     /**
-     * 终点
-     */
-    end_pointer: {
-      is_has_prize: 1, // 0表示没有奖品，1表示有奖品
-      rank: 1, // 终点排名
-      pointer_name: '终点站', // 站点名称
-      gift_name: '欧尚车模', // 获得奖品的名称
-      is_get_prize: 0 // 0表示没有领取奖品，1表示已经领取奖品
-    },
-    /**
      * 错误信息
      */
     err_msg: ''
@@ -382,10 +372,9 @@ const store = new Vuex.Store({
      */
     mid_pointer (state) {
       let lastItem = null
-      for (let i = state.sites.length - 1; i >= 0; --i) {
+      for (let i = state.sites.length - 2; i >= 0; --i) {
         const item = state.sites[i]
         if (item.status === 1) {
-          // this.commit('setSiteCode', item.site_code)
           state.site_code = item.code
           console.log('lastItem', lastItem)
           return {
@@ -399,11 +388,45 @@ const store = new Vuex.Store({
         }
         lastItem = item
       }
-
+      return null
+    },
+    end_pointer (state) {
+      if (state.sites.length < 5) return null
+      for (let i = state.sites.length - 1; i >= state.sites.length - 1; --i) {
+        const item = state.sites[i]
+        if (item.status === 1) {
+          state.site_code = item.code
+          return {
+            is_has_prize: item.prize_surplus > 0, // 0表示没有奖品，1表示有奖品
+            arrive: item.arrive + 1, // 到达本站的名次
+            pointer_name: item.name, // 站点名称
+            gift_name: item.prize_name // 本站奖品
+          }
+        }
+      }
       return null
     }
   },
   mutations: {
+    resetRanks (state, payload) {
+      if (state.rank_type === 0) {
+        for (let i = 0; i < state.rank_today.length; i++) {
+          state.rank_today[i].openComment = false
+          if (payload.openid === state.rank_today[i].openid) {
+            // payload.openComment = !payload.openComment
+            // state.rank_today[i].openComment = payload.openComment
+            state.rank_today[i].openComment = true
+          }
+        }
+      } else {
+        for (let i = 0; i < state.rank_all.length; i++) {
+          state.rank_all[i].openComment = false
+          if (payload.openid === state.rank_today[i].openid) {
+            state.rank_today[i].openComment = !state.rank_today[i].openComment
+          }
+        }
+      }
+    },
     setSource (state, payload) {
       state.source = payload
       wx.setStorageSync('state', JSON.stringify(state))
@@ -686,6 +709,7 @@ const store = new Vuex.Store({
 
         if (result.err_code === 0 || result.err_code === '0') {
           this.commit('setUserinfo', { phone: 1 })
+          this.commit('closeDial')
         } else {
           $util.catchError('手机号获取失败')
         }
@@ -723,6 +747,7 @@ const store = new Vuex.Store({
       try {
         var runData = await $util.wxApi.getWeRunData()
         var result = await $api.getWeRunData(runData)
+        // TODO: result.phone
         if (result.err_code === 0 || result.err_code === '0') {
           store.commit('setUserinfo', {
             today_step: result.today_step,
@@ -775,6 +800,10 @@ const store = new Vuex.Store({
       if (store.state.rank_type === 0) {
         result = await $api.getRankToday()
         if (result.err_code === 0 || result.err_code === '0') {
+          for (let i = 0; i < result.data.rank.length; i++) {
+            result.data.rank[i].openComment = false
+            result.data.rank[i].comments = []
+          }
           this.commit('setRankToday', result.data)
         } else {
           $util.catchError('获取今日排行榜失败')
@@ -782,6 +811,10 @@ const store = new Vuex.Store({
       } else {
         result = await $api.getRankAll()
         if (result.err_code === 0 || result.err_code === '0') {
+          for (let i = 0; i < result.data.rank.length; i++) {
+            result.data.rank[i].openComment = false
+            result.data.rank[i].comments = []
+          }
           this.commit('setRankAll', result.data)
         } else {
           $util.catchError('获取总排行榜失败')

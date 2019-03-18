@@ -60,7 +60,6 @@ export default {
     ComBtnRule
   },
   async onLoad () {
-    console.log('onLoad')
     this.openid = this.$root.$mp.query.openid
     if (this.$root.$mp.query.source.indexOf('分享') < 0) {
       this.source = this.$root.$mp.query.source + '分享'

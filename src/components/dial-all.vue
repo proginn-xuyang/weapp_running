@@ -16,6 +16,7 @@
     <dial-mid-pointer v-if="state.dial_id===5"></dial-mid-pointer>
 
     <!-- 放弃站点奖励 -->
+
     <dial-give-up v-if="state.dial_id===6"></dial-give-up>
 
     <!-- 确认奖励 -->
@@ -59,10 +60,13 @@
 
     <!-- 经销商信息 -->
     <dial-adduserinfo-tip-error v-if="state.dial_id===20"></dial-adduserinfo-tip-error>
+
+    <dial-auth-telephone v-if="state.dial_id == 21"></dial-auth-telephone>
   </div>
 </template>
 
 <script>
+import DialAuthTelephone from './dial-auth-telephone'
 import DialStepLog from './dial-step-log' // 1
 import DialFriendStepLog from './dial-friend-step-log' // 2
 import DialGiftMoney from './dial-gift-money' // 3
@@ -86,6 +90,7 @@ import DialAdduserinfoError from './dial-adduserinfo-error' // 18
 
 export default {
   components: {
+    DialAuthTelephone, // 21
     DialStepLog, // 步数明细 1
     DialFriendStepLog, // 好友赠送 2
     DialGiftMoney, // 现金奖励 3
