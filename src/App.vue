@@ -99,12 +99,13 @@ export default {
     var tickTime = new Date(year, month, day, 21, 58, 0)
 
     if (now < tickTime && this.$store.state.userinfo.phone > 0) {
-      if (this.$store.state.userinfo.today_step >= 30000) {
-        this.$util.catchError('恭喜你获得瓜分每日红包的资格，继续向着站点奖励冲刺吧！')
-      } else {
-        this.$util.catchError(`亲，你离每日红包还差${30000 - this.$store.state.userinfo.today_step}步，要继续努力呀！`)
-      }
+      // if (this.$store.state.userinfo.today_step >= 30000) {
+      //   this.$util.catchError('恭喜你获得瓜分每日红包的资格，继续向着站点奖励冲刺吧！')
+      // } else {
+      //   this.$util.catchError(`亲，你离每日红包还差${30000 - this.$store.state.userinfo.today_step}步，要继续努力呀！`)
+      // }
     }
+    this.$util.catchError(`活动已经结束`)
   }
 }
 </script>
