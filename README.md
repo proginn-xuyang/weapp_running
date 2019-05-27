@@ -1,6 +1,6 @@
 # weapp_changan_run
 
-> 长安重
+> 跑步小程序
 
 ## Build Setup
 
